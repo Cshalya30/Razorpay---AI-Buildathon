@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { TrendUp, Info } from "@phosphor-icons/react";
+import { motion } from "framer-motion";
+import { TrendUp, Info, CheckCircle, WarningCircle } from "@phosphor-icons/react";
 
 interface ScatterPoint {
   id: string;
   day: number;
   headroom: number;
   amount: number;
+  mandateName: string;
   status: "recovered" | "at_risk";
   isPrimarySalary: boolean;
 }
@@ -13,38 +15,40 @@ interface ScatterPoint {
 export const PalantirScatterPlot: React.FC = () => {
   const [hoveredPoint, setHoveredPoint] = useState<ScatterPoint | null>(null);
 
-  // 160 realistic, well-dispersed mandate clearance observations across the 30-day billing cycle
+  // 140 realistic points clustered vertically by cycle-time milestone columns like the Palantir reference
   const points = React.useMemo(() => {
     const pts: ScatterPoint[] = [];
-    const clusters = [
-      { centerDay: 1, count: 24, baseHeadroom: 24000, spreadDay: 1.2, spreadHeadroom: 9000 },
-      { centerDay: 5, count: 48, baseHeadroom: 36000, spreadDay: 1.8, spreadHeadroom: 11000 }, // Primary Salary Peak
-      { centerDay: 7, count: 22, baseHeadroom: 28000, spreadDay: 1.5, spreadHeadroom: 8000 },
-      { centerDay: 14, count: 16, baseHeadroom: 12000, spreadDay: 2.2, spreadHeadroom: 6000 },
-      { centerDay: 21, count: 14, baseHeadroom: 9500, spreadDay: 2.4, spreadHeadroom: 5000 },
-      { centerDay: 28, count: 26, baseHeadroom: 31000, spreadDay: 1.4, spreadHeadroom: 10000 },
-      { centerDay: 30, count: 10, baseHeadroom: 26000, spreadDay: 1.0, spreadHeadroom: 7000 }
+    const columns = [
+      { day: 1, label: "Day 01", count: 26, baseHeadroom: 26000, spreadY: 8000 },
+      { day: 5, label: "Day 05 (Salary Peak)", count: 54, baseHeadroom: 38000, spreadY: 10000 },
+      { day: 7, label: "Day 07", count: 24, baseHeadroom: 30000, spreadY: 7000 },
+      { day: 15, label: "Day 15 (Mid-Month)", count: 12, baseHeadroom: 11000, spreadY: 5000 },
+      { day: 20, label: "Day 20 (Burn Phase)", count: 10, baseHeadroom: 8500, spreadY: 4500 },
+      { day: 28, label: "Day 28 (Month End)", count: 28, baseHeadroom: 32000, spreadY: 9000 }
     ];
 
-    let idCounter = 1001;
-    clusters.forEach((c) => {
-      for (let i = 0; i < c.count; i++) {
-        // Natural Gaussian-like spread so points do NOT overlap into solid blobs
-        const u1 = Math.random();
-        const u2 = Math.random();
-        const z0 = Math.sqrt(-2.0 * Math.log(u1 || 0.001)) * Math.cos(2.0 * Math.PI * u2);
-        const z1 = Math.sqrt(-2.0 * Math.log(u1 || 0.001)) * Math.sin(2.0 * Math.PI * u2);
+    const merchants = ["Netflix India", "Spotify Premium", "AWS Cloud", "Cult.fit Gym", "Amazon Prime", "HDFC Life", "ICICI Prudential"];
 
-        const day = Math.max(1, Math.min(30, c.centerDay + z0 * (c.spreadDay * 0.7)));
-        const headroom = Math.max(1200, Math.min(48000, c.baseHeadroom + z1 * (c.spreadHeadroom * 0.6)));
+    let idCounter = 1001;
+    columns.forEach((col) => {
+      for (let i = 0; i < col.count; i++) {
+        // Controlled horizontal column jitter (like Palantir agent cycle scatter)
+        const jitterX = (Math.random() - 0.5) * 1.2;
+        const day = Math.max(0.5, Math.min(30, col.day + jitterX));
+        
+        // Vertical headroom distribution
+        const u = Math.random();
+        const jitterY = (u - 0.5) * 2 * col.spreadY;
+        const headroom = Math.max(1200, Math.min(48000, col.baseHeadroom + jitterY));
         const amount = [499, 1199, 1499, 2500, 4500, 8200][Math.floor(Math.random() * 6)];
-        const isSalary = c.centerDay === 5 || c.centerDay === 1 || c.centerDay === 28;
+        const isSalary = col.day === 5 || col.day === 1 || col.day === 28;
 
         pts.push({
           id: `MDT-${idCounter++}`,
           day: parseFloat(day.toFixed(1)),
           headroom: Math.round(headroom),
           amount,
+          mandateName: merchants[Math.floor(Math.random() * merchants.length)],
           status: headroom >= amount ? "recovered" : "at_risk",
           isPrimarySalary: isSalary
         });
@@ -53,122 +57,183 @@ export const PalantirScatterPlot: React.FC = () => {
     return pts;
   }, []);
 
+  const timelineItems = [
+    { title: "Salary Window Clearance", status: "Active", latency: "Day 05", progress: "98.7% P(Clear)" },
+    { title: "24h Pre-Debit Notice Rail", status: "Verified", latency: "26.4h lead", progress: "Statutory Gated" },
+    { title: "AFA Threshold Guard", status: "Enforced", latency: "?15,000", progress: "2 Halted" },
+    { title: "Anti-Harassment Ceiling", status: "Safe", latency: "Max 4 retries", progress: "1 Escalated" }
+  ];
+
   return (
-    <div className="bg-white border border-[#DDD8CC] p-6 shadow-card mb-6">
-      {/* Title Header */}
-      <div className="flex flex-wrap items-start justify-between gap-4 mb-4 pb-4 border-b border-[#DDD8CC]">
+    <div className="bg-[#090D1A] text-white p-6 rounded-2xl border border-indigo-900/30 shadow-2xl mb-8 relative overflow-hidden font-sans">
+      {/* Subtle Background Glow */}
+      <div className="absolute top-0 right-1/4 w-96 h-60 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-white/10">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-mono font-bold text-[#2B4C7E] tracking-wider uppercase">
-              EMPIRICAL TIMING TELEMETRY // STATISTICAL VALIDATION
+            <span className="text-[10px] font-mono font-bold text-sky-400 tracking-widest uppercase">
+              CYCLE TIME &amp; LIQUIDITY CLUSTERING TELEMETRY
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#0F6B5C]" />
-            <span className="text-[10px] font-mono text-[#0F6B5C] font-semibold">N = 160 SAMPLES</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </div>
-          <h2 className="text-xl font-serif font-bold text-[#1B1B18] tracking-tight">
-            Mandate Recovery Clearance Distribution across 30-Day Cycle
+          <h2 className="text-xl font-bold text-white tracking-tight">
+            Cycle time by agent &amp; customer liquidity arrival
           </h2>
-          <p className="text-[12px] text-[#6B6558] font-sans mt-0.5 max-w-3xl">
-            Empirical evidence demonstrating why timing alignment yields a 98.7% recovery rate: customer balance clearance events cluster tightly around primary monthly salary credit windows.
+          <p className="text-xs text-slate-400 mt-0.5">
+            Empirical evidence showing why timing alignment drives a 98.7% recovery rate: clearance events cluster tightly around primary customer salary inflow dates.
           </p>
         </div>
 
-        {/* Legend */}
-        <div className="flex items-center gap-4 text-[11px] font-mono shrink-0 bg-[#F6F4EE] px-3 py-1.5 border border-[#DDD8CC]">
-          <div className="flex items-center gap-1.5 text-[#1B1B18]">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#0F6B5C] inline-block" />
-            <span>Settled Clearance</span>
+        <div className="flex items-center gap-4 text-xs font-mono">
+          <div className="flex items-center gap-1.5 text-emerald-400">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)] inline-block" />
+            <span>Salary Inflow Clearance</span>
           </div>
-          <div className="flex items-center gap-1.5 text-[#B4790E]">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#B4790E] inline-block" />
-            <span>Deficit Window</span>
+          <div className="flex items-center gap-1.5 text-sky-400">
+            <span className="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.8)] inline-block" />
+            <span>Mid-Cycle Clearance</span>
           </div>
         </div>
       </div>
 
-      {/* SVG Scatter Plot Canvas in Light Paper Style */}
-      <div className="relative w-full h-72 bg-[#F6F4EE]/60 border border-[#DDD8CC] p-4 overflow-hidden rounded-sm">
-        {/* Soft highlighted salary credit window vertical bands */}
-        <div className="absolute inset-0 pointer-events-none flex">
-          {/* Day 1 Band */}
-          <div className="absolute left-[3%] w-[5%] top-0 bottom-8 bg-[#0F6B5C]/5 border-x border-[#0F6B5C]/15 flex items-start justify-center pt-2">
-            <span className="text-[9px] font-mono text-[#0F6B5C] font-semibold opacity-70">1st</span>
+      {/* Split View: Left Milestones + Right Scatter Matrix */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        {/* Left Side: Pipeline Milestones (Palantir left rail) */}
+        <div className="lg:col-span-4 space-y-3">
+          <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider mb-2">
+            Execution Stages // Active Rails
           </div>
-          {/* Day 5-7 Primary Band */}
-          <div className="absolute left-[14%] w-[12%] top-0 bottom-8 bg-[#0F6B5C]/8 border-x border-[#0F6B5C]/20 flex items-start justify-center pt-2">
-            <span className="text-[9px] font-mono text-[#0F6B5C] font-semibold">Salary Peak (D5-D7)</span>
-          </div>
-          {/* Day 28-30 Month End Band */}
-          <div className="absolute left-[88%] w-[9%] top-0 bottom-8 bg-[#0F6B5C]/5 border-x border-[#0F6B5C]/15 flex items-start justify-center pt-2">
-            <span className="text-[9px] font-mono text-[#0F6B5C] font-semibold opacity-70">Month End</span>
+
+          {timelineItems.map((item, idx) => (
+            <div
+              key={idx}
+              className="p-3 bg-[#0F1424] border border-white/10 rounded-xl hover:border-sky-500/40 transition-all group"
+            >
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 group-hover:animate-ping" />
+                  <span className="text-xs font-bold text-white group-hover:text-sky-300 transition-colors">
+                    {item.title}
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  {item.status}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 mt-1">
+                <span>Target: {item.latency}</span>
+                <span className="text-white font-medium">{item.progress}</span>
+              </div>
+            </div>
+          ))}
+
+          <div className="p-3 bg-[#11172A] border border-indigo-900/40 rounded-xl text-[11px] font-mono text-slate-300">
+            <div className="text-emerald-400 font-bold mb-0.5">82% Balance Liquidity Inflow</div>
+            <span>Concentrated within 48 hours of primary monthly payroll credit.</span>
           </div>
         </div>
 
-        {/* Scatter Points Plot */}
-        <svg className="w-full h-full" viewBox="0 0 760 220" preserveAspectRatio="none">
-          {/* Subtle Horizontal Grid lines */}
-          <line x1="0" y1="35" x2="760" y2="35" stroke="#DDD8CC" strokeWidth="1" strokeDasharray="3 3" />
-          <line x1="0" y1="85" x2="760" y2="85" stroke="#DDD8CC" strokeWidth="1" strokeDasharray="3 3" />
-          <line x1="0" y1="135" x2="760" y2="135" stroke="#DDD8CC" strokeWidth="1" strokeDasharray="3 3" />
-          <line x1="0" y1="185" x2="760" y2="185" stroke="#DDD8CC" strokeWidth="1" />
-
-          {/* Points */}
-          {points.map((pt) => {
-            const cx = (pt.day / 30) * 720 + 20;
-            const cy = 185 - (pt.headroom / 50000) * 155;
-            const isHovered = hoveredPoint?.id === pt.id;
-            const isRecovered = pt.status === "recovered";
-
-            return (
-              <circle
-                key={pt.id}
-                cx={cx}
-                cy={cy}
-                r={isHovered ? 5.5 : isRecovered ? 3.2 : 2.6}
-                fill={isRecovered ? "#0F6B5C" : "#B4790E"}
-                fillOpacity={isHovered ? 1.0 : isRecovered ? 0.75 : 0.65}
-                stroke={isHovered ? "#1B1B18" : isRecovered ? "#0A4E43" : "#8A5C0B"}
-                strokeWidth={isHovered ? 1.5 : 0.75}
-                className="cursor-pointer transition-all"
-                onMouseEnter={() => setHoveredPoint(pt)}
-                onMouseLeave={() => setHoveredPoint(null)}
+        {/* Right Side: Palantir Scatter Canvas (Exact visual style from reference) */}
+        <div className="lg:col-span-8 bg-[#060913] border border-white/10 rounded-xl p-4 relative overflow-hidden h-80 flex flex-col justify-between">
+          {/* Subtle animated red threshold band lines (like the reference image) */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Top red threshold contour */}
+            <svg className="w-full h-full" viewBox="0 0 500 240" preserveAspectRatio="none">
+              <path
+                d="M 0 60 Q 125 55 250 80 T 500 65"
+                stroke="rgba(239, 68, 68, 0.35)"
+                strokeWidth="1.5"
+                fill="none"
+                strokeDasharray="4 4"
               />
-            );
-          })}
-        </svg>
-
-        {/* Interactive Hover Tooltip */}
-        {hoveredPoint && (
-          <div className="absolute top-3 right-3 p-3 bg-white border border-[#DDD8CC] shadow-card text-[11px] font-mono z-10 text-[#1B1B18]">
-            <div className="font-bold text-[#2B4C7E] flex items-center justify-between gap-3">
-              <span>{hoveredPoint.id} ? Cycle Day {hoveredPoint.day}</span>
-              <span className={hoveredPoint.status === "recovered" ? "text-[#0F6B5C]" : "text-[#B4790E]"}>
-                {hoveredPoint.status === "recovered" ? "CLEARANCE" : "DEFICIT"}
-              </span>
-            </div>
-            <div className="text-[#6B6558] mt-0.5">Mandate Amount: ?{hoveredPoint.amount}</div>
-            <div className="text-[#0F6B5C] font-bold mt-0.5">
-              Available Headroom: +?{hoveredPoint.headroom.toLocaleString("en-IN")}
-            </div>
+              <path
+                d="M 0 140 Q 125 150 250 120 T 500 135"
+                stroke="rgba(239, 68, 68, 0.25)"
+                strokeWidth="1.5"
+                fill="none"
+                strokeDasharray="4 4"
+              />
+            </svg>
           </div>
-        )}
 
-        {/* X-Axis Cycle Day Labels */}
-        <div className="absolute bottom-2 left-6 right-6 flex justify-between text-[10px] font-mono text-[#6B6558]">
-          <span>Day 1</span>
-          <span className="text-[#0F6B5C] font-bold">Day 5 (Salary Peak)</span>
-          <span>Day 10</span>
-          <span>Day 15</span>
-          <span>Day 20</span>
-          <span>Day 25</span>
-          <span className="text-[#0F6B5C] font-bold">Day 30</span>
+          {/* SVG Canvas for Scatter Points */}
+          <svg className="w-full h-full relative z-10" viewBox="0 0 500 220" preserveAspectRatio="none">
+            <defs>
+              <filter id="pointGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            {/* Vertical column guides */}
+            {[20, 110, 190, 290, 370, 460].map((x, i) => (
+              <line
+                key={i}
+                x1={x}
+                y1={15}
+                x2={x}
+                y2={195}
+                stroke="rgba(255,255,255,0.06)"
+                strokeDasharray="2 4"
+                strokeWidth="1"
+              />
+            ))}
+
+            {/* Render Points with individual glow */}
+            {points.map((pt) => {
+              const cx = (pt.day / 30) * 460 + 20;
+              const cy = 195 - (pt.headroom / 50000) * 170;
+              const isHovered = hoveredPoint?.id === pt.id;
+
+              return (
+                <circle
+                  key={pt.id}
+                  cx={cx}
+                  cy={cy}
+                  r={isHovered ? 5.5 : pt.isPrimarySalary ? 3.2 : 2.4}
+                  fill={pt.isPrimarySalary ? "#10B981" : "#38BDF8"}
+                  filter="url(#pointGlow)"
+                  className="cursor-pointer transition-all duration-150"
+                  onMouseEnter={() => setHoveredPoint(pt)}
+                  onMouseLeave={() => setHoveredPoint(null)}
+                />
+              );
+            })}
+          </svg>
+
+          {/* Interactive Hover Tooltip */}
+          {hoveredPoint && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="absolute top-3 right-3 p-3 bg-[#0F1424]/95 border border-sky-400/40 rounded-lg text-xs font-mono shadow-2xl z-20 text-white backdrop-blur-md"
+            >
+              <div className="font-bold text-sky-400 flex items-center justify-between gap-3">
+                <span>{hoveredPoint.id} ? Day {hoveredPoint.day}</span>
+                <span className="text-emerald-400 font-bold">P(Success) = 98.7%</span>
+              </div>
+              <div className="text-slate-300 mt-1">{hoveredPoint.mandateName} ? ?{hoveredPoint.amount}</div>
+              <div className="text-emerald-400 font-semibold mt-0.5">
+                Surplus Headroom: +?{hoveredPoint.headroom.toLocaleString("en-IN")}
+              </div>
+            </motion.div>
+          )}
+
+          {/* X-Axis Milestone Column Labels (Matching Palantir timeline columns) */}
+          <div className="flex justify-between text-[10px] font-mono text-slate-400 pt-2 border-t border-white/10 relative z-10 px-2">
+            <span>Day 01</span>
+            <span className="text-emerald-400 font-bold">Day 05 (Salary Peak)</span>
+            <span>Day 07</span>
+            <span>Day 15</span>
+            <span>Day 20</span>
+            <span className="text-emerald-400 font-bold">Day 28 (Month End)</span>
+          </div>
         </div>
-      </div>
-
-      {/* Footer Statistical Insights */}
-      <div className="flex flex-wrap items-center justify-between text-[11px] font-mono text-[#6B6558] mt-3 pt-3 border-t border-[#DDD8CC]">
-        <span>Average Retries per Recovery: <strong className="text-[#1B1B18]">1.1 attempts</strong></span>
-        <span className="text-[#0F6B5C] font-bold">82% of customer balance liquidity arrives within 48 hours of primary salary credit</span>
       </div>
     </div>
   );
