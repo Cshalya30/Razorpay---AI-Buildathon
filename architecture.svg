@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #EDEAE2; }
+      .card { fill: #FFFFFF; stroke: #DDD8CC; stroke-width: 1.5; rx: 6; }
+      .box-blue { fill: #2B4C7E; rx: 4; }
+      .box-teal { fill: #0F6B5C; rx: 4; }
+      .box-red { fill: #A6323B; rx: 4; }
+      .box-mustard { fill: #B4790E; rx: 4; }
+      .text-title { font-family: 'Fraunces', Georgia, serif; font-size: 20px; font-weight: bold; fill: #1B1B18; }
+      .text-subtitle { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; fill: #6B6558; }
+      .text-header { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 600; fill: #FFFFFF; }
+      .text-body { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; fill: #1B1B18; }
+      .text-mono { font-family: 'IBM Plex Mono', monospace; font-size: 11px; fill: #6B6558; }
+      .line { stroke: #6B6558; stroke-width: 1.5; marker-end: url(#arrow); }
+      .rule-line { stroke: #DDD8CC; stroke-width: 1; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#6B6558" />
+    </marker>
+  </defs>
+
+  <rect width="900" height="480" class="bg" />
+
+  <!-- Title -->
+  <text x="40" y="45" class="text-title">RECOVER ? Agent Architecture &amp; Decision Boundary</text>
+  <text x="40" y="68" class="text-subtitle">Strict Separation: The AI Model Only Ever Returns Probabilities. The Rule Engine Only Ever Makes Decisions.</text>
+  <line x1="40" y1="82" x2="860" y2="82" class="rule-line" />
+
+  <!-- 1. Input Box: Failed Mandate -->
+  <rect x="40" y="140" width="180" height="180" class="card" />
+  <rect x="40" y="140" width="180" height="34" fill="#1B1B18" rx="6" />
+  <text x="55" y="162" class="text-header">Failed Mandate</text>
+  <text x="55" y="195" class="text-body" font-weight="600">Insufficient Balance</text>
+  <text x="55" y="215" class="text-mono">? Scheduled debit failed</text>
+  <text x="55" y="235" class="text-mono">? Customer history loaded</text>
+  <text x="55" y="255" class="text-mono">? Amount: ?199 - ?22,600</text>
+  <text x="55" y="275" class="text-mono">? Due day recorded</text>
+  <text x="55" y="295" class="text-mono">? Balance curve synced</text>
+
+  <!-- Arrow: Input -> Deterministic Engine -->
+  <line x1="220" y1="230" x2="275" y2="230" class="line" />
+
+  <!-- 2. Deterministic Layer (Node.js agentService.ts) -->
+  <rect x="280" y="110" width="280" height="240" class="card" />
+  <rect x="280" y="110" width="280" height="34" fill="#7C7568" rx="6" />
+  <text x="295" y="132" class="text-header">DETERMINISTIC LAYER (Rule Engine)</text>
+  <text x="295" y="165" class="text-body" font-weight="600">Gate 1: Revocation Check</text>
+  <text x="310" y="182" class="text-mono">User revoked? ? STOP permanent</text>
+  <text x="295" y="205" class="text-body" font-weight="600">Gate 2: AFA Threshold (&gt; ?15,000)</text>
+  <text x="310" y="222" class="text-mono">Non-exempt category? ? STOP AFA</text>
+  <text x="295" y="245" class="text-body" font-weight="600">Gate 3: Retry Cap (Max 4 attempts)</text>
+  <text x="310" y="262" class="text-mono">Attempts ? 4? ? ESCALATE to Ops</text>
+  <text x="295" y="285" class="text-body" font-weight="600">Gate 4: 24h Pre-Debit Notice</text>
+  <text x="310" y="302" class="text-mono">Notice &lt; 24h? ? Dispatch notice first</text>
+  <text x="295" y="332" class="text-body" font-style="italic" fill="#0F6B5C">All gates pass ? Consult ML for Timing</text>
+
+  <!-- Arrow: Rule Engine -> ML Model -->
+  <line x1="560" y1="180" x2="615" y2="180" class="line" />
+
+  <!-- 3. AI Predictive Layer (Python FastAPI /predict) -->
+  <rect x="620" y="110" width="240" height="240" class="card" />
+  <rect x="620" y="110" width="240" height="34" fill="#2B4C7E" rx="6" />
+  <text x="635" y="132" class="text-header">AI LAYER (FastAPI /predict)</text>
+  <text x="635" y="165" class="text-body" font-weight="600">GradientBoostingClassifier</text>
+  <text x="635" y="185" class="text-mono">Engineered Features:</text>
+  <text x="645" y="203" class="text-mono">? Historical balance (87.8%)</text>
+  <text x="645" y="220" class="text-mono">? Amount/inflow ratio (10.9%)</text>
+  <text x="645" y="237" class="text-mono">? Days since salary credit</text>
+  <text x="645" y="254" class="text-mono">? Category code &amp; attempts</text>
+  <text x="635" y="280" class="text-body" font-weight="600">Pydantic Schema Output:</text>
+  <text x="645" y="298" class="text-mono" fill="#2B4C7E">? best_day (e.g. Day 5)</text>
+  <text x="645" y="315" class="text-mono" fill="#2B4C7E">? predicted_success_prob: 99.9%</text>
+  <text x="645" y="332" class="text-mono" fill="#A6323B">Zero decision/status fields</text>
+
+  <!-- Arrow: ML Probability -> Rule Engine Scheduling -->
+  <path d="M 740 350 L 740 390 L 420 390 L 420 355" fill="none" class="line" />
+  <text x="500" y="408" class="text-mono" font-weight="600">Probability returned ? Rule Engine schedules debit</text>
+
+  <!-- Outcome Badges at Bottom -->
+  <rect x="40" y="420" width="160" height="34" fill="#A6323B" rx="3" />
+  <text x="50" y="442" class="text-header" font-size="12px">ESCALATED / STOPPED</text>
+  <text x="210" y="442" class="text-mono">Gated by compliance rules</text>
+
+  <rect x="480" y="420" width="170" height="34" fill="#0F6B5C" rx="3" />
+  <text x="490" y="442" class="text-header" font-size="12px">RECOVERED (98.7% RATE)</text>
+  <text x="660" y="442" class="text-mono">Predicted salary-window timing</text>
+</svg>

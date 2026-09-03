@@ -1,0 +1,321 @@
+mandate_id,customer_id,merchant_name,category,mandate_amount,due_day,outcome,attempts
+MDT-1001,CUST-0001,HDFC Credit Card Bill,credit_card_bill,22600,4,failed_insufficient_balance,3
+MDT-1002,CUST-0001,Amazon Prime,subscription,1499,16,success,0
+MDT-1003,CUST-0001,Netflix India,subscription,199,8,success,0
+MDT-1004,CUST-0002,ICICI Prudential SIP,mutual_fund_sip,1000,25,success,0
+MDT-1005,CUST-0002,SBI Card Bill,credit_card_bill,11914,24,failed_insufficient_balance,2
+MDT-1006,CUST-0002,HDFC Mutual Fund SIP,mutual_fund_sip,7500,24,success,0
+MDT-1007,CUST-0003,Netflix India,subscription,499,7,failed_insufficient_balance,1
+MDT-1008,CUST-0004,Spotify Premium,subscription,119,7,failed_insufficient_balance,1
+MDT-1009,CUST-0005,Netflix India,subscription,499,9,success,0
+MDT-1010,CUST-0005,ICICI Prudential SIP,mutual_fund_sip,1000,16,success,0
+MDT-1011,CUST-0006,YouTube Premium,subscription,189,23,success,0
+MDT-1012,CUST-0006,Airtel Postpaid Autopay,subscription,349,11,success,0
+MDT-1013,CUST-0006,Zomato Gold,subscription,299,16,success,0
+MDT-1014,CUST-0007,Spotify Premium,subscription,149,26,failed_insufficient_balance,1
+MDT-1015,CUST-0008,YouTube Premium,subscription,189,23,failed_insufficient_balance,1
+MDT-1016,CUST-0008,Netflix India,subscription,499,1,success,0
+MDT-1017,CUST-0009,HDFC ERGO Health Insurance,insurance,4200,22,failed_insufficient_balance,1
+MDT-1018,CUST-0009,Star Health Insurance,insurance,3168,10,failed_insufficient_balance,1
+MDT-1019,CUST-0010,Jio Fiber,subscription,599,1,success,0
+MDT-1020,CUST-0010,ICICI Prudential SIP,mutual_fund_sip,10000,9,success,0
+MDT-1021,CUST-0011,LIC Premium,insurance,2400,25,failed_insufficient_balance,1
+MDT-1022,CUST-0011,Netflix India,subscription,499,7,failed_insufficient_balance,1
+MDT-1023,CUST-0012,Amazon Prime,subscription,1499,26,success,0
+MDT-1024,CUST-0012,HDFC ERGO Health Insurance,insurance,15600,2,failed_insufficient_balance,1
+MDT-1025,CUST-0013,Spotify Premium,subscription,149,16,success,0
+MDT-1026,CUST-0014,Netflix India,subscription,499,23,success,0
+MDT-1027,CUST-0014,Amazon Prime,subscription,1499,27,success,0
+MDT-1028,CUST-0015,Amazon Prime,subscription,299,23,failed_insufficient_balance,1
+MDT-1029,CUST-0016,Airtel Postpaid Autopay,subscription,349,12,failed_insufficient_balance,2
+MDT-1030,CUST-0016,YouTube Premium,subscription,189,15,failed_insufficient_balance,1
+MDT-1031,CUST-0016,Amazon Prime,subscription,299,21,failed_insufficient_balance,1
+MDT-1032,CUST-0017,LIC Premium,insurance,12568,7,success,0
+MDT-1033,CUST-0017,Spotify Premium,subscription,149,11,success,0
+MDT-1034,CUST-0018,Jio Fiber,subscription,399,4,failed_insufficient_balance,1
+MDT-1035,CUST-0018,Spotify Premium,subscription,119,17,failed_insufficient_balance,1
+MDT-1036,CUST-0018,ICICI Prudential SIP,mutual_fund_sip,10000,26,failed_insufficient_balance,1
+MDT-1037,CUST-0019,HDFC Credit Card Bill,credit_card_bill,15200,5,success,0
+MDT-1038,CUST-0019,Airtel Postpaid Autopay,subscription,499,6,success,0
+MDT-1039,CUST-0020,Netflix India,subscription,499,26,failed_insufficient_balance,1
+MDT-1040,CUST-0020,Spotify Premium,subscription,119,3,success,0
+MDT-1041,CUST-0020,Amazon Prime,subscription,1499,12,failed_insufficient_balance,1
+MDT-1042,CUST-0021,HDFC Mutual Fund SIP,mutual_fund_sip,3000,27,failed_insufficient_balance,3
+MDT-1043,CUST-0021,Netflix India,subscription,199,1,success,0
+MDT-1044,CUST-0022,HDFC Credit Card Bill,credit_card_bill,22600,21,failed_insufficient_balance,1
+MDT-1045,CUST-0023,YouTube Premium,subscription,189,7,success,0
+MDT-1046,CUST-0024,Airtel Postpaid Autopay,subscription,699,28,failed_insufficient_balance,1
+MDT-1047,CUST-0024,HDFC Mutual Fund SIP,mutual_fund_sip,1500,13,success,0
+MDT-1048,CUST-0025,Netflix India,subscription,499,20,success,0
+MDT-1049,CUST-0025,ICICI Prudential SIP,mutual_fund_sip,5000,5,success,0
+MDT-1050,CUST-0026,HDFC Mutual Fund SIP,mutual_fund_sip,1500,19,failed_insufficient_balance,1
+MDT-1051,CUST-0026,Zomato Gold,subscription,149,23,failed_insufficient_balance,3
+MDT-1052,CUST-0027,Netflix India,subscription,499,27,success,0
+MDT-1053,CUST-0027,ICICI Prudential SIP,mutual_fund_sip,10000,4,failed_insufficient_balance,1
+MDT-1054,CUST-0028,Netflix India,subscription,199,28,failed_insufficient_balance,1
+MDT-1055,CUST-0029,Amazon Prime,subscription,1499,13,success,0
+MDT-1056,CUST-0029,ICICI Prudential SIP,mutual_fund_sip,2500,14,success,0
+MDT-1057,CUST-0030,Airtel Postpaid Autopay,subscription,699,7,unknown_gap,1
+MDT-1058,CUST-0031,HDFC Mutual Fund SIP,mutual_fund_sip,3000,6,failed_insufficient_balance,2
+MDT-1059,CUST-0032,HDFC ERGO Health Insurance,insurance,4223,8,failed_insufficient_balance,3
+MDT-1060,CUST-0033,HDFC ERGO Health Insurance,insurance,4268,3,success,0
+MDT-1061,CUST-0033,Spotify Premium,subscription,119,16,success,0
+MDT-1062,CUST-0034,Amazon Prime,subscription,1499,23,success,0
+MDT-1063,CUST-0035,HDFC Credit Card Bill,credit_card_bill,22668,23,failed_insufficient_balance,2
+MDT-1064,CUST-0035,Netflix India,subscription,649,20,failed_insufficient_balance,1
+MDT-1065,CUST-0036,Zomato Gold,subscription,149,18,success,0
+MDT-1066,CUST-0037,Spotify Premium,subscription,119,11,success,0
+MDT-1067,CUST-0038,Spotify Premium,subscription,149,12,success,0
+MDT-1068,CUST-0039,YouTube Premium,subscription,129,1,success,0
+MDT-1069,CUST-0039,ICICI Prudential SIP,mutual_fund_sip,5000,17,success,0
+MDT-1070,CUST-0040,HDFC Mutual Fund SIP,mutual_fund_sip,3000,22,failed_insufficient_balance,1
+MDT-1071,CUST-0040,Spotify Premium,subscription,119,18,success,0
+MDT-1072,CUST-0041,Airtel Postpaid Autopay,subscription,699,6,success,0
+MDT-1073,CUST-0042,Netflix India,subscription,199,17,success,0
+MDT-1074,CUST-0042,Star Health Insurance,insurance,9200,15,success,0
+MDT-1075,CUST-0043,Spotify Premium,subscription,119,11,failed_insufficient_balance,3
+MDT-1076,CUST-0044,Zomato Gold,subscription,149,9,success,0
+MDT-1077,CUST-0044,Amazon Prime,subscription,299,11,success,0
+MDT-1078,CUST-0045,ICICI Prudential SIP,mutual_fund_sip,2500,16,success,0
+MDT-1079,CUST-0046,ICICI Prudential SIP,mutual_fund_sip,5000,14,failed_insufficient_balance,1
+MDT-1080,CUST-0046,HDFC Mutual Fund SIP,mutual_fund_sip,3000,20,failed_insufficient_balance,1
+MDT-1081,CUST-0047,Netflix India,subscription,499,14,success,0
+MDT-1082,CUST-0047,SBI Card Bill,credit_card_bill,6168,25,failed_insufficient_balance,1
+MDT-1083,CUST-0047,Spotify Premium,subscription,149,2,success,0
+MDT-1084,CUST-0048,Jio Fiber,subscription,399,2,success,0
+MDT-1085,CUST-0049,Spotify Premium,subscription,119,2,success,0
+MDT-1086,CUST-0050,Spotify Premium,subscription,149,6,failed_insufficient_balance,2
+MDT-1087,CUST-0050,Zomato Gold,subscription,299,4,success,0
+MDT-1088,CUST-0051,Spotify Premium,subscription,119,15,success,0
+MDT-1089,CUST-0051,Cult.fit Membership,subscription,1199,23,success,0
+MDT-1090,CUST-0052,HDFC ERGO Health Insurance,insurance,8850,4,failed_insufficient_balance,1
+MDT-1091,CUST-0052,HDFC Mutual Fund SIP,mutual_fund_sip,1500,12,success,0
+MDT-1092,CUST-0052,LIC Premium,insurance,2423,6,failed_insufficient_balance,1
+MDT-1093,CUST-0053,YouTube Premium,subscription,189,19,failed_insufficient_balance,3
+MDT-1094,CUST-0053,Amazon Prime,subscription,299,19,failed_insufficient_balance,1
+MDT-1095,CUST-0053,ICICI Prudential SIP,mutual_fund_sip,2500,14,failed_insufficient_balance,1
+MDT-1096,CUST-0054,Netflix India,subscription,499,22,success,0
+MDT-1097,CUST-0055,Spotify Premium,subscription,149,1,success,0
+MDT-1098,CUST-0056,Netflix India,subscription,649,22,success,0
+MDT-1099,CUST-0056,HDFC ERGO Health Insurance,insurance,4314,4,success,0
+MDT-1100,CUST-0057,Jio Fiber,subscription,399,1,success,0
+MDT-1101,CUST-0057,HDFC ERGO Health Insurance,insurance,4200,23,failed_insufficient_balance,2
+MDT-1102,CUST-0058,Jio Fiber,subscription,999,9,success,0
+MDT-1103,CUST-0058,Airtel Postpaid Autopay,subscription,699,22,success,0
+MDT-1104,CUST-0059,Airtel Postpaid Autopay,subscription,499,2,success,0
+MDT-1105,CUST-0060,Netflix India,subscription,499,11,failed_insufficient_balance,3
+MDT-1106,CUST-0060,Cult.fit Membership,subscription,799,7,failed_insufficient_balance,1
+MDT-1107,CUST-0060,HDFC ERGO Health Insurance,insurance,15463,24,failed_insufficient_balance,1
+MDT-1108,CUST-0061,Zomato Gold,subscription,299,3,success,0
+MDT-1109,CUST-0061,Netflix India,subscription,499,9,success,0
+MDT-1110,CUST-0061,HDFC ERGO Health Insurance,insurance,4268,3,success,0
+MDT-1111,CUST-0062,Jio Fiber,subscription,399,6,failed_insufficient_balance,2
+MDT-1112,CUST-0063,Netflix India,subscription,499,21,success,0
+MDT-1113,CUST-0063,Amazon Prime,subscription,299,4,failed_insufficient_balance,1
+MDT-1114,CUST-0064,Airtel Postpaid Autopay,subscription,499,24,success,0
+MDT-1115,CUST-0064,Jio Fiber,subscription,599,22,success,0
+MDT-1116,CUST-0065,LIC Premium,insurance,2263,27,failed_insufficient_balance,1
+MDT-1117,CUST-0065,Spotify Premium,subscription,119,16,success,0
+MDT-1118,CUST-0065,ICICI Prudential SIP,mutual_fund_sip,10000,13,success,0
+MDT-1119,CUST-0066,Spotify Premium,subscription,149,19,failed_insufficient_balance,3
+MDT-1120,CUST-0066,HDFC ERGO Health Insurance,insurance,8918,26,failed_insufficient_balance,1
+MDT-1121,CUST-0067,ICICI Prudential SIP,mutual_fund_sip,2500,14,failed_insufficient_balance,2
+MDT-1122,CUST-0067,Cult.fit Membership,subscription,799,2,success,0
+MDT-1123,CUST-0067,Netflix India,subscription,649,11,failed_insufficient_balance,2
+MDT-1124,CUST-0068,Zomato Gold,subscription,149,16,failed_insufficient_balance,3
+MDT-1125,CUST-0069,SBI Card Bill,credit_card_bill,6168,3,failed_insufficient_balance,2
+MDT-1126,CUST-0069,HDFC Credit Card Bill,credit_card_bill,15158,22,failed_insufficient_balance,1
+MDT-1127,CUST-0069,Amazon Prime,subscription,299,17,success,0
+MDT-1128,CUST-0070,Star Health Insurance,insurance,9200,18,failed_insufficient_balance,1
+MDT-1129,CUST-0070,Jio Fiber,subscription,399,17,failed_insufficient_balance,1
+MDT-1130,CUST-0071,Amazon Prime,subscription,1499,14,success,0
+MDT-1131,CUST-0071,HDFC ERGO Health Insurance,insurance,4200,24,failed_insufficient_balance,3
+MDT-1132,CUST-0071,Airtel Postpaid Autopay,subscription,499,12,success,0
+MDT-1133,CUST-0072,Zomato Gold,subscription,149,25,failed_insufficient_balance,3
+MDT-1134,CUST-0072,ICICI Prudential SIP,mutual_fund_sip,1000,4,success,0
+MDT-1135,CUST-0073,Jio Fiber,subscription,399,26,success,0
+MDT-1136,CUST-0073,HDFC ERGO Health Insurance,insurance,4200,2,success,0
+MDT-1137,CUST-0074,Jio Fiber,subscription,599,23,failed_insufficient_balance,1
+MDT-1138,CUST-0075,Netflix India,subscription,649,24,failed_insufficient_balance,2
+MDT-1139,CUST-0075,Jio Fiber,subscription,999,15,failed_insufficient_balance,3
+MDT-1140,CUST-0076,HDFC Credit Card Bill,credit_card_bill,15200,28,failed_insufficient_balance,1
+MDT-1141,CUST-0076,Airtel Postpaid Autopay,subscription,349,6,unknown_gap,1
+MDT-1142,CUST-0077,Netflix India,subscription,499,28,success,0
+MDT-1143,CUST-0077,LIC Premium,insurance,12614,1,failed_insufficient_balance,1
+MDT-1144,CUST-0077,HDFC Credit Card Bill,credit_card_bill,15158,21,failed_insufficient_balance,2
+MDT-1145,CUST-0078,Groww SIP,mutual_fund_sip,2000,13,success,0
+MDT-1146,CUST-0078,YouTube Premium,subscription,189,10,success,0
+MDT-1147,CUST-0079,Jio Fiber,subscription,999,12,failed_insufficient_balance,2
+MDT-1148,CUST-0079,YouTube Premium,subscription,189,3,failed_insufficient_balance,1
+MDT-1149,CUST-0079,ICICI Prudential SIP,mutual_fund_sip,2500,1,failed_insufficient_balance,1
+MDT-1150,CUST-0080,HDFC Mutual Fund SIP,mutual_fund_sip,1500,23,success,0
+MDT-1151,CUST-0081,ICICI Prudential SIP,mutual_fund_sip,1000,7,success,0
+MDT-1152,CUST-0082,Airtel Postpaid Autopay,subscription,699,5,failed_insufficient_balance,1
+MDT-1153,CUST-0082,Netflix India,subscription,499,27,failed_insufficient_balance,3
+MDT-1154,CUST-0083,YouTube Premium,subscription,129,10,failed_insufficient_balance,2
+MDT-1155,CUST-0084,Amazon Prime,subscription,1499,14,success,0
+MDT-1156,CUST-0085,Netflix India,subscription,199,6,failed_insufficient_balance,1
+MDT-1157,CUST-0086,Airtel Postpaid Autopay,subscription,499,16,failed_insufficient_balance,1
+MDT-1158,CUST-0086,HDFC ERGO Health Insurance,insurance,8850,7,failed_insufficient_balance,1
+MDT-1159,CUST-0087,HDFC Mutual Fund SIP,mutual_fund_sip,3000,2,failed_insufficient_balance,1
+MDT-1160,CUST-0087,ICICI Prudential SIP,mutual_fund_sip,1000,4,failed_insufficient_balance,2
+MDT-1161,CUST-0088,ICICI Prudential SIP,mutual_fund_sip,5000,2,failed_insufficient_balance,2
+MDT-1162,CUST-0088,LIC Premium,insurance,6000,19,failed_insufficient_balance,3
+MDT-1163,CUST-0089,Netflix India,subscription,199,23,success,0
+MDT-1164,CUST-0089,HDFC ERGO Health Insurance,insurance,4200,14,success,0
+MDT-1165,CUST-0090,Netflix India,subscription,499,18,failed_insufficient_balance,1
+MDT-1166,CUST-0090,Amazon Prime,subscription,1499,16,failed_insufficient_balance,1
+MDT-1167,CUST-0091,ICICI Prudential SIP,mutual_fund_sip,5000,15,failed_insufficient_balance,2
+MDT-1168,CUST-0091,Star Health Insurance,insurance,3058,16,failed_insufficient_balance,1
+MDT-1169,CUST-0092,HDFC Credit Card Bill,credit_card_bill,8400,19,success,0
+MDT-1170,CUST-0092,SBI Card Bill,credit_card_bill,11800,28,failed_insufficient_balance,2
+MDT-1171,CUST-0093,Groww SIP,mutual_fund_sip,1000,24,success,0
+MDT-1172,CUST-0094,Amazon Prime,subscription,1499,27,failed_insufficient_balance,1
+MDT-1173,CUST-0094,HDFC Mutual Fund SIP,mutual_fund_sip,3000,26,failed_insufficient_balance,1
+MDT-1174,CUST-0095,HDFC Mutual Fund SIP,mutual_fund_sip,1500,10,failed_insufficient_balance,1
+MDT-1175,CUST-0095,Amazon Prime,subscription,1499,5,success,0
+MDT-1176,CUST-0096,Netflix India,subscription,199,6,failed_insufficient_balance,3
+MDT-1177,CUST-0097,Groww SIP,mutual_fund_sip,500,26,success,0
+MDT-1178,CUST-0097,Amazon Prime,subscription,1499,16,success,0
+MDT-1179,CUST-0098,Jio Fiber,subscription,399,7,success,0
+MDT-1180,CUST-0098,Airtel Postpaid Autopay,subscription,699,2,success,0
+MDT-1181,CUST-0099,Netflix India,subscription,499,9,failed_insufficient_balance,1
+MDT-1182,CUST-0100,Netflix India,subscription,199,27,failed_insufficient_balance,3
+MDT-1183,CUST-0101,SBI Card Bill,credit_card_bill,5963,20,success,0
+MDT-1184,CUST-0102,HDFC Mutual Fund SIP,mutual_fund_sip,1500,18,success,0
+MDT-1185,CUST-0103,Groww SIP,mutual_fund_sip,1000,9,success,0
+MDT-1186,CUST-0104,Spotify Premium,subscription,149,25,success,0
+MDT-1187,CUST-0104,Amazon Prime,subscription,299,25,success,0
+MDT-1188,CUST-0105,Cult.fit Membership,subscription,1199,5,failed_insufficient_balance,3
+MDT-1189,CUST-0105,Airtel Postpaid Autopay,subscription,699,22,success,0
+MDT-1190,CUST-0105,Netflix India,subscription,199,23,success,0
+MDT-1191,CUST-0106,ICICI Prudential SIP,mutual_fund_sip,10000,26,failed_insufficient_balance,2
+MDT-1192,CUST-0107,SBI Card Bill,credit_card_bill,6100,20,success,0
+MDT-1193,CUST-0108,Zomato Gold,subscription,149,17,failed_insufficient_balance,1
+MDT-1194,CUST-0109,Cult.fit Membership,subscription,799,28,success,0
+MDT-1195,CUST-0110,Cult.fit Membership,subscription,1199,6,failed_insufficient_balance,1
+MDT-1196,CUST-0111,Netflix India,subscription,649,16,failed_insufficient_balance,1
+MDT-1197,CUST-0111,Spotify Premium,subscription,119,21,failed_insufficient_balance,1
+MDT-1198,CUST-0112,Airtel Postpaid Autopay,subscription,349,4,success,0
+MDT-1199,CUST-0112,Cult.fit Membership,subscription,799,15,success,0
+MDT-1200,CUST-0113,Zomato Gold,subscription,149,8,failed_insufficient_balance,2
+MDT-1201,CUST-0113,HDFC Mutual Fund SIP,mutual_fund_sip,3000,10,failed_insufficient_balance,3
+MDT-1202,CUST-0114,Spotify Premium,subscription,119,9,success,0
+MDT-1203,CUST-0115,Netflix India,subscription,649,25,failed_insufficient_balance,2
+MDT-1204,CUST-0116,Amazon Prime,subscription,299,25,success,0
+MDT-1205,CUST-0117,YouTube Premium,subscription,189,26,success,0
+MDT-1206,CUST-0117,ICICI Prudential SIP,mutual_fund_sip,2500,5,success,0
+MDT-1207,CUST-0117,HDFC Mutual Fund SIP,mutual_fund_sip,3000,14,success,0
+MDT-1208,CUST-0118,HDFC ERGO Health Insurance,insurance,8850,17,failed_insufficient_balance,1
+MDT-1209,CUST-0118,Cult.fit Membership,subscription,799,15,failed_insufficient_balance,1
+MDT-1210,CUST-0119,Amazon Prime,subscription,299,3,failed_insufficient_balance,1
+MDT-1211,CUST-0120,Cult.fit Membership,subscription,1199,25,success,0
+MDT-1212,CUST-0120,Jio Fiber,subscription,399,14,unknown_gap,1
+MDT-1213,CUST-0121,HDFC Mutual Fund SIP,mutual_fund_sip,1500,22,success,0
+MDT-1214,CUST-0121,Airtel Postpaid Autopay,subscription,699,5,success,0
+MDT-1215,CUST-0122,Spotify Premium,subscription,119,21,failed_insufficient_balance,3
+MDT-1216,CUST-0122,Amazon Prime,subscription,1499,13,failed_insufficient_balance,3
+MDT-1217,CUST-0123,Groww SIP,mutual_fund_sip,2000,24,failed_insufficient_balance,1
+MDT-1218,CUST-0123,Netflix India,subscription,499,1,success,0
+MDT-1219,CUST-0124,Netflix India,subscription,649,20,success,0
+MDT-1220,CUST-0124,Amazon Prime,subscription,299,23,success,0
+MDT-1221,CUST-0125,ICICI Prudential SIP,mutual_fund_sip,10000,21,success,0
+MDT-1222,CUST-0125,Zomato Gold,subscription,149,18,success,0
+MDT-1223,CUST-0126,HDFC ERGO Health Insurance,insurance,15600,23,failed_insufficient_balance,1
+MDT-1224,CUST-0126,Jio Fiber,subscription,999,13,success,0
+MDT-1225,CUST-0126,Netflix India,subscription,199,10,success,0
+MDT-1226,CUST-0127,HDFC Mutual Fund SIP,mutual_fund_sip,1500,18,success,0
+MDT-1227,CUST-0128,Amazon Prime,subscription,1499,24,success,0
+MDT-1228,CUST-0128,Netflix India,subscription,649,24,success,0
+MDT-1229,CUST-0129,YouTube Premium,subscription,189,7,success,0
+MDT-1230,CUST-0130,Netflix India,subscription,649,18,failed_insufficient_balance,1
+MDT-1231,CUST-0131,Netflix India,subscription,499,25,failed_insufficient_balance,1
+MDT-1232,CUST-0131,ICICI Prudential SIP,mutual_fund_sip,1000,1,success,0
+MDT-1233,CUST-0131,Airtel Postpaid Autopay,subscription,699,19,success,0
+MDT-1234,CUST-0132,Spotify Premium,subscription,119,27,success,0
+MDT-1235,CUST-0132,Jio Fiber,subscription,599,24,success,0
+MDT-1236,CUST-0133,Star Health Insurance,insurance,3100,27,failed_insufficient_balance,1
+MDT-1237,CUST-0133,Netflix India,subscription,499,21,failed_insufficient_balance,3
+MDT-1238,CUST-0134,Netflix India,subscription,199,2,success,0
+MDT-1239,CUST-0134,YouTube Premium,subscription,129,15,failed_insufficient_balance,1
+MDT-1240,CUST-0135,YouTube Premium,subscription,129,15,success,0
+MDT-1241,CUST-0135,SBI Card Bill,credit_card_bill,11800,26,failed_insufficient_balance,3
+MDT-1242,CUST-0135,Jio Fiber,subscription,999,23,success,0
+MDT-1243,CUST-0136,Netflix India,subscription,649,8,success,0
+MDT-1244,CUST-0136,Zomato Gold,subscription,299,10,success,0
+MDT-1245,CUST-0136,HDFC ERGO Health Insurance,insurance,8850,27,success,0
+MDT-1246,CUST-0137,Amazon Prime,subscription,299,23,success,0
+MDT-1247,CUST-0137,Zomato Gold,subscription,299,17,success,0
+MDT-1248,CUST-0138,HDFC Mutual Fund SIP,mutual_fund_sip,3000,17,success,0
+MDT-1249,CUST-0139,HDFC Mutual Fund SIP,mutual_fund_sip,1500,27,failed_insufficient_balance,1
+MDT-1250,CUST-0139,Cult.fit Membership,subscription,1199,4,failed_insufficient_balance,1
+MDT-1251,CUST-0139,HDFC Credit Card Bill,credit_card_bill,22600,14,failed_insufficient_balance,1
+MDT-1252,CUST-0140,SBI Card Bill,credit_card_bill,6100,5,success,0
+MDT-1253,CUST-0141,Netflix India,subscription,199,15,success,0
+MDT-1254,CUST-0141,Jio Fiber,subscription,399,12,success,0
+MDT-1255,CUST-0142,YouTube Premium,subscription,189,19,failed_insufficient_balance,3
+MDT-1256,CUST-0142,Netflix India,subscription,649,25,failed_insufficient_balance,2
+MDT-1257,CUST-0142,Cult.fit Membership,subscription,1199,19,failed_insufficient_balance,2
+MDT-1258,CUST-0143,Spotify Premium,subscription,149,23,failed_insufficient_balance,2
+MDT-1259,CUST-0143,HDFC Credit Card Bill,credit_card_bill,22600,27,failed_insufficient_balance,1
+MDT-1260,CUST-0144,Cult.fit Membership,subscription,799,16,failed_insufficient_balance,2
+MDT-1261,CUST-0145,ICICI Prudential SIP,mutual_fund_sip,1000,23,success,0
+MDT-1262,CUST-0146,Cult.fit Membership,subscription,1199,16,success,0
+MDT-1263,CUST-0147,Amazon Prime,subscription,299,18,success,0
+MDT-1264,CUST-0148,HDFC Mutual Fund SIP,mutual_fund_sip,1500,20,failed_insufficient_balance,2
+MDT-1265,CUST-0148,Netflix India,subscription,199,4,success,0
+MDT-1266,CUST-0149,Netflix India,subscription,649,10,success,0
+MDT-1267,CUST-0149,Jio Fiber,subscription,399,17,success,0
+MDT-1268,CUST-0150,LIC Premium,insurance,2423,10,success,0
+MDT-1269,CUST-0151,Jio Fiber,subscription,599,1,user_revoked,0
+MDT-1270,CUST-0151,Netflix India,subscription,199,5,user_revoked,0
+MDT-1271,CUST-0152,Jio Fiber,subscription,599,2,success,0
+MDT-1272,CUST-0152,Spotify Premium,subscription,149,10,success,0
+MDT-1273,CUST-0152,Netflix India,subscription,199,6,failed_insufficient_balance,2
+MDT-1274,CUST-0153,Zomato Gold,subscription,149,18,success,0
+MDT-1275,CUST-0154,Netflix India,subscription,199,28,success,0
+MDT-1276,CUST-0154,Spotify Premium,subscription,119,14,success,0
+MDT-1277,CUST-0155,HDFC ERGO Health Insurance,insurance,15668,11,failed_insufficient_balance,2
+MDT-1278,CUST-0155,Star Health Insurance,insurance,9200,27,failed_insufficient_balance,3
+MDT-1279,CUST-0156,Spotify Premium,subscription,119,17,failed_insufficient_balance,2
+MDT-1280,CUST-0157,Jio Fiber,subscription,999,15,failed_insufficient_balance,1
+MDT-1281,CUST-0157,Spotify Premium,subscription,149,3,failed_insufficient_balance,3
+MDT-1282,CUST-0158,HDFC Credit Card Bill,credit_card_bill,15268,11,success,0
+MDT-1283,CUST-0158,Amazon Prime,subscription,299,22,success,0
+MDT-1284,CUST-0159,Airtel Postpaid Autopay,subscription,699,3,success,0
+MDT-1285,CUST-0159,Amazon Prime,subscription,299,23,success,0
+MDT-1286,CUST-0160,Amazon Prime,subscription,1499,18,success,0
+MDT-1287,CUST-0161,Netflix India,subscription,649,18,success,0
+MDT-1288,CUST-0162,HDFC ERGO Health Insurance,insurance,4200,18,success,0
+MDT-1289,CUST-0163,YouTube Premium,subscription,129,19,failed_insufficient_balance,3
+MDT-1290,CUST-0163,HDFC ERGO Health Insurance,insurance,4200,17,failed_insufficient_balance,1
+MDT-1291,CUST-0163,ICICI Prudential SIP,mutual_fund_sip,1000,22,failed_insufficient_balance,3
+MDT-1292,CUST-0164,Jio Fiber,subscription,399,9,success,0
+MDT-1293,CUST-0165,Groww SIP,mutual_fund_sip,500,27,success,0
+MDT-1294,CUST-0166,Star Health Insurance,insurance,9314,20,failed_insufficient_balance,1
+MDT-1295,CUST-0166,ICICI Prudential SIP,mutual_fund_sip,10000,19,failed_insufficient_balance,1
+MDT-1296,CUST-0166,LIC Premium,insurance,6000,1,success,0
+MDT-1297,CUST-0167,Jio Fiber,subscription,599,6,success,0
+MDT-1298,CUST-0167,Spotify Premium,subscription,149,1,success,0
+MDT-1299,CUST-0168,Cult.fit Membership,subscription,1199,13,success,0
+MDT-1300,CUST-0168,Netflix India,subscription,499,3,success,0
+MDT-1301,CUST-0168,Airtel Postpaid Autopay,subscription,349,4,success,0
+MDT-1302,CUST-0169,Netflix India,subscription,199,10,success,0
+MDT-1303,CUST-0169,Groww SIP,mutual_fund_sip,500,9,success,0
+MDT-1304,CUST-0170,LIC Premium,insurance,2468,22,success,0
+MDT-1305,CUST-0171,Zomato Gold,subscription,149,20,failed_insufficient_balance,1
+MDT-1306,CUST-0172,Jio Fiber,subscription,399,23,success,0
+MDT-1307,CUST-0173,YouTube Premium,subscription,189,13,failed_insufficient_balance,1
+MDT-1308,CUST-0174,Groww SIP,mutual_fund_sip,500,14,success,0
+MDT-1309,CUST-0174,HDFC ERGO Health Insurance,insurance,8713,2,failed_insufficient_balance,1
+MDT-1310,CUST-0175,YouTube Premium,subscription,129,16,success,0
+MDT-1311,CUST-0176,Airtel Postpaid Autopay,subscription,699,13,success,0
+MDT-1312,CUST-0176,Jio Fiber,subscription,399,9,success,0
+MDT-1313,CUST-0176,LIC Premium,insurance,2514,14,success,0
+MDT-1314,CUST-0177,SBI Card Bill,credit_card_bill,11758,1,failed_insufficient_balance,1
+MDT-1315,CUST-0178,Cult.fit Membership,subscription,799,8,success,0
+MDT-1316,CUST-0179,Cult.fit Membership,subscription,1199,15,success,0
+MDT-1317,CUST-0179,SBI Card Bill,credit_card_bill,6100,17,success,0
+MDT-1318,CUST-0179,LIC Premium,insurance,2400,5,success,0
+MDT-1319,CUST-0180,Jio Fiber,subscription,999,6,success,0
+MDT-1320,CUST-0001,HDFC Credit Card Bill,credit_card_bill,22601,4,failed_insufficient_balance,3

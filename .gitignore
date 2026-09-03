@@ -1,0 +1,11 @@
+node_modules/
+dist/
+__pycache__/
+*.pyc
+*.joblib
+.env
+.DS_Store
+*.log
+*.db
+*.db-wal
+*.db-shm

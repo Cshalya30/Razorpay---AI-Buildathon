@@ -1,0 +1,139 @@
+mandate_id,merchant_name,amount,due_day,notice_hours_before_debit,compliant,reason
+MDT-1001,HDFC Credit Card Bill,22600,4,36,True,recurring mandate debit
+MDT-1005,SBI Card Bill,11914,24,30,True,recurring mandate debit
+MDT-1007,Netflix India,499,7,36,True,recurring mandate debit
+MDT-1008,Spotify Premium,119,7,30,True,recurring mandate debit
+MDT-1014,Spotify Premium,149,26,24,True,recurring mandate debit
+MDT-1015,YouTube Premium,189,23,24,True,recurring mandate debit
+MDT-1017,HDFC ERGO Health Insurance,4200,22,30,True,insurance premium recurring debit
+MDT-1018,Star Health Insurance,3168,10,36,True,insurance premium recurring debit
+MDT-1021,LIC Premium,2400,25,26,True,insurance premium recurring debit
+MDT-1022,Netflix India,499,7,22,False,recurring mandate debit
+MDT-1024,HDFC ERGO Health Insurance,15600,2,25,True,insurance premium recurring debit
+MDT-1028,Amazon Prime,299,23,24,True,recurring mandate debit
+MDT-1029,Airtel Postpaid Autopay,349,12,24,True,recurring mandate debit
+MDT-1030,YouTube Premium,189,15,30,True,recurring mandate debit
+MDT-1031,Amazon Prime,299,21,26,True,recurring mandate debit
+MDT-1034,Jio Fiber,399,4,36,True,recurring mandate debit
+MDT-1035,Spotify Premium,119,17,26,True,recurring mandate debit
+MDT-1036,ICICI Prudential SIP,10000,26,22,False,recurring mandate debit
+MDT-1039,Netflix India,499,26,30,True,recurring mandate debit
+MDT-1041,Amazon Prime,1499,12,26,True,recurring mandate debit
+MDT-1042,HDFC Mutual Fund SIP,3000,27,22,False,recurring mandate debit
+MDT-1044,HDFC Credit Card Bill,22600,21,25,True,recurring mandate debit
+MDT-1046,Airtel Postpaid Autopay,699,28,36,True,recurring mandate debit
+MDT-1050,HDFC Mutual Fund SIP,1500,19,36,True,recurring mandate debit
+MDT-1051,Zomato Gold,149,23,26,True,recurring mandate debit
+MDT-1053,ICICI Prudential SIP,10000,4,24,True,recurring mandate debit
+MDT-1054,Netflix India,199,28,25,True,recurring mandate debit
+MDT-1058,HDFC Mutual Fund SIP,3000,6,22,False,recurring mandate debit
+MDT-1059,HDFC ERGO Health Insurance,4223,8,36,True,insurance premium recurring debit
+MDT-1063,HDFC Credit Card Bill,22668,23,36,True,recurring mandate debit
+MDT-1064,Netflix India,649,20,24,True,recurring mandate debit
+MDT-1070,HDFC Mutual Fund SIP,3000,22,26,True,recurring mandate debit
+MDT-1075,Spotify Premium,119,11,24,True,recurring mandate debit
+MDT-1079,ICICI Prudential SIP,5000,14,30,True,recurring mandate debit
+MDT-1080,HDFC Mutual Fund SIP,3000,20,22,False,recurring mandate debit
+MDT-1082,SBI Card Bill,6168,25,24,True,recurring mandate debit
+MDT-1086,Spotify Premium,149,6,25,True,recurring mandate debit
+MDT-1090,HDFC ERGO Health Insurance,8850,4,22,False,insurance premium recurring debit
+MDT-1092,LIC Premium,2423,6,36,True,insurance premium recurring debit
+MDT-1093,YouTube Premium,189,19,26,True,recurring mandate debit
+MDT-1094,Amazon Prime,299,19,30,True,recurring mandate debit
+MDT-1095,ICICI Prudential SIP,2500,14,25,True,recurring mandate debit
+MDT-1101,HDFC ERGO Health Insurance,4200,23,36,True,insurance premium recurring debit
+MDT-1105,Netflix India,499,11,36,True,recurring mandate debit
+MDT-1106,Cult.fit Membership,799,7,26,True,recurring mandate debit
+MDT-1107,HDFC ERGO Health Insurance,15463,24,22,False,insurance premium recurring debit
+MDT-1111,Jio Fiber,399,6,26,True,recurring mandate debit
+MDT-1113,Amazon Prime,299,4,22,False,recurring mandate debit
+MDT-1116,LIC Premium,2263,27,26,True,insurance premium recurring debit
+MDT-1119,Spotify Premium,149,19,22,False,recurring mandate debit
+MDT-1120,HDFC ERGO Health Insurance,8918,26,30,True,insurance premium recurring debit
+MDT-1121,ICICI Prudential SIP,2500,14,26,True,recurring mandate debit
+MDT-1123,Netflix India,649,11,25,True,recurring mandate debit
+MDT-1124,Zomato Gold,149,16,22,False,recurring mandate debit
+MDT-1125,SBI Card Bill,6168,3,26,True,recurring mandate debit
+MDT-1126,HDFC Credit Card Bill,15158,22,26,True,recurring mandate debit
+MDT-1128,Star Health Insurance,9200,18,25,True,insurance premium recurring debit
+MDT-1129,Jio Fiber,399,17,30,True,recurring mandate debit
+MDT-1131,HDFC ERGO Health Insurance,4200,24,36,True,insurance premium recurring debit
+MDT-1133,Zomato Gold,149,25,26,True,recurring mandate debit
+MDT-1137,Jio Fiber,599,23,24,True,recurring mandate debit
+MDT-1138,Netflix India,649,24,22,False,recurring mandate debit
+MDT-1139,Jio Fiber,999,15,25,True,recurring mandate debit
+MDT-1140,HDFC Credit Card Bill,15200,28,22,False,recurring mandate debit
+MDT-1143,LIC Premium,12614,1,24,True,insurance premium recurring debit
+MDT-1144,HDFC Credit Card Bill,15158,21,36,True,recurring mandate debit
+MDT-1147,Jio Fiber,999,12,30,True,recurring mandate debit
+MDT-1148,YouTube Premium,189,3,24,True,recurring mandate debit
+MDT-1149,ICICI Prudential SIP,2500,1,24,True,recurring mandate debit
+MDT-1152,Airtel Postpaid Autopay,699,5,22,False,recurring mandate debit
+MDT-1153,Netflix India,499,27,25,True,recurring mandate debit
+MDT-1154,YouTube Premium,129,10,30,True,recurring mandate debit
+MDT-1156,Netflix India,199,6,36,True,recurring mandate debit
+MDT-1157,Airtel Postpaid Autopay,499,16,22,False,recurring mandate debit
+MDT-1158,HDFC ERGO Health Insurance,8850,7,22,False,insurance premium recurring debit
+MDT-1159,HDFC Mutual Fund SIP,3000,2,30,True,recurring mandate debit
+MDT-1160,ICICI Prudential SIP,1000,4,30,True,recurring mandate debit
+MDT-1161,ICICI Prudential SIP,5000,2,36,True,recurring mandate debit
+MDT-1162,LIC Premium,6000,19,24,True,insurance premium recurring debit
+MDT-1165,Netflix India,499,18,22,False,recurring mandate debit
+MDT-1166,Amazon Prime,1499,16,22,False,recurring mandate debit
+MDT-1167,ICICI Prudential SIP,5000,15,24,True,recurring mandate debit
+MDT-1168,Star Health Insurance,3058,16,36,True,insurance premium recurring debit
+MDT-1170,SBI Card Bill,11800,28,24,True,recurring mandate debit
+MDT-1172,Amazon Prime,1499,27,22,False,recurring mandate debit
+MDT-1173,HDFC Mutual Fund SIP,3000,26,30,True,recurring mandate debit
+MDT-1174,HDFC Mutual Fund SIP,1500,10,22,False,recurring mandate debit
+MDT-1176,Netflix India,199,6,24,True,recurring mandate debit
+MDT-1181,Netflix India,499,9,26,True,recurring mandate debit
+MDT-1182,Netflix India,199,27,30,True,recurring mandate debit
+MDT-1188,Cult.fit Membership,1199,5,36,True,recurring mandate debit
+MDT-1191,ICICI Prudential SIP,10000,26,26,True,recurring mandate debit
+MDT-1193,Zomato Gold,149,17,30,True,recurring mandate debit
+MDT-1195,Cult.fit Membership,1199,6,25,True,recurring mandate debit
+MDT-1196,Netflix India,649,16,22,False,recurring mandate debit
+MDT-1197,Spotify Premium,119,21,24,True,recurring mandate debit
+MDT-1200,Zomato Gold,149,8,24,True,recurring mandate debit
+MDT-1201,HDFC Mutual Fund SIP,3000,10,30,True,recurring mandate debit
+MDT-1203,Netflix India,649,25,26,True,recurring mandate debit
+MDT-1208,HDFC ERGO Health Insurance,8850,17,25,True,insurance premium recurring debit
+MDT-1209,Cult.fit Membership,799,15,30,True,recurring mandate debit
+MDT-1210,Amazon Prime,299,3,24,True,recurring mandate debit
+MDT-1215,Spotify Premium,119,21,25,True,recurring mandate debit
+MDT-1216,Amazon Prime,1499,13,22,False,recurring mandate debit
+MDT-1217,Groww SIP,2000,24,24,True,recurring mandate debit
+MDT-1223,HDFC ERGO Health Insurance,15600,23,26,True,insurance premium recurring debit
+MDT-1230,Netflix India,649,18,22,False,recurring mandate debit
+MDT-1231,Netflix India,499,25,22,False,recurring mandate debit
+MDT-1236,Star Health Insurance,3100,27,26,True,insurance premium recurring debit
+MDT-1237,Netflix India,499,21,25,True,recurring mandate debit
+MDT-1239,YouTube Premium,129,15,24,True,recurring mandate debit
+MDT-1241,SBI Card Bill,11800,26,36,True,recurring mandate debit
+MDT-1249,HDFC Mutual Fund SIP,1500,27,22,False,recurring mandate debit
+MDT-1250,Cult.fit Membership,1199,4,26,True,recurring mandate debit
+MDT-1251,HDFC Credit Card Bill,22600,14,22,False,recurring mandate debit
+MDT-1255,YouTube Premium,189,19,25,True,recurring mandate debit
+MDT-1256,Netflix India,649,25,25,True,recurring mandate debit
+MDT-1257,Cult.fit Membership,1199,19,30,True,recurring mandate debit
+MDT-1258,Spotify Premium,149,23,26,True,recurring mandate debit
+MDT-1259,HDFC Credit Card Bill,22600,27,24,True,recurring mandate debit
+MDT-1260,Cult.fit Membership,799,16,26,True,recurring mandate debit
+MDT-1264,HDFC Mutual Fund SIP,1500,20,30,True,recurring mandate debit
+MDT-1273,Netflix India,199,6,22,False,recurring mandate debit
+MDT-1277,HDFC ERGO Health Insurance,15668,11,22,False,insurance premium recurring debit
+MDT-1278,Star Health Insurance,9200,27,36,True,insurance premium recurring debit
+MDT-1279,Spotify Premium,119,17,25,True,recurring mandate debit
+MDT-1280,Jio Fiber,999,15,24,True,recurring mandate debit
+MDT-1281,Spotify Premium,149,3,25,True,recurring mandate debit
+MDT-1289,YouTube Premium,129,19,22,False,recurring mandate debit
+MDT-1290,HDFC ERGO Health Insurance,4200,17,30,True,insurance premium recurring debit
+MDT-1291,ICICI Prudential SIP,1000,22,24,True,recurring mandate debit
+MDT-1294,Star Health Insurance,9314,20,26,True,insurance premium recurring debit
+MDT-1295,ICICI Prudential SIP,10000,19,36,True,recurring mandate debit
+MDT-1305,Zomato Gold,149,20,36,True,recurring mandate debit
+MDT-1307,YouTube Premium,189,13,30,True,recurring mandate debit
+MDT-1309,HDFC ERGO Health Insurance,8713,2,25,True,insurance premium recurring debit
+MDT-1314,SBI Card Bill,11758,1,36,True,recurring mandate debit
+MDT-1320,HDFC Credit Card Bill,22601,4,25,True,recurring mandate debit
