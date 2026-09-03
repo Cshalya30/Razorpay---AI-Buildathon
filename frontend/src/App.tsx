@@ -5,18 +5,20 @@ import { Ledger } from "./pages/Ledger";
 import { RetryQueue } from "./pages/RetryQueue";
 import { ComplianceDashboard } from "./pages/ComplianceDashboard";
 import { EvalReport } from "./pages/EvalReport";
+import { CommandPalette } from "./components/common/CommandPalette";
+import { ToastContainer } from "./components/common/ToastContainer";
 import { useStore } from "./store/useStore";
 
 export const App: React.FC = () => {
   const { activeNav } = useStore();
 
   return (
-    <div className="flex min-h-screen bg-paper text-ink">
+    <div className="flex min-h-screen bg-[#EDEAE2] text-[#1B1B18] font-sans">
       {/* 220px Fixed Ink Sidebar */}
       <Sidebar />
 
-      {/* Main App Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 bg-[#EDEAE2]">
         <TopBar />
         <main className="flex-1 overflow-y-auto">
           {activeNav === "ledger" && <Ledger />}
@@ -25,6 +27,12 @@ export const App: React.FC = () => {
           {activeNav === "eval" && <EvalReport />}
         </main>
       </div>
+
+      {/* Global Command Palette (?K) */}
+      <CommandPalette />
+
+      {/* Global Toast Notification System */}
+      <ToastContainer />
     </div>
   );
 };

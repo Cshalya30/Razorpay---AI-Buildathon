@@ -3,11 +3,13 @@ import { useStore } from "../store/useStore";
 import { api } from "../api/client";
 import { Mandate } from "../types";
 import { HeroMetric } from "../components/ledger/HeroMetric";
+import { CategoryBreakdownCard } from "../components/ledger/CategoryBreakdownCard";
 import { DemoScenarioBar } from "../components/ledger/DemoScenarioBar";
 import { BaselineComparisonSection } from "../components/eval/BaselineComparisonSection";
 import { LedgerTable } from "../components/ledger/LedgerTable";
 import { MandateDetailDrawer } from "../components/detail/MandateDetailDrawer";
 import { io } from "socket.io-client";
+import { motion } from "framer-motion";
 
 export const Ledger: React.FC = () => {
   const { metrics, evalComparison, setMetrics, setEvalComparison } = useStore();
@@ -45,7 +47,7 @@ export const Ledger: React.FC = () => {
       loadData();
     });
 
-    // Fallback 4s polling per Flag 1 recommendation
+    // Fallback 4s polling
     const interval = setInterval(() => {
       loadData();
     }, 4000);
@@ -57,21 +59,29 @@ export const Ledger: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="p-8 max-w-7xl mx-auto space-y-6"
+    >
       {/* Walkthrough Scenarios Bar for Part 9 & Demo Protocol */}
       <DemoScenarioBar />
 
       {/* Row 1 & 2: Hero Metric + Stat Quad */}
       <HeroMetric metrics={metrics} evalComparison={evalComparison} />
 
+      {/* Sectoral Breakdown Card */}
+      <CategoryBreakdownCard />
+
       {/* Row 3: Folded Baseline vs Model Comparison Section */}
       <BaselineComparisonSection comparison={evalComparison} />
 
-      {/* Row 4: Ledger Table */}
+      {/* Row 4: High Density Ledger Table */}
       <LedgerTable mandates={mandates} onRefresh={loadData} />
 
       {/* 480px Slide-over Mandate Detail Drawer */}
       <MandateDetailDrawer onRefreshLedger={loadData} />
-    </div>
+    </motion.div>
   );
 };

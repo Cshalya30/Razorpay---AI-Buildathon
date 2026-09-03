@@ -2,41 +2,89 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --paper: #EDEAE2;
-  --surface: #FFFFFF;
-  --ink: #1B1B18;
-  --ink-muted: #6B6558;
-  --ink-faint: #A39C8D;
-  --rule: #DDD8CC;
-  --recovered: #0F6B5C;
-  --at-risk: #B4790E;
-  --breach: #A6323B;
-  --offline: #7C7568;
-  --accent: #2B4C7E;
+@layer base {
+  :root {
+    --paper: #EDEAE2;
+    --paper-card: #F6F4EE;
+    --surface: #FFFFFF;
+    --ink: #1B1B18;
+    --ink-muted: #6B6558;
+    --rule: #DDD8CC;
+    --rule-dark: #C9C4B6;
+    --recovered: #0F6B5C;
+    --at-risk: #B4790E;
+    --breach: #A6323B;
+    --offline: #7C7568;
+    --accent: #2B4C7E;
+    --accent-light: #EBF1FA;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Custom subtle financial scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--rule);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-muted);
+  }
 }
 
-body {
-  background-color: var(--paper);
-  color: var(--ink);
-  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  margin: 0;
-  padding: 0;
-  -webkit-font-smoothing: antialiased;
+/* Subtle tactile shadows and micro-borders */
+.shadow-card {
+  box-shadow: 0 1px 3px rgba(27, 27, 24, 0.04), 0 1px 2px rgba(27, 27, 24, 0.02);
 }
 
-/* Custom scrollbars for accountant ledger precision */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+.shadow-card-hover {
+  box-shadow: 0 4px 12px rgba(27, 27, 24, 0.08), 0 1px 3px rgba(27, 27, 24, 0.04);
 }
-::-webkit-scrollbar-track {
-  background: var(--paper);
+
+.shadow-drawer {
+  box-shadow: -8px 0 32px rgba(27, 27, 24, 0.12);
 }
-::-webkit-scrollbar-thumb {
-  background: var(--rule);
-  border-radius: 3px;
+
+.shadow-modal {
+  box-shadow: 0 24px 64px rgba(27, 27, 24, 0.2), 0 8px 24px rgba(27, 27, 24, 0.1);
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--ink-faint);
+
+/* Hairline borders */
+.border-hairline {
+  border: 1px solid var(--rule);
+}
+
+/* Subtle dot grid pattern for financial background */
+.bg-grid-pattern {
+  background-image: radial-gradient(#DDD8CC 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Pulse animation for live socket indicator */
+@keyframes live-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.5;
+  }
+}
+
+.animate-live-pulse {
+  animation: live-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

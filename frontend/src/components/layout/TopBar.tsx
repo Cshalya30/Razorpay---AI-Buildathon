@@ -1,54 +1,79 @@
 import React, { useState } from "react";
 import { useStore } from "../../store/useStore";
 import { api } from "../../api/client";
-import { ArrowsClockwise, CheckCircle } from "@phosphor-icons/react";
+import { 
+  MagnifyingGlass, 
+  ArrowsClockwise, 
+  Command,
+  FileCsv
+} from "@phosphor-icons/react";
 
 export const TopBar: React.FC = () => {
-  const { setEvalComparison, setMetrics } = useStore();
-  const [isRunningEval, setIsRunningEval] = useState(false);
+  const { setEvalComparison, setCommandPaletteOpen, addToast } = useStore();
+  const [evalLoading, setEvalLoading] = useState<boolean>(false);
 
-  const handleRunEvalLive = async () => {
+  const handleRunEval = async () => {
     try {
-      setIsRunningEval(true);
-      const evalData = await api.runEvaluation();
-      setEvalComparison(evalData);
-      const metricsData = await api.getMetrics();
-      setMetrics(metricsData);
+      setEvalLoading(true);
+      const res = await api.runEvaluation();
+      setEvalComparison(res);
+      addToast(
+        `Policy benchmark complete! Recovery Rate: ${res.model.recoveryRate.toFixed(1)}% (+${res.deltaRecoveryRate.toFixed(1)}pt lift)`,
+        "success"
+      );
     } catch (err) {
-      console.error("Failed to run evaluation:", err);
+      console.error("Failed to run eval:", err);
+      addToast("Failed to run evaluation benchmark", "warning");
     } finally {
-      setIsRunningEval(false);
+      setEvalLoading(false);
     }
   };
 
+  const handleExportCsv = () => {
+    window.open("/api/v1/compliance/export?format=csv", "_blank");
+    addToast("Exporting RBI statutory audit trail CSV...", "info");
+  };
+
   return (
-    <header className="h-14 border-b border-[#DDD8CC] bg-[#EDEAE2] px-8 flex items-center justify-between shrink-0">
-      <div className="flex items-center gap-3">
-        <span className="text-[13px] font-semibold text-[#1B1B18] tracking-tight">
-          Recovery Register
-        </span>
-        <span className="text-[#DDD8CC] font-mono">/</span>
-        <span className="text-[12px] text-[#6B6558] font-mono">
-          SEPTEMBER 2026 CYCLE
-        </span>
+    <header className="h-14 bg-white border-b border-[#DDD8CC] px-8 flex items-center justify-between shrink-0 shadow-card">
+      {/* Search trigger opens Command Palette */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => setCommandPaletteOpen(true)}
+          className="flex items-center gap-2.5 px-3 py-1.5 bg-[#EDEAE2]/50 hover:bg-[#EDEAE2] border border-[#DDD8CC] text-[#6B6558] hover:text-[#1B1B18] text-[12px] transition-colors rounded-sm group w-72"
+        >
+          <MagnifyingGlass size={15} className="text-[#6B6558] group-hover:text-[#1B1B18]" />
+          <span className="font-sans flex-1 text-left">Search mandates, merchants...</span>
+          <div className="flex items-center gap-0.5 text-[10px] font-mono bg-white px-1.5 py-0.5 border border-[#DDD8CC] rounded-sm text-[#6B6558]">
+            <Command size={10} />
+            <span>K</span>
+          </div>
+        </button>
+
+        {/* Live Socket Status */}
+        <div className="flex items-center gap-2 text-[11px] font-mono text-[#6B6558]">
+          <span className="w-2 h-2 rounded-full bg-[#0F6B5C] animate-live-pulse" />
+          <span>Live WebSocket Sync</span>
+        </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        {/* Live Feed Marker */}
-        <div className="flex items-center gap-1.5 px-2 py-1 bg-white/70 border border-[#DDD8CC] text-[11px] font-mono text-[#6B6558]">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#0F6B5C] animate-pulse" />
-          <span>AGENT LIVE</span>
-        </div>
-
-        {/* Re-run Eval Live Button */}
+      {/* Action Buttons */}
+      <div className="flex items-center gap-3">
         <button
-          onClick={handleRunEvalLive}
-          disabled={isRunningEval}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#2B4C7E] text-white text-[12px] font-medium hover:bg-[#233F69] disabled:opacity-50 transition-colors shadow-sm"
-          title="Re-runs both baseline and model policies live"
+          onClick={handleExportCsv}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-mono text-[#1B1B18] hover:bg-[#EDEAE2] border border-[#DDD8CC] transition-colors shadow-sm"
         >
-          <ArrowsClockwise size={13} className={isRunningEval ? "animate-spin" : ""} />
-          <span>{isRunningEval ? "Evaluating..." : "Re-run Eval Live"}</span>
+          <FileCsv size={15} />
+          <span>Export Audit</span>
+        </button>
+
+        <button
+          onClick={handleRunEval}
+          disabled={evalLoading}
+          className="flex items-center gap-2 px-3.5 py-1.5 bg-[#2B4C7E] text-white text-[12px] font-medium hover:bg-[#233F69] disabled:opacity-50 transition-colors shadow-sm"
+        >
+          <ArrowsClockwise size={14} className={evalLoading ? "animate-spin" : ""} />
+          <span>{evalLoading ? "Benchmarking..." : "Re-run Policy Eval"}</span>
         </button>
       </div>
     </header>
