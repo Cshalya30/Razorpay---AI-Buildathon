@@ -19,6 +19,22 @@
     --accent-light: #EBF1FA;
   }
 
+  :root.dark, html.dark {
+    --paper: #090D1A;
+    --paper-card: #0F1424;
+    --surface: #11172A;
+    --ink: #F1F5F9;
+    --ink-muted: #94A3B8;
+    --rule: #1E293B;
+    --rule-dark: #334155;
+    --recovered: #10B981;
+    --at-risk: #F59E0B;
+    --breach: #EF4444;
+    --offline: #64748B;
+    --accent: #6366F1;
+    --accent-light: #1E1B4B;
+  }
+
   body {
     background-color: var(--paper);
     color: var(--ink);
@@ -26,6 +42,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   /* Custom subtle financial scrollbars */
@@ -58,19 +75,54 @@
   box-shadow: -8px 0 32px rgba(27, 27, 24, 0.12);
 }
 
-.shadow-modal {
-  box-shadow: 0 24px 64px rgba(27, 27, 24, 0.2), 0 8px 24px rgba(27, 27, 24, 0.1);
+/* Global Dark Mode utility overrides so all white cards & rules flip automatically */
+html.dark .bg-white {
+  background-color: #11172A !important;
 }
-
-/* Hairline borders */
-.border-hairline {
-  border: 1px solid var(--rule);
+html.dark .bg-white\/60, html.dark .bg-white\/40 {
+  background-color: #11172A !important;
+}
+html.dark .bg-\[\#EDEAE2\] {
+  background-color: #090D1A !important;
+}
+html.dark .bg-\[\#EDEAE2\]\/50, html.dark .bg-\[\#EDEAE2\]\/30, html.dark .bg-\[\#EDEAE2\]\/60 {
+  background-color: #0F1424 !important;
+}
+html.dark .bg-\[\#F6F4EE\] {
+  background-color: #0F1424 !important;
+}
+html.dark .bg-\[\#F7F5F0\] {
+  background-color: #161F38 !important;
+}
+html.dark .border-\[\#DDD8CC\] {
+  border-color: #1E293B !important;
+}
+html.dark .border-\[\#DDD8CC\]\/60 {
+  border-color: #1E293B !important;
+}
+html.dark .divide-\[\#DDD8CC\] > * + * {
+  border-color: #1E293B !important;
+}
+html.dark .text-\[\#1B1B18\] {
+  color: #F8FAFC !important;
+}
+html.dark .text-\[\#6B6558\] {
+  color: #94A3B8 !important;
+}
+html.dark .text-\[\#A39C8D\] {
+  color: #64748B !important;
+}
+html.dark .shadow-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.07);
 }
 
 /* Subtle dot grid pattern for financial background */
 .bg-grid-pattern {
   background-image: radial-gradient(#DDD8CC 1px, transparent 1px);
   background-size: 20px 20px;
+}
+html.dark .bg-grid-pattern {
+  background-image: radial-gradient(#1E293B 1px, transparent 1px);
 }
 
 /* Pulse animation for live socket indicator */

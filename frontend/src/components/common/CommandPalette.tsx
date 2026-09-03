@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useStore } from "../../store/useStore";
-import { api } from "../../api/client";
+import { api, downloadAuditCsv } from "../../api/client";
 import { Mandate } from "../../types";
 import { 
   MagnifyingGlass, 
@@ -84,10 +84,10 @@ export const CommandPalette: React.FC = () => {
     if (action === "batch") {
       setActiveNav("retries");
       const res = await api.batchExecuteRetries();
-      addToast(`Batch executed: ${res.recoveredCount}/${res.totalExecuted} recovered (+?${res.recoveredAmount.toLocaleString('en-IN')})`, "success");
+      addToast(`Batch executed: ${res.recoveredCount}/${res.totalExecuted} recovered (+₹${res.recoveredAmount.toLocaleString('en-IN')})`, "success");
     } else if (action === "export") {
-      window.open("/api/v1/compliance/export?format=csv", "_blank");
-      addToast("Exporting RBI statutory audit CSV...", "success");
+      downloadAuditCsv();
+      addToast("Downloaded RBI statutory audit CSV directly!", "success");
     } else if (action === "eval") {
       setActiveNav("eval");
       addToast("Switched to Evaluation & Benchmark Report", "info");

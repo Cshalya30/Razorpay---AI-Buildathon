@@ -29,6 +29,9 @@ interface AppState {
   toasts: ToastItem[];
   addToast: (message: string, type?: "success" | "info" | "warning") => void;
   removeToast: (id: string) => void;
+
+  isDarkMode: boolean;
+  toggleDarkMode: () => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -49,6 +52,20 @@ export const useStore = create<AppState>((set) => ({
 
   evalComparison: null,
   setEvalComparison: (comp) => set({ evalComparison: comp }),
+
+  isDarkMode: typeof window !== "undefined" ? localStorage.getItem("recover_theme") === "dark" : false,
+  toggleDarkMode: () => set((state) => {
+    const next = !state.isDarkMode;
+    if (typeof window !== "undefined") {
+      localStorage.setItem("recover_theme", next ? "dark" : "light");
+      if (next) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    }
+    return { isDarkMode: next };
+  }),
 
   toasts: [],
   addToast: (message, type = "info") => {

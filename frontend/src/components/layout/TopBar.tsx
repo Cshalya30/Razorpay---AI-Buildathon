@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { useStore } from "../../store/useStore";
-import { api } from "../../api/client";
+import { api, downloadAuditCsv } from "../../api/client";
 import { 
   MagnifyingGlass, 
   ArrowsClockwise, 
   Command,
-  FileCsv
+  FileCsv,
+  Moon,
+  Sun
 } from "@phosphor-icons/react";
 
 export const TopBar: React.FC = () => {
-  const { setEvalComparison, setCommandPaletteOpen, addToast } = useStore();
+  const { setEvalComparison, setCommandPaletteOpen, addToast, isDarkMode, toggleDarkMode } = useStore();
   const [evalLoading, setEvalLoading] = useState<boolean>(false);
 
   const handleRunEval = async () => {
@@ -30,8 +32,8 @@ export const TopBar: React.FC = () => {
   };
 
   const handleExportCsv = () => {
-    window.open("/api/v1/compliance/export?format=csv", "_blank");
-    addToast("Exporting RBI statutory audit trail CSV...", "info");
+    downloadAuditCsv();
+    addToast("Downloaded RBI statutory audit CSV directly!", "success");
   };
 
   return (
@@ -53,15 +55,34 @@ export const TopBar: React.FC = () => {
         {/* Live Socket Status */}
         <div className="flex items-center gap-2 text-[11px] font-mono text-[#6B6558]">
           <span className="w-2 h-2 rounded-full bg-[#0F6B5C] animate-live-pulse" />
-          <span>Live WebSocket Sync</span>
+          <span>Live Sync Engine</span>
         </div>
       </div>
 
       {/* Action Buttons */}
       <div className="flex items-center gap-3">
+        {/* Dark Mode Toggle Button */}
+        <button
+          onClick={toggleDarkMode}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-mono text-[#1B1B18] hover:bg-[#EDEAE2] border border-[#DDD8CC] transition-colors shadow-sm rounded-sm"
+          title="Toggle Dark / Light Mode"
+        >
+          {isDarkMode ? (
+            <>
+              <Sun size={15} className="text-amber-400" weight="fill" />
+              <span>Light Mode</span>
+            </>
+          ) : (
+            <>
+              <Moon size={15} className="text-[#2B4C7E]" weight="bold" />
+              <span>Dark Mode</span>
+            </>
+          )}
+        </button>
+
         <button
           onClick={handleExportCsv}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-mono text-[#1B1B18] hover:bg-[#EDEAE2] border border-[#DDD8CC] transition-colors shadow-sm"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-mono text-[#1B1B18] hover:bg-[#EDEAE2] border border-[#DDD8CC] transition-colors shadow-sm rounded-sm"
         >
           <FileCsv size={15} />
           <span>Export Audit</span>
@@ -70,7 +91,7 @@ export const TopBar: React.FC = () => {
         <button
           onClick={handleRunEval}
           disabled={evalLoading}
-          className="flex items-center gap-2 px-3.5 py-1.5 bg-[#2B4C7E] text-white text-[12px] font-medium hover:bg-[#233F69] disabled:opacity-50 transition-colors shadow-sm"
+          className="flex items-center gap-2 px-3.5 py-1.5 bg-[#2B4C7E] text-white text-[12px] font-medium hover:bg-[#233F69] disabled:opacity-50 transition-colors shadow-sm rounded-sm"
         >
           <ArrowsClockwise size={14} className={evalLoading ? "animate-spin" : ""} />
           <span>{evalLoading ? "Benchmarking..." : "Re-run Policy Eval"}</span>

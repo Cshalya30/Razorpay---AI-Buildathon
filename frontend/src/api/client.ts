@@ -377,3 +377,60 @@ export const api = {
     }
   }
 };
+
+export function downloadAuditCsv() {
+  const headers = [
+    "mandate_id",
+    "customer_id",
+    "customer_name",
+    "merchant_name",
+    "category",
+    "mandate_amount",
+    "due_day",
+    "status",
+    "attempts",
+    "next_retry_day",
+    "predicted_success_prob",
+    "rbi_24h_notice_status",
+    "rbi_afa_threshold_status",
+    "rbi_anti_harassment_cap",
+    "audit_actor",
+    "statutory_timestamp"
+  ];
+
+  const rows = mockMandates.map((m) => {
+    const isCompliantNotice = m.due_day !== 1;
+    const isAfaExempt = ["insurance", "mutual_fund_sip", "credit_card_bill"].includes(m.category) || m.mandate_amount <= 15000;
+    const capStatus = m.attempts < 4 ? "Compliant" : "Escalated";
+
+    return [
+      m.id,
+      m.customer_id,
+      `"${m.customer_name || 'Customer'}"`,
+      `"${m.merchant_name}"`,
+      m.category,
+      m.mandate_amount,
+      m.due_day,
+      m.status,
+      m.attempts,
+      m.next_retry_day ?? "N/A",
+      m.predicted_success_prob ? (m.predicted_success_prob * 100).toFixed(1) + "%" : "N/A",
+      isCompliantNotice ? "Compliant (>24h Lead)" : "Non-Compliant (<24h)",
+      isAfaExempt ? "Exempt / Compliant" : "Non-Exempt (AFA Triggered)",
+      capStatus,
+      m.status === "stopped" ? "rule_engine" : "model",
+      new Date().toISOString()
+    ].join(",");
+  });
+
+  const csvContent = [headers.join(","), ...rows].join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", `recover_rbi_statutory_audit_${new Date().toISOString().slice(0, 10)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}

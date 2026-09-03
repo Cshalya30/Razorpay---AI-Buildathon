@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { api, ComplianceSummary } from "../api/client";
+import { api, ComplianceSummary, downloadAuditCsv } from "../api/client";
+import { useStore } from "../store/useStore";
 import { 
   ShieldCheck, 
   WarningCircle, 
@@ -11,6 +12,7 @@ import {
 } from "@phosphor-icons/react";
 
 export const ComplianceDashboard: React.FC = () => {
+  const { addToast } = useStore();
   const [data, setData] = useState<ComplianceSummary | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>("");
@@ -32,7 +34,8 @@ export const ComplianceDashboard: React.FC = () => {
   }, []);
 
   const handleExportCsv = () => {
-    window.open("/api/v1/compliance/export?format=csv", "_blank");
+    downloadAuditCsv();
+    addToast("Downloaded RBI statutory audit CSV directly!", "success");
   };
 
   const scorecard = data?.scorecard;
