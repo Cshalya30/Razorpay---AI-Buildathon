@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useStore } from "../store/useStore";
-import { api } from "../api/client";
+import { api, isStandalone, mockMandates } from "../api/client";
 import { Mandate } from "../types";
 import { HeroMetric } from "../components/ledger/HeroMetric";
 import { CategoryBreakdownCard } from "../components/ledger/CategoryBreakdownCard";
@@ -14,14 +14,16 @@ import { FlowArrow, ArrowRight } from "@phosphor-icons/react";
 
 export const Ledger: React.FC = () => {
   const { metrics, evalComparison, setMetrics, setEvalComparison, setActiveNav } = useStore();
-  const [mandates, setMandates] = useState<Mandate[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [mandates, setMandates] = useState<Mandate[]>(mockMandates);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const loadData = async () => {
     try {
       const mandateData = await api.getMandates({ limit: 100 });
-      setMandates(mandateData.mandates);
-      if (mandateData.metrics) {
+      if (mandateData && mandateData.mandates) {
+        setMandates(mandateData.mandates);
+      }
+      if (mandateData && mandateData.metrics) {
         setMetrics(mandateData.metrics);
       }
       const evalData = await api.getLatestEval();
@@ -36,27 +38,19 @@ export const Ledger: React.FC = () => {
   useEffect(() => {
     loadData();
 
-    // Setup Socket.io live retry updates
-    const socket = io();
-    socket.on("mandate:update", () => {
-      loadData();
-    });
-    socket.on("mandate:recovered", () => {
-      loadData();
-    });
-    socket.on("retry:scheduled", () => {
-      loadData();
-    });
+    if (!isStandalone) {
+      // Setup Socket.io live retry updates only on local server
+      const socket = io();
+      socket.on("mandate:update", () => loadData());
+      socket.on("mandate:recovered", () => loadData());
+      socket.on("retry:scheduled", () => loadData());
 
-    // Fallback 4s polling
-    const interval = setInterval(() => {
-      loadData();
-    }, 4000);
-
-    return () => {
-      socket.disconnect();
-      clearInterval(interval);
-    };
+      const interval = setInterval(() => loadData(), 4000);
+      return () => {
+        socket.disconnect();
+        clearInterval(interval);
+      };
+    }
   }, []);
 
   return (

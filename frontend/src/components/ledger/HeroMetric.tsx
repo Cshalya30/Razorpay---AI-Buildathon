@@ -75,7 +75,7 @@ export const HeroMetric: React.FC<Props> = ({ metrics, evalComparison }) => {
         {/* Stat 1: Recovered */}
         <div className="pr-4">
           <div className="text-[11px] font-mono text-[#6B6558] uppercase">
-            ? RECOVERED
+            NET RECOVERED
           </div>
           <div className="font-mono text-[20px] font-bold text-[#0F6B5C] mt-1">
             ?{totalRecovered.toLocaleString("en-IN")}
@@ -88,7 +88,7 @@ export const HeroMetric: React.FC<Props> = ({ metrics, evalComparison }) => {
         {/* Stat 2: At Risk */}
         <div className="px-4">
           <div className="text-[11px] font-mono text-[#6B6558] uppercase">
-            ? AT RISK
+            TOTAL AT RISK
           </div>
           <div className="font-mono text-[20px] font-bold text-[#B4790E] mt-1">
             ?{totalAtRisk.toLocaleString("en-IN")}

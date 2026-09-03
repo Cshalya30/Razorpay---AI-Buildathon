@@ -60,36 +60,48 @@ export interface ModelBenchmarkData {
 
 import mockMandatesRaw from "./mockData.json";
 
+export const isStandalone = typeof window !== "undefined" && (
+  window.location.hostname.includes("vercel.app") ||
+  window.location.hostname.includes("now.sh") ||
+  (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1")
+);
+
 // Built-in Mock/Fallback Seeds for Standalone Vercel Deployments (Full 320 Mandate Records)
-let mockMandates: Mandate[] = [...(mockMandatesRaw as unknown as Mandate[])];
+export let mockMandates: Mandate[] = [...(mockMandatesRaw as unknown as Mandate[])];
 
 export const api = {
+  getMockMandates(params: { status?: string; category?: string; search?: string; limit?: number; offset?: number } = {}) {
+    let list = [...mockMandates];
+    if (params.status && params.status !== "all") list = list.filter(m => m.status === params.status);
+    if (params.category && params.category !== "all") list = list.filter(m => m.category === params.category);
+    if (params.search) {
+      const q = params.search.toLowerCase();
+      list = list.filter(m => m.id.toLowerCase().includes(q) || (m.customer_name && m.customer_name.toLowerCase().includes(q)) || m.merchant_name.toLowerCase().includes(q));
+    }
+    return {
+      mandates: list,
+      total: list.length,
+      metrics: {
+        totalMandates: 320,
+        recoveredCount: 312,
+        atRiskCount: 4,
+        escalatedCount: 1,
+        stoppedCount: 3,
+        recoveryRate: 98.7,
+        recoveredAmount: 725687,
+        atRiskAmount: 808714
+      }
+    };
+  },
   async getMandates(params: { status?: string; category?: string; search?: string; limit?: number; offset?: number } = {}) {
+    if (isStandalone) {
+      return this.getMockMandates(params);
+    }
     try {
       const res = await apiClient.get<{ success: boolean; data: { mandates: Mandate[]; total: number; metrics: LedgerMetrics } }>("/mandates", { params });
       return res.data.data;
     } catch {
-      let list = [...mockMandates];
-      if (params.status) list = list.filter(m => m.status === params.status);
-      if (params.category) list = list.filter(m => m.category === params.category);
-      if (params.search) {
-        const q = params.search.toLowerCase();
-        list = list.filter(m => m.id.toLowerCase().includes(q) || (m.customer_name && m.customer_name.toLowerCase().includes(q)) || m.merchant_name.toLowerCase().includes(q));
-      }
-      return {
-        mandates: list,
-        total: list.length,
-        metrics: {
-          totalMandates: 320,
-          recoveredCount: 312,
-          atRiskCount: 4,
-          escalatedCount: 1,
-          stoppedCount: 3,
-          recoveryRate: 98.7,
-          recoveredAmount: 725687,
-          atRiskAmount: 808714
-        }
-      };
+      return this.getMockMandates(params);
     }
   },
 
