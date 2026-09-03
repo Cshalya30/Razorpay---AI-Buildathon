@@ -20,6 +20,7 @@ import {
   ResponsiveContainer, 
   Cell 
 } from "recharts";
+import { PalantirScatterPlot } from "../components/visual/PalantirScatterPlot";
 
 export const EvalReport: React.FC = () => {
   const { evalComparison, setEvalComparison } = useStore();
@@ -112,6 +113,9 @@ export const EvalReport: React.FC = () => {
         </button>
       </div>
 
+      {/* Palantir Cycle Time & Liquidity Scatter Plot (Image 3) */}
+      <PalantirScatterPlot />
+
       {/* Hero Financial Lift Card */}
       <div className="bg-white border border-[#DDD8CC] p-6 shadow-card mb-6">
         <div className="grid grid-cols-3 gap-6">
@@ -120,10 +124,10 @@ export const EvalReport: React.FC = () => {
               NET REVENUE RECOVERED (LIFT)
             </div>
             <div className="text-[36px] font-mono font-bold text-[#0F6B5C] mt-1 leading-none">
-              +?{comp ? comp.deltaRecoveredAmount.toLocaleString("en-IN") : "2,92,732"}
+              +₹{comp ? comp.deltaRecoveredAmount.toLocaleString("en-IN") : "2,92,732"}
             </div>
             <div className="text-[13px] text-[#0F6B5C] font-mono font-semibold mt-1">
-              ? +{comp ? comp.deltaRecoveryRate.toFixed(1) : "32.6"} percentage points lift
+              ▲ +{comp ? comp.deltaRecoveryRate.toFixed(1) : "32.6"} percentage points lift
             </div>
           </div>
 

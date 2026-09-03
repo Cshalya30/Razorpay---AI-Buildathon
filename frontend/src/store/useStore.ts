@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { LedgerMetrics, EvalComparison } from "../types";
+import { LedgerMetrics, EvalComparison, NavTab } from "../types";
 
 export interface ToastItem {
   id: string;
@@ -8,8 +8,8 @@ export interface ToastItem {
 }
 
 interface AppState {
-  activeNav: "ledger" | "retries" | "compliance" | "eval";
-  setActiveNav: (nav: "ledger" | "retries" | "compliance" | "eval") => void;
+  activeNav: NavTab;
+  setActiveNav: (nav: NavTab) => void;
 
   selectedMandateId: string | null;
   setSelectedMandate: (id: string | null) => void;

@@ -5,6 +5,7 @@ import { Ledger } from "./pages/Ledger";
 import { RetryQueue } from "./pages/RetryQueue";
 import { ComplianceDashboard } from "./pages/ComplianceDashboard";
 import { EvalReport } from "./pages/EvalReport";
+import { EngineRoom } from "./pages/EngineRoom";
 import { CommandPalette } from "./components/common/CommandPalette";
 import { ToastContainer } from "./components/common/ToastContainer";
 import { useStore } from "./store/useStore";
@@ -22,6 +23,7 @@ export const App: React.FC = () => {
         <TopBar />
         <main className="flex-1 overflow-y-auto">
           {activeNav === "ledger" && <Ledger />}
+          {activeNav === "architecture" && <EngineRoom />}
           {activeNav === "retries" && <RetryQueue />}
           {activeNav === "compliance" && <ComplianceDashboard />}
           {activeNav === "eval" && <EvalReport />}

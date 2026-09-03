@@ -96,3 +96,5 @@ export interface PredictionData {
   candidate_days: CandidateDay[];
   feature_importances: Record<string, number>;
 }
+
+export type NavTab = "ledger" | "retries" | "compliance" | "eval" | "architecture";

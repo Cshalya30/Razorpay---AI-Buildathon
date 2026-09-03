@@ -6,11 +6,13 @@ import {
   ClockCountdown, 
   ShieldCheck, 
   ChartBar,
+  FlowArrow,
   Icon
 } from "@phosphor-icons/react";
+import { NavTab } from "../../types";
 
 interface NavItem {
-  id: "ledger" | "retries" | "compliance" | "eval";
+  id: NavTab;
   label: string;
   icon: Icon;
   badge?: string;
@@ -38,6 +40,12 @@ export const Sidebar: React.FC = () => {
       label: "Ledger", 
       icon: BookOpen,
       badge: metrics?.totalMandates ? `${metrics.totalMandates}` : undefined
+    },
+    { 
+      id: "architecture", 
+      label: "Architecture", 
+      icon: FlowArrow,
+      badge: "Spec"
     },
     { 
       id: "retries", 
