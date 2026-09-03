@@ -5,11 +5,22 @@ const API_BASE = "/api/v1";
 
 const apiClient = axios.create({
   baseURL: API_BASE,
-  timeout: 4000,
+  timeout: 3000,
   headers: {
     "Content-Type": "application/json"
   }
 });
+
+// Immediately reject if Vercel SPA rewrites /api/* to index.html (string)
+apiClient.interceptors.response.use(
+  (response) => {
+    if (typeof response.data === "string" || !response.data?.success || !response.data?.data) {
+      return Promise.reject(new Error("Invalid API payload - activating offline fallback engine"));
+    }
+    return response;
+  },
+  (error) => Promise.reject(error)
+);
 
 export interface ComplianceSummary {
   scorecard: {
@@ -47,129 +58,10 @@ export interface ModelBenchmarkData {
   feature_descriptions: Record<string, string>;
 }
 
-// Built-in Mock/Fallback Seeds for Standalone Vercel Deployments
-let mockMandates: Mandate[] = [
-  {
-    id: "MDT-1001",
-    customer_id: "CUST-0001",
-    merchant_name: "Netflix India",
-    mandate_amount: 499,
-    category: "subscription",
-    due_day: 4,
-    status: "recovered",
-    attempts: 1,
-    next_retry_day: 5,
-    predicted_success_prob: 0.999,
-    created_at: "2026-09-01T00:00:00Z",
-    customer_name: "Aarav Sharma",
-    upi_handle: "aarav@oksbi"
-  },
-  {
-    id: "MDT-1002",
-    customer_id: "CUST-0002",
-    merchant_name: "AWS Cloud Services",
-    mandate_amount: 18000,
-    category: "subscription",
-    due_day: 1,
-    status: "stopped",
-    attempts: 0,
-    next_retry_day: null,
-    predicted_success_prob: null,
-    created_at: "2026-09-01T00:00:00Z",
-    customer_name: "Diya Patel",
-    upi_handle: "diya@hdfcbank"
-  },
-  {
-    id: "MDT-1003",
-    customer_id: "CUST-0022",
-    merchant_name: "Cult.fit Membership",
-    mandate_amount: 1199,
-    category: "subscription",
-    due_day: 18,
-    status: "pending",
-    attempts: 2,
-    next_retry_day: 21,
-    predicted_success_prob: 0.998,
-    created_at: "2026-09-01T00:00:00Z",
-    customer_name: "Ishaan Nair",
-    upi_handle: "ishaan@icici"
-  },
-  {
-    id: "MDT-1004",
-    customer_id: "CUST-0004",
-    merchant_name: "Spotify Premium",
-    mandate_amount: 119,
-    category: "subscription",
-    due_day: 15,
-    status: "escalated",
-    attempts: 4,
-    next_retry_day: null,
-    predicted_success_prob: null,
-    created_at: "2026-09-01T00:00:00Z",
-    customer_name: "Ananya Iyer",
-    upi_handle: "ananya@axisbank"
-  },
-  {
-    id: "MDT-1005",
-    customer_id: "CUST-0003",
-    merchant_name: "Amazon Prime",
-    mandate_amount: 1499,
-    category: "subscription",
-    due_day: 12,
-    status: "stopped",
-    attempts: 1,
-    next_retry_day: null,
-    predicted_success_prob: null,
-    created_at: "2026-09-01T00:00:00Z",
-    customer_name: "Kabir Verma",
-    upi_handle: "kabir@paytm"
-  },
-  {
-    id: "MDT-1006",
-    customer_id: "CUST-0005",
-    merchant_name: "HDFC Life Insurance",
-    mandate_amount: 4500,
-    category: "insurance",
-    due_day: 7,
-    status: "retry_scheduled",
-    attempts: 1,
-    next_retry_day: 8,
-    predicted_success_prob: 0.965,
-    created_at: "2026-09-01T00:00:00Z",
-    customer_name: "Sneha Sen",
-    upi_handle: "sneha@okhdfcbank"
-  },
-  {
-    id: "MDT-1007",
-    customer_id: "CUST-0006",
-    merchant_name: "Zerodha Coin SIP",
-    mandate_amount: 2500,
-    category: "mutual_fund_sip",
-    due_day: 10,
-    status: "retry_scheduled",
-    attempts: 1,
-    next_retry_day: 11,
-    predicted_success_prob: 0.982,
-    created_at: "2026-09-01T00:00:00Z",
-    customer_name: "Vikram Malhotra",
-    upi_handle: "vikram@kotak"
-  },
-  {
-    id: "MDT-1008",
-    customer_id: "CUST-0007",
-    merchant_name: "SBI Card AutoPay",
-    mandate_amount: 8200,
-    category: "credit_card_bill",
-    due_day: 20,
-    status: "retry_scheduled",
-    attempts: 1,
-    next_retry_day: 22,
-    predicted_success_prob: 0.941,
-    created_at: "2026-09-01T00:00:00Z",
-    customer_name: "Rohan Das",
-    upi_handle: "rohan@sbi"
-  }
-];
+import mockMandatesRaw from "./mockData.json";
+
+// Built-in Mock/Fallback Seeds for Standalone Vercel Deployments (Full 320 Mandate Records)
+let mockMandates: Mandate[] = [...(mockMandatesRaw as unknown as Mandate[])];
 
 export const api = {
   async getMandates(params: { status?: string; category?: string; search?: string; limit?: number; offset?: number } = {}) {
