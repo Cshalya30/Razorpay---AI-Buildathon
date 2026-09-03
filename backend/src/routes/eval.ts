@@ -1,14 +1,16 @@
 import { Router, Request, Response } from "express";
+import axios from "axios";
 import { queries } from "../db/queries";
 import { evalService } from "../services/evalService";
 
 export const evalRouter = Router();
 
+const ML_SERVICE_URL = process.env.ML_SERVICE_URL || "http://127.0.0.1:8000";
+
 // GET /api/v1/eval/latest
 evalRouter.get("/latest", (req: Request, res: Response): void => {
   const { baseline, model } = queries.getLatestEvalRuns();
   if (!baseline || !model) {
-    // Run evaluation once if no runs exist
     const comparison = evalService.runEvaluation();
     res.json({ success: true, data: comparison });
     return;
@@ -41,11 +43,27 @@ evalRouter.get("/latest", (req: Request, res: Response): void => {
 });
 
 // POST /api/v1/eval/run
-// Re-runs both policies over the dataset deterministically
-evalRouter.post("/run", (req: Request, res: Response): void => {
+evalRouter.post("/run", (_req: Request, res: Response): void => {
   const comparison = evalService.runEvaluation();
   res.json({
     success: true,
     data: comparison
   });
+});
+
+// GET /api/v1/eval/model-benchmark
+// Proxies telemetry from FastAPI ML service
+evalRouter.get("/model-benchmark", async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const mlResp = await axios.get(`${ML_SERVICE_URL}/model/benchmark`, { timeout: 2000 });
+    res.json({
+      success: true,
+      data: mlResp.data
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      error: `Could not reach ML service at ${ML_SERVICE_URL}: ${err.message}`
+    });
+  }
 });

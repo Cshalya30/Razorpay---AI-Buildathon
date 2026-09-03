@@ -1,7 +1,6 @@
 import os
 import sys
 from pydantic import BaseModel
-import inspect
 
 sys.path.append(os.path.dirname(__file__))
 from main import PredictResponse, CandidateDay, MandatePredictRequest, app
@@ -27,17 +26,21 @@ print("class PredictResponse(BaseModel):")
 for name, field in PredictResponse.model_fields.items():
     print(f"    {name}: {field.annotation}")
 
-# 2. Train Model & Report Real AUC and Feature Importances
-print("\n--- 2. TRAINING GRADIENT BOOSTING CLASSIFIER ---")
+# 2. Train Model & Report Real Metrics and Feature Importances
+print("\n--- 2. TRAINING CALIBRATED GRADIENT BOOSTING CLASSIFIER ---")
 seeds_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "generator", "seeds"))
 predictor = RetryPredictor()
-auc, importances = predictor.train_from_seeds(seeds_dir)
+metrics, importances = predictor.train_from_seeds(seeds_dir)
 
-print(f"Real Test ROC-AUC Score: {auc:.4f}")
+print(f"Real Test ROC-AUC Score: {metrics['roc_auc']:.4f}")
+print(f"Real Test PR-AUC Score:  {metrics['pr_auc']:.4f}")
+print(f"Real Test Accuracy:      {metrics['accuracy']:.4f}")
+print(f"Real Brier Score Loss:   {metrics['brier_score']:.4f}")
+
 print("\nFeature Importances Ranking:")
 sorted_importances = sorted(importances.items(), key=lambda x: x[1], reverse=True)
 for rank, (feat, imp) in enumerate(sorted_importances, 1):
-    print(f"  {rank}. {feat:<30}: {imp:.4f} ({imp*100:.1f}%)")
+    print(f"  {rank}. {feat:<28}: {imp:.4f} ({imp*100:.1f}%)")
 
 # 3. Test Prediction
 print("\n--- 3. TEST INFERENCE ---")
@@ -49,7 +52,10 @@ result = predictor.predict_candidate_days(
     category="subscription",
     attempts=1,
     balance_curve=sample_balance,
-    current_due_day=4
+    current_due_day=4,
+    credit_days_str="5",
+    daily_burn=724.0
 )
 print(f"Best candidate retry day: Day {result['best_day']} (P={result['predicted_success_prob']:.1%})")
-print("Candidate days preview:", result["candidate_days"][:5])
+print(f"Local Explanation:        {result['local_explanation']}")
+print("Candidate days preview:  ", result["candidate_days"][:3])

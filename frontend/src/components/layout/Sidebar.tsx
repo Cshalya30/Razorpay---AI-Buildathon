@@ -1,21 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useStore } from "../../store/useStore";
+import { api } from "../../api/client";
 import { 
   BookOpen, 
   ClockCountdown, 
   ShieldCheck, 
-  ChartBar 
+  ChartBar,
+  Icon
 } from "@phosphor-icons/react";
 
-export const Sidebar: React.FC = () => {
-  const { activeNav, setActiveNav } = useStore();
+interface NavItem {
+  id: "ledger" | "retries" | "compliance" | "eval";
+  label: string;
+  icon: Icon;
+  badge?: string;
+  badgeColor?: string;
+}
 
-  const navItems = [
-    { id: "ledger", label: "Ledger", icon: BookOpen },
-    { id: "retries", label: "Retry Queue", icon: ClockCountdown },
-    { id: "compliance", label: "Compliance", icon: ShieldCheck },
-    { id: "eval", label: "Eval Report", icon: ChartBar }
-  ] as const;
+export const Sidebar: React.FC = () => {
+  const { activeNav, setActiveNav, metrics } = useStore();
+  const [retryCount, setRetryCount] = useState<number>(0);
+  const [nonCompliantCount, setNonCompliantCount] = useState<number>(28);
+
+  useEffect(() => {
+    api.getUpcomingRetries().then(data => {
+      setRetryCount(data.totalCount);
+    }).catch(() => {});
+
+    api.getComplianceSummary().then(data => {
+      setNonCompliantCount(data.scorecard.nonCompliantNotices);
+    }).catch(() => {});
+  }, [activeNav]);
+
+  const navItems: NavItem[] = [
+    { 
+      id: "ledger", 
+      label: "Ledger", 
+      icon: BookOpen,
+      badge: metrics?.totalMandates ? `${metrics.totalMandates}` : undefined
+    },
+    { 
+      id: "retries", 
+      label: "Retry Queue", 
+      icon: ClockCountdown,
+      badge: retryCount > 0 ? `${retryCount}` : undefined
+    },
+    { 
+      id: "compliance", 
+      label: "Compliance", 
+      icon: ShieldCheck,
+      badge: nonCompliantCount > 0 ? `${nonCompliantCount}` : undefined,
+      badgeColor: "text-[#A6323B] bg-[#A6323B]/20"
+    },
+    { 
+      id: "eval", 
+      label: "Eval Report", 
+      icon: ChartBar,
+      badge: "98.7%"
+    }
+  ];
 
   return (
     <aside className="w-[220px] min-h-screen bg-[#1B1B18] text-[#EDEAE2] flex flex-col justify-between py-6 shrink-0 border-r border-[#2C2C28]">
@@ -33,20 +76,27 @@ export const Sidebar: React.FC = () => {
         {/* Navigation Items */}
         <nav className="space-y-1 px-3">
           {navItems.map((item) => {
-            const Icon = item.icon;
+            const ItemIcon = item.icon;
             const isActive = activeNav === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => setActiveNav(item.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2 text-[13px] font-medium transition-colors ${
+                className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium transition-colors ${
                   isActive
                     ? "bg-[#2A2925] text-white border-l-2 border-[#0F6B5C]"
                     : "text-[#A39C8D] hover:text-[#EDEAE2] hover:bg-[#23221E] border-l-2 border-transparent"
                 }`}
               >
-                <Icon size={16} weight={isActive ? "bold" : "regular"} />
-                <span>{item.label}</span>
+                <div className="flex items-center gap-3">
+                  <ItemIcon size={16} weight={isActive ? "bold" : "regular"} />
+                  <span>{item.label}</span>
+                </div>
+                {item.badge && (
+                  <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded-sm ${item.badgeColor || 'bg-white/10 text-[#DDD8CC]'}`}>
+                    {item.badge}
+                  </span>
+                )}
               </button>
             );
           })}

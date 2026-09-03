@@ -11,6 +11,42 @@ const apiClient = axios.create({
   }
 });
 
+export interface ComplianceSummary {
+  scorecard: {
+    totalNotices: number;
+    compliantNotices: number;
+    nonCompliantNotices: number;
+    complianceRate: number;
+    afaStops: number;
+    capStops: number;
+    revokeStops: number;
+  };
+  recentNotices: any[];
+}
+
+export interface RetryQueueData {
+  retries: Mandate[];
+  totalCount: number;
+  totalVolume: number;
+  avgConfidence: number;
+  dayBuckets: Record<number, { count: number; volume: number }>;
+}
+
+export interface ModelBenchmarkData {
+  metrics: {
+    roc_auc: number;
+    pr_auc: number;
+    brier_score: number;
+    accuracy: number;
+    precision: number;
+    recall: number;
+    n_train: number;
+    n_test: number;
+  };
+  feature_importances: Record<string, number>;
+  feature_descriptions: Record<string, string>;
+}
+
 export const api = {
   async getMandates(params: { status?: string; category?: string; search?: string; limit?: number; offset?: number } = {}) {
     const res = await apiClient.get<{ success: boolean; data: { mandates: Mandate[]; total: number; metrics: LedgerMetrics } }>("/mandates", { params });
@@ -47,7 +83,17 @@ export const api = {
   },
 
   async getUpcomingRetries() {
-    const res = await apiClient.get<{ success: boolean; data: Mandate[] }>("/retries/upcoming");
+    const res = await apiClient.get<{ success: boolean; data: RetryQueueData }>("/retries/upcoming");
+    return res.data.data;
+  },
+
+  async batchExecuteRetries(day?: number) {
+    const res = await apiClient.post<{ success: boolean; data: any }>("/retries/batch-execute", { day });
+    return res.data.data;
+  },
+
+  async getComplianceSummary() {
+    const res = await apiClient.get<{ success: boolean; data: ComplianceSummary }>("/compliance/summary");
     return res.data.data;
   },
 
@@ -58,6 +104,11 @@ export const api = {
 
   async runEvaluation() {
     const res = await apiClient.post<{ success: boolean; data: EvalComparison }>("/eval/run");
+    return res.data.data;
+  },
+
+  async getModelBenchmark() {
+    const res = await apiClient.get<{ success: boolean; data: ModelBenchmarkData }>("/eval/model-benchmark");
     return res.data.data;
   }
 };
