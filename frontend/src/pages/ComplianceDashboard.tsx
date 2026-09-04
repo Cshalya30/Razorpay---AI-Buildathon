@@ -93,7 +93,7 @@ export const ComplianceDashboard: React.FC = () => {
         {/* Pillar 2: AFA Threshold Gating */}
         <div className="bg-white border border-[#DDD8CC] p-4 shadow-card">
           <div className="flex items-center justify-between text-[#6B6558] mb-1">
-            <span className="text-[11px] font-mono uppercase">AFA ?15,000 THRESHOLD</span>
+            <span className="text-[11px] font-mono uppercase">AFA ₹15,000 THRESHOLD</span>
             <ShieldCheck size={16} className="text-[#A6323B]" />
           </div>
           <div className="text-[24px] font-mono font-bold text-[#A6323B] mt-1">
@@ -103,7 +103,7 @@ export const ComplianceDashboard: React.FC = () => {
             Mandates halted for AFA auth
           </div>
           <div className="text-[10px] text-[#A39C8D] font-mono mt-0.5">
-            Non-exempt subscriptions &gt; ?15k gated
+            Non-exempt subscriptions &gt; ₹15k gated
           </div>
         </div>
 
@@ -147,14 +147,14 @@ export const ComplianceDashboard: React.FC = () => {
         <div className="font-bold text-[#1B1B18] uppercase tracking-wider mb-2">
           Statutory Gating Specifications Implemented:
         </div>
-        <div>? <strong>RBI/DPSS/2021-22/68</strong>: Pre-debit alerts must be sent via SMS/Email at least 24 hours prior to actual debit. Non-compliant alerts are automatically rejected by the rule engine and a new 26-hour advance alert is dispatched.</div>
-        <div>? <strong>Master Direction Section 5.3</strong>: E-mandates exceeding ?15,000 require AFA re-authentication unless classified under insurance, mutual fund SIPs, or credit card bills. Subscriptions are strictly non-exempt.</div>
-        <div>? <strong>Anti-Harassment Directive</strong>: Mandates failing 4 consecutive debit attempts are terminated from automated retries and escalated for human intervention.</div>
+        <div>• <strong>RBI/DPSS/2021-22/68</strong>: Pre-debit alerts must be sent via SMS/Email at least 24 hours prior to actual debit. Non-compliant alerts are automatically rejected by the rule engine and a new 26-hour advance alert is dispatched.</div>
+        <div>• <strong>Master Direction Section 5.3</strong>: E-mandates exceeding ₹15,000 require AFA re-authentication unless classified under insurance, mutual fund SIPs, or credit card bills. Subscriptions are strictly non-exempt.</div>
+        <div>• <strong>Anti-Harassment Directive</strong>: Mandates failing 4 consecutive debit attempts are terminated from automated retries and escalated for human intervention.</div>
       </div>
 
       {/* Notifications Table */}
-      <div className="bg-white border border-[#DDD8CC] shadow-card">
-        <div className="p-3 border-b border-[#DDD8CC] flex items-center justify-between">
+      <div className="bg-white border border-[#DDD8CC] shadow-card overflow-x-auto">
+        <div className="p-3 border-b border-[#DDD8CC] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <span className="text-[12px] font-semibold text-[#1B1B18] tracking-tight">
             Pre-Debit Notice Dispatch Log &amp; Timing Verification
           </span>
@@ -164,16 +164,16 @@ export const ComplianceDashboard: React.FC = () => {
             placeholder="Search mandate, merchant..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="px-3 py-1 bg-[#EDEAE2]/50 border border-[#DDD8CC] text-[12px] text-[#1B1B18] placeholder-[#A39C8D] focus:outline-none focus:border-[#2B4C7E] w-64 font-sans"
+            className="px-3 py-1 bg-[#EDEAE2]/50 border border-[#DDD8CC] text-[12px] text-[#1B1B18] placeholder-[#A39C8D] focus:outline-none focus:border-[#2B4C7E] w-full sm:w-64 font-sans"
           />
         </div>
 
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left border-collapse min-w-[750px]">
           <thead>
             <tr className="border-b border-[#DDD8CC] bg-[#EDEAE2]/30 text-[11px] font-mono text-[#6B6558] uppercase">
               <th className="py-2 px-4">Mandate Ref</th>
               <th className="py-2 px-4">Merchant &amp; Category</th>
-              <th className="py-2 px-4 text-right">Amount (?)</th>
+              <th className="py-2 px-4 text-right">Amount (₹)</th>
               <th className="py-2 px-4">Scheduled Debit</th>
               <th className="py-2 px-4">Notice Dispatch Time</th>
               <th className="py-2 px-4">Lead Time</th>
@@ -193,7 +193,7 @@ export const ComplianceDashboard: React.FC = () => {
                     <div className="text-[10px] font-mono text-[#6B6558] capitalize">{n.category}</div>
                   </td>
                   <td className="py-2.5 px-4 text-right font-bold text-[#1B1B18]">
-                    ?{n.amount.toLocaleString("en-IN")}
+                    ₹{n.amount.toLocaleString("en-IN")}
                   </td>
                   <td className="py-2.5 px-4 text-[#6B6558]">
                     {new Date(n.scheduled_debit_at).toLocaleDateString("en-IN", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}

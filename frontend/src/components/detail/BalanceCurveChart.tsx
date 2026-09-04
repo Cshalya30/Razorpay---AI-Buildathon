@@ -35,10 +35,10 @@ export const BalanceCurveChart: React.FC<Props> = ({ mandate, balanceCurve }) =>
         <div className="bg-[#1B1B18] text-[#EDEAE2] p-2.5 shadow-modal border border-[#2C2C28] text-[11px] font-mono">
           <div className="text-[#A39C8D] mb-1">Cycle Day {label}</div>
           <div className="font-bold text-[13px] text-white">
-            Balance: ?{data.balance.toLocaleString("en-IN")}
+            Balance: ₹{data.balance.toLocaleString("en-IN")}
           </div>
           <div className="text-[11px] text-[#A39C8D] mt-0.5">
-            Mandate Amount: ?{mandate.mandate_amount.toLocaleString("en-IN")}
+            Mandate Amount: ₹{mandate.mandate_amount.toLocaleString("en-IN")}
           </div>
           <div className={`mt-1 font-semibold ${isSufficient ? "text-[#0F6B5C]" : "text-[#A6323B]"}`}>
             {isSufficient 
@@ -60,7 +60,7 @@ export const BalanceCurveChart: React.FC<Props> = ({ mandate, balanceCurve }) =>
         <div className="flex items-center gap-3 text-[10px] font-mono text-[#6B6558]">
           <div className="flex items-center gap-1">
             <span className="w-2.5 h-0.5 bg-[#A6323B] inline-block" />
-            <span>Debit ?{mandate.mandate_amount.toLocaleString("en-IN")}</span>
+            <span>Debit ₹{mandate.mandate_amount.toLocaleString("en-IN")}</span>
           </div>
           {mandate.next_retry_day && (
             <div className="flex items-center gap-1 text-[#2B4C7E] font-bold">

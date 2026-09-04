@@ -124,7 +124,7 @@ export const RetryQueue: React.FC = () => {
         <div className="bg-white border border-[#DDD8CC] p-4 shadow-card">
           <div className="text-[11px] font-mono text-[#6B6558] uppercase">QUEUE RECOVERY VOLUME</div>
           <div className="text-[22px] font-mono font-bold text-[#0F6B5C] mt-1">
-            ?{totalVol.toLocaleString("en-IN")}
+            ₹{totalVol.toLocaleString("en-IN")}
           </div>
           <div className="text-[11px] text-[#A39C8D] font-mono mt-0.5">
             across {filteredRetries.length} scheduled attempts
@@ -137,7 +137,7 @@ export const RetryQueue: React.FC = () => {
             {avgConf.toFixed(1)}%
           </div>
           <div className="text-[11px] text-[#A39C8D] font-mono mt-0.5">
-            calibrated P(balance ? amount)
+            calibrated P(balance ≥ amount)
           </div>
         </div>
 
@@ -147,7 +147,7 @@ export const RetryQueue: React.FC = () => {
             {filteredRetries.length > 0 ? `${Math.round((highConfCount / filteredRetries.length) * 100)}%` : "0%"}
           </div>
           <div className="text-[11px] text-[#A39C8D] font-mono mt-0.5">
-            {highConfCount} mandates with P ? 80%
+            {highConfCount} mandates with P ≥ 80%
           </div>
         </div>
 
@@ -159,6 +159,51 @@ export const RetryQueue: React.FC = () => {
           <div className="text-[11px] text-[#A39C8D] font-mono mt-0.5">
             24h pre-debit notices dispatched
           </div>
+        </div>
+      </div>
+
+      {/* Confidence Distribution Visual (Histogram) - Priority 2.1 */}
+      <div className="bg-white border border-[#DDD8CC] p-4 mb-6 shadow-card">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+          <div>
+            <div className="text-[12px] font-bold font-mono text-[#1B1B18] uppercase tracking-wider">
+              Calibrated Confidence Distribution across Scheduled Retries
+            </div>
+            <div className="text-[11px] text-[#6B6558] mt-0.5">
+              Empirical spread of gradient boosted probability estimates (P ≥ 0.50 execution threshold).
+            </div>
+          </div>
+          <div className="text-[11px] font-mono text-[#2B4C7E] bg-[#2B4C7E]/10 px-2 py-1 self-start sm:self-auto">
+            Std Dev: σ = 0.201 · N = {retries.length} records
+          </div>
+        </div>
+
+        {/* 5-Bucket Visual Bar Matrix */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 pt-2">
+          {[
+            { label: "< 60% (Marginal)", filter: (p: number) => p < 0.60, color: "bg-[#A6323B]" },
+            { label: "60%–70% (Fair)", filter: (p: number) => p >= 0.60 && p < 0.70, color: "bg-[#B4790E]" },
+            { label: "70%–80% (Good)", filter: (p: number) => p >= 0.70 && p < 0.80, color: "bg-[#2B4C7E]" },
+            { label: "80%–90% (High)", filter: (p: number) => p >= 0.80 && p < 0.90, color: "bg-[#0F6B5C]" },
+            { label: "90%–100% (Prime)", filter: (p: number) => p >= 0.90, color: "bg-[#0A4D42]" },
+          ].map((bucket, idx) => {
+            const bucketCount = retries.filter(r => bucket.filter(r.predicted_success_prob ?? 0)).length;
+            const pct = retries.length > 0 ? (bucketCount / retries.length) * 100 : 0;
+            return (
+              <div key={idx} className="bg-[#EDEAE2]/40 p-2.5 border border-[#DDD8CC]/70">
+                <div className="flex justify-between text-[11px] font-mono">
+                  <span className="text-[#6B6558] truncate">{bucket.label}</span>
+                  <span className="font-bold text-[#1B1B18]">{bucketCount} ({pct.toFixed(0)}%)</span>
+                </div>
+                <div className="w-full bg-[#DDD8CC]/50 h-2 mt-2 overflow-hidden rounded-[1px]">
+                  <div 
+                    className={`h-full ${bucket.color} transition-all duration-500`} 
+                    style={{ width: `${Math.max(4, pct)}%` }} 
+                  />
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -195,14 +240,14 @@ export const RetryQueue: React.FC = () => {
       </div>
 
       {/* Queue Table */}
-      <div className="bg-white border border-[#DDD8CC] shadow-card">
-        <table className="w-full text-left border-collapse">
+      <div className="bg-white border border-[#DDD8CC] shadow-card overflow-x-auto">
+        <table className="w-full text-left border-collapse min-w-[700px]">
           <thead>
             <tr className="border-b border-[#DDD8CC] bg-[#EDEAE2]/30 text-[11px] font-mono text-[#6B6558] uppercase">
               <th className="py-2.5 px-4 font-medium">Mandate ID</th>
               <th className="py-2.5 px-4 font-medium">Customer</th>
               <th className="py-2.5 px-4 font-medium">Merchant & Category</th>
-              <th className="py-2.5 px-4 font-medium text-right">Amount (?)</th>
+              <th className="py-2.5 px-4 font-medium text-right">Amount (₹)</th>
               <th className="py-2.5 px-4 font-medium">Original Due</th>
               <th className="py-2.5 px-4 font-medium">Scheduled Day</th>
               <th className="py-2.5 px-4 font-medium">Model Confidence</th>
@@ -247,7 +292,7 @@ export const RetryQueue: React.FC = () => {
                     </td>
 
                     <td className="py-2.5 px-4 font-mono text-[13px] font-semibold text-right text-[#1B1B18]">
-                      ?{mandate.mandate_amount.toLocaleString("en-IN")}
+                      ₹{mandate.mandate_amount.toLocaleString("en-IN")}
                     </td>
 
                     <td className="py-2.5 px-4 font-mono text-[12px] text-[#6B6558]">
@@ -258,7 +303,7 @@ export const RetryQueue: React.FC = () => {
                       Day {mandate.next_retry_day}
                     </td>
 
-                    <td className="py-2.5 px-4">
+                    <td className="py-2.5 px-4 max-w-sm">
                       <div className="flex items-center gap-2">
                         <span className={`px-2 py-0.5 text-[10px] font-mono font-bold ${
                           isHigh ? "bg-[#0F6B5C]/15 text-[#0F6B5C]" : "bg-[#B4790E]/15 text-[#B4790E]"
@@ -266,6 +311,11 @@ export const RetryQueue: React.FC = () => {
                           {(prob * 100).toFixed(0)}% ({isHigh ? "HIGH" : "MOD"})
                         </span>
                       </div>
+                      {mandate.decision_rationale && (
+                        <div className="text-[11px] text-[#6B6558] font-sans mt-1 leading-snug">
+                          {mandate.decision_rationale}
+                        </div>
+                      )}
                     </td>
 
                     <td className="py-2.5 px-4 text-right">

@@ -6,7 +6,7 @@ export const LinearIsometricCards: React.FC = () => {
       fig: "FIG 0.1",
       title: "Deterministic Gating Shield",
       subtitle: "RBI DPSS/2021-22/68",
-      desc: "Hard-coded central bank compliance rules that can never be overridden by machine learning. Enforces the 24-hour pre-debit alert lead time, the ?15,000 AFA exemption threshold, and the 4-attempt anti-harassment stopping rule.",
+      desc: "Hard-coded central bank compliance rules that can never be overridden by machine learning. Enforces the 24-hour pre-debit alert lead time, the ₹15,000 AFA exemption threshold, and the 4-attempt anti-harassment stopping rule.",
       svg: (
         <svg className="w-48 h-32 mx-auto" viewBox="0 0 160 110" fill="none" stroke="currentColor">
           {/* Isometric stacked plates in clean slate/ink lines */}

@@ -1,7 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LedgerMetrics, EvalComparison } from "../../types";
 import { TrendUp, ShieldCheck, WarningCircle, Prohibit, CurrencyInr } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
+
+const CountUpNumber: React.FC<{ value: number; decimals?: number; prefix?: string; suffix?: string; duration?: number }> = ({
+  value,
+  decimals = 0,
+  prefix = "",
+  suffix = "",
+  duration = 800
+}) => {
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    let startTimestamp: number | null = null;
+    const startVal = 0;
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      const current = startVal + (value - startVal) * easeProgress;
+      setDisplay(current);
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    };
+    requestAnimationFrame(step);
+  }, [value, duration]);
+
+  return (
+    <span>
+      {prefix}
+      {display.toLocaleString("en-IN", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      })}
+      {suffix}
+    </span>
+  );
+};
 
 interface Props {
   metrics: LedgerMetrics | null;
@@ -41,13 +78,13 @@ export const HeroMetric: React.FC<Props> = ({ metrics, evalComparison }) => {
               transition={{ duration: 0.4, ease: "easeOut" }}
               className="font-serif text-[44px] font-bold text-[#1B1B18] tracking-tight leading-none"
             >
-              {recoveryRate.toFixed(1)}%
+              <CountUpNumber value={recoveryRate} decimals={1} suffix="%" />
             </motion.h1>
 
             {/* Delta vs. Baseline */}
             <div className="flex items-center gap-1.5 text-[14px] font-mono font-semibold text-[#0F6B5C]">
               <TrendUp size={18} weight="bold" />
-              <span>? +{delta > 0 ? delta.toFixed(1) : "32.6"}pt vs naive baseline</span>
+              <span>▲ +{delta > 0 ? delta.toFixed(1) : "24.8"}pt vs naive baseline</span>
             </div>
           </div>
 
@@ -62,7 +99,7 @@ export const HeroMetric: React.FC<Props> = ({ metrics, evalComparison }) => {
             NET FINANCIAL RECOVERY
           </div>
           <div className="font-mono text-[26px] font-bold text-[#0F6B5C] mt-1">
-            +?{(evalComparison?.deltaRecoveredAmount ?? 292732).toLocaleString("en-IN")}
+            <CountUpNumber value={evalComparison?.deltaRecoveredAmount ?? 96048} prefix="+₹" />
           </div>
           <div className="text-[11px] font-mono text-[#A39C8D]">
             additional revenue captured
@@ -71,14 +108,14 @@ export const HeroMetric: React.FC<Props> = ({ metrics, evalComparison }) => {
       </div>
 
       {/* Row 2: Four Plain Stat Pairs */}
-      <div className="grid grid-cols-4 pt-4 divide-x divide-[#DDD8CC]">
+      <div className="grid grid-cols-2 md:grid-cols-4 pt-4 gap-4 md:gap-0 md:divide-x divide-[#DDD8CC]">
         {/* Stat 1: Recovered */}
-        <div className="pr-4">
+        <div className="md:pr-4">
           <div className="text-[11px] font-mono text-[#6B6558] uppercase">
             NET RECOVERED
           </div>
           <div className="font-mono text-[20px] font-bold text-[#0F6B5C] mt-1">
-            ?{totalRecovered.toLocaleString("en-IN")}
+            <CountUpNumber value={totalRecovered} prefix="₹" />
           </div>
           <div className="text-[11px] font-mono text-[#A39C8D] mt-0.5">
             debit successful on retry
@@ -86,12 +123,12 @@ export const HeroMetric: React.FC<Props> = ({ metrics, evalComparison }) => {
         </div>
 
         {/* Stat 2: At Risk */}
-        <div className="px-4">
+        <div className="md:px-4">
           <div className="text-[11px] font-mono text-[#6B6558] uppercase">
             TOTAL AT RISK
           </div>
           <div className="font-mono text-[20px] font-bold text-[#B4790E] mt-1">
-            ?{totalAtRisk.toLocaleString("en-IN")}
+            <CountUpNumber value={totalAtRisk} prefix="₹" />
           </div>
           <div className="text-[11px] font-mono text-[#A39C8D] mt-0.5">
             scheduled retry pending
@@ -99,12 +136,12 @@ export const HeroMetric: React.FC<Props> = ({ metrics, evalComparison }) => {
         </div>
 
         {/* Stat 3: Escalated */}
-        <div className="px-4">
+        <div className="md:px-4">
           <div className="text-[11px] font-mono text-[#6B6558] uppercase">
             ESCALATED
           </div>
           <div className="font-mono text-[20px] font-bold text-[#1B1B18] mt-1">
-            {escalatedCount}
+            <CountUpNumber value={escalatedCount} />
           </div>
           <div className="text-[11px] font-mono text-[#A39C8D] mt-0.5">
             4-attempt retry cap hit
@@ -112,12 +149,12 @@ export const HeroMetric: React.FC<Props> = ({ metrics, evalComparison }) => {
         </div>
 
         {/* Stat 4: Stopped */}
-        <div className="pl-4">
+        <div className="md:pl-4">
           <div className="text-[11px] font-mono text-[#6B6558] uppercase">
             STOPPED
           </div>
           <div className="font-mono text-[20px] font-bold text-[#7C7568] mt-1">
-            {stoppedCount}
+            <CountUpNumber value={stoppedCount} />
           </div>
           <div className="text-[11px] font-mono text-[#A39C8D] mt-0.5">
             revoked or AFA required

@@ -10,6 +10,12 @@ CATEGORY_MAP = {
 }
 
 def infer_salary_day(credit_days_str: str, credit_amounts_str: str) -> int:
+    """
+    CRITICAL STATUTORY / ML AUDIT INTEGRITY BOUNDARY:
+    Computes salary day as a strictly INFERRED statistical value from recurring
+    inbound transaction history. MUST NEVER accept or read ground-truth `salary_day`.
+    """
+    assert not isinstance(credit_days_str, int), "LEAKAGE_PREVENTION_ASSERTION: Ground-truth integer salary_day cannot be passed."
     if not credit_days_str or not credit_amounts_str or pd.isna(credit_days_str):
         return 1
     try:

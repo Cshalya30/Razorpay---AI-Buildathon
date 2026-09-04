@@ -28,7 +28,7 @@ export const ComplianceTab: React.FC<Props> = ({ mandate, notifications }) => {
                 24-Hour Pre-Debit Notice (RBI Rule 2021/68)
               </div>
               <div className="text-[11px] text-[#6B6558] font-mono mt-0.5">
-                Statutory requirement: mandates must issue customer alert ?24h prior to any debit execution.
+                Statutory requirement: mandates must issue customer alert ₹24h prior to any debit execution.
               </div>
             </div>
           </div>
@@ -46,12 +46,12 @@ export const ComplianceTab: React.FC<Props> = ({ mandate, notifications }) => {
             )}
             <div>
               <div className="font-semibold">
-                AFA Threshold Gating (?15,000 Cap)
+                AFA Threshold Gating (₹15,000 Cap)
               </div>
               <div className="text-[11px] text-[#6B6558] font-mono mt-0.5">
                 {isAfaRisk
-                  ? "VIOLATION STOP: Amount exceeds ?15,000 without insurance/SIP exemption. Auto-retry halted."
-                  : "Exempt category or amount ? ?15,000. Auto-retry authorized."}
+                  ? "VIOLATION STOP: Amount exceeds ₹15,000 without insurance/SIP exemption. Auto-retry halted."
+                  : "Exempt category or amount ? ₹15,000. Auto-retry authorized."}
               </div>
             </div>
           </div>
@@ -101,7 +101,7 @@ export const ComplianceTab: React.FC<Props> = ({ mandate, notifications }) => {
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="font-semibold text-[#1B1B18]">
-                      {n.merchant_name} ? ?{n.amount.toLocaleString("en-IN")}
+                      {n.merchant_name} ? ₹{n.amount.toLocaleString("en-IN")}
                     </span>
                     <span
                       className={`px-1.5 py-0.5 text-[10px] font-bold ${

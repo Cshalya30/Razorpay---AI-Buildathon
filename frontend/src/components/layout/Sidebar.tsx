@@ -20,7 +20,7 @@ interface NavItem {
 }
 
 export const Sidebar: React.FC = () => {
-  const { activeNav, setActiveNav, metrics } = useStore();
+  const { activeNav, setActiveNav, metrics, mobileMenuOpen, setMobileMenuOpen } = useStore();
   const [retryCount, setRetryCount] = useState<number>(0);
   const [nonCompliantCount, setNonCompliantCount] = useState<number>(28);
 
@@ -64,21 +64,31 @@ export const Sidebar: React.FC = () => {
       id: "eval", 
       label: "Eval Report", 
       icon: ChartBar,
-      badge: "98.7%"
+      badge: "70.1%"
     }
   ];
 
-  return (
-    <aside className="w-[220px] min-h-screen bg-[#1B1B18] text-[#EDEAE2] flex flex-col justify-between py-6 shrink-0 border-r border-[#2C2C28]">
+  const sidebarContent = (
+    <div className="flex flex-col justify-between h-full py-6">
       <div>
         {/* Fraunces Serif Wordmark */}
-        <div className="px-6 mb-8">
-          <h1 className="font-serif text-2xl font-bold tracking-normal text-[#EDEAE2]">
-            Recover
-          </h1>
-          <p className="text-[11px] font-mono text-[#A39C8D] mt-1 tracking-wide">
-            UPI AUTOPAY REGISTER
-          </p>
+        <div className="px-6 mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="font-serif text-2xl font-bold tracking-normal text-[#EDEAE2]">
+              Recover
+            </h1>
+            <p className="text-[11px] font-mono text-[#A39C8D] mt-1 tracking-wide">
+              UPI AUTOPAY REGISTER
+            </p>
+          </div>
+          {mobileMenuOpen && (
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="md:hidden text-[#A39C8D] hover:text-white p-1"
+            >
+              ✕
+            </button>
+          )}
         </div>
 
         {/* Navigation Items */}
@@ -89,8 +99,11 @@ export const Sidebar: React.FC = () => {
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveNav(item.id)}
-                className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium transition-colors ${
+                onClick={() => {
+                  setActiveNav(item.id);
+                  setMobileMenuOpen(false);
+                }}
+                className={`w-full flex items-center justify-between px-3 py-2.5 text-[13px] font-medium transition-colors ${
                   isActive
                     ? "bg-[#2A2925] text-white border-l-2 border-[#0F6B5C]"
                     : "text-[#A39C8D] hover:text-[#EDEAE2] hover:bg-[#23221E] border-l-2 border-transparent"
@@ -113,9 +126,31 @@ export const Sidebar: React.FC = () => {
 
       {/* Footer Info */}
       <div className="px-6 pt-4 border-t border-[#2C2C28] text-[11px] text-[#6B6558] font-mono">
-        <div>TRACK 3 ? RECOVERY</div>
+        <div>TRACK 3 – RECOVERY</div>
         <div className="text-[#A39C8D] mt-0.5">RAZORPAY BUILDATHON</div>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex w-[220px] min-h-screen bg-[#1B1B18] text-[#EDEAE2] flex-col shrink-0 border-r border-[#2C2C28]">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile Drawer Overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="relative w-64 max-w-[80vw] h-full bg-[#1B1B18] shadow-2xl z-10 flex flex-col">
+            {sidebarContent}
+          </div>
+        </div>
+      )}
+    </>
   );
 };

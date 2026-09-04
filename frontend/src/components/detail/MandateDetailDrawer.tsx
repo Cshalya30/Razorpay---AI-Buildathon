@@ -105,7 +105,7 @@ export const MandateDetailDrawer: React.FC<Props> = ({ onRefreshLedger }) => {
 
           <div className="flex items-center gap-2">
             <span className="font-mono text-[16px] font-bold text-[#1B1B18]">
-              ?{mandate?.mandate_amount.toLocaleString("en-IN")}
+              ₹{mandate?.mandate_amount.toLocaleString("en-IN")}
             </span>
             <button
               onClick={() => setDetailDrawerOpen(false)}
@@ -183,7 +183,41 @@ export const MandateDetailDrawer: React.FC<Props> = ({ onRefreshLedger }) => {
           ) : data ? (
             <>
               {activeTab === "model" && (
-                <div>
+                <div className="space-y-4">
+                  {/* Priority 3.2: Per-mandate before/after policy comparison */}
+                  <div className="bg-white border border-[#DDD8CC] p-3.5 shadow-card">
+                    <div className="text-[11px] font-mono text-[#6B6558] uppercase tracking-wider mb-2">
+                      Policy Execution Comparison: Naive vs. RECOVER
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
+                      {/* Left: Naive Baseline Policy */}
+                      <div className="bg-[#EDEAE2]/50 p-2.5 border border-[#DDD8CC] space-y-1">
+                        <div className="font-bold text-[#A6323B] flex items-center gap-1">
+                          <span>✕ Naive Fixed (+1, +3, +7)</span>
+                        </div>
+                        <div className="text-[#6B6558] font-mono text-[10px]">
+                          Candidates: Days {((data.mandate.due_day) % 30) + 1}, {((data.mandate.due_day + 2) % 30) + 1}, {((data.mandate.due_day + 6) % 30) + 1}
+                        </div>
+                        <div className="text-[#A6323B] font-mono text-[10px] mt-1 font-semibold">
+                          Expected Outcome: High-Risk Debit Deficit
+                        </div>
+                      </div>
+
+                      {/* Right: RECOVER Intelligent Timing */}
+                      <div className="bg-[#0F6B5C]/10 p-2.5 border border-[#0F6B5C]/30 space-y-1">
+                        <div className="font-bold text-[#0F6B5C] flex items-center gap-1">
+                          <span>✓ RECOVER Predictive</span>
+                        </div>
+                        <div className="text-[#6B6558] font-mono text-[10px]">
+                          Selected: Day {data.mandate.next_retry_day ?? "Pending"} ({((data.mandate.predicted_success_prob ?? 0.85) * 100).toFixed(0)}% conf)
+                        </div>
+                        <div className="text-[#0F6B5C] font-mono text-[10px] mt-1 font-semibold">
+                          Expected Outcome: 1-Pass Clearance
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <RetryPredictionPanel mandate={data.mandate} />
                   <BalanceCurveChart mandate={data.mandate} balanceCurve={data.balanceCurve} />
                 </div>

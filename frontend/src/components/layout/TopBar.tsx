@@ -7,11 +7,21 @@ import {
   Command,
   FileCsv,
   Moon,
-  Sun
+  Sun,
+  List
 } from "@phosphor-icons/react";
 
 export const TopBar: React.FC = () => {
-  const { setEvalComparison, setCommandPaletteOpen, addToast, isDarkMode, toggleDarkMode } = useStore();
+  const { 
+    setEvalComparison, 
+    setCommandPaletteOpen, 
+    addToast, 
+    isDarkMode, 
+    toggleDarkMode,
+    setMobileMenuOpen,
+    liveSyncActive,
+    toggleLiveSync
+  } = useStore();
   const [evalLoading, setEvalLoading] = useState<boolean>(false);
 
   const handleRunEval = async () => {
@@ -36,27 +46,49 @@ export const TopBar: React.FC = () => {
     addToast("Downloaded RBI statutory audit CSV directly!", "success");
   };
 
+  const handleToggleSync = () => {
+    toggleLiveSync();
+    if (liveSyncActive) {
+      addToast("Live Sync Engine: Paused (manual refresh active)", "warning");
+    } else {
+      addToast("Live Sync Engine: Connected (active polling 1s)", "success");
+    }
+  };
+
   return (
-    <header className="h-14 bg-white border-b border-[#DDD8CC] px-8 flex items-center justify-between shrink-0 shadow-card">
-      {/* Search trigger opens Command Palette */}
-      <div className="flex items-center gap-4">
+    <header className="h-14 bg-white border-b border-[#DDD8CC] px-4 md:px-8 flex items-center justify-between shrink-0 shadow-card">
+      {/* Mobile Menu & Search trigger */}
+      <div className="flex items-center gap-3">
+        {/* Mobile Hamburger Toggle */}
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="md:hidden p-1.5 text-[#1B1B18] hover:bg-[#EDEAE2] rounded-sm transition-colors"
+          title="Open Navigation"
+        >
+          <List size={20} weight="bold" />
+        </button>
+
         <button
           onClick={() => setCommandPaletteOpen(true)}
-          className="flex items-center gap-2.5 px-3 py-1.5 bg-[#EDEAE2]/50 hover:bg-[#EDEAE2] border border-[#DDD8CC] text-[#6B6558] hover:text-[#1B1B18] text-[12px] transition-colors rounded-sm group w-72"
+          className="flex items-center gap-2.5 px-3 py-1.5 bg-[#EDEAE2]/50 hover:bg-[#EDEAE2] border border-[#DDD8CC] text-[#6B6558] hover:text-[#1B1B18] text-[12px] transition-colors rounded-sm group w-44 sm:w-60 md:w-72"
         >
-          <MagnifyingGlass size={15} className="text-[#6B6558] group-hover:text-[#1B1B18]" />
-          <span className="font-sans flex-1 text-left">Search mandates, merchants...</span>
-          <div className="flex items-center gap-0.5 text-[10px] font-mono bg-white px-1.5 py-0.5 border border-[#DDD8CC] rounded-sm text-[#6B6558]">
+          <MagnifyingGlass size={15} className="text-[#6B6558] group-hover:text-[#1B1B18] shrink-0" />
+          <span className="font-sans flex-1 text-left truncate">Search mandates...</span>
+          <div className="hidden sm:flex items-center gap-0.5 text-[10px] font-mono bg-white px-1.5 py-0.5 border border-[#DDD8CC] rounded-sm text-[#6B6558]">
             <Command size={10} />
             <span>K</span>
           </div>
         </button>
 
-        {/* Live Socket Status */}
-        <div className="flex items-center gap-2 text-[11px] font-mono text-[#6B6558]">
-          <span className="w-2 h-2 rounded-full bg-[#0F6B5C] animate-live-pulse" />
-          <span>Live Sync Engine</span>
-        </div>
+        {/* Live Socket Status / Interactive Toggle */}
+        <button
+          onClick={handleToggleSync}
+          className="hidden lg:flex items-center gap-2 px-2 py-1 text-[11px] font-mono text-[#6B6558] hover:bg-[#EDEAE2] rounded-sm border border-transparent hover:border-[#DDD8CC] transition-colors cursor-pointer"
+          title="Click to toggle real-time synchronization"
+        >
+          <span className={`w-2 h-2 rounded-full ${liveSyncActive ? "bg-[#0F6B5C] animate-live-pulse" : "bg-[#B4790E]"}`} />
+          <span>{liveSyncActive ? "Live Sync Engine" : "Sync: Paused"}</span>
+        </button>
       </div>
 
       {/* Action Buttons */}

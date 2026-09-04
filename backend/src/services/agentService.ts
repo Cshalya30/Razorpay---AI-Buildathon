@@ -46,10 +46,10 @@ export class AgentService {
       };
     }
 
-    // Gate 2: Check AFA Threshold (> ?15,000 outside exempt categories)
+    // Gate 2: Check AFA Threshold (> ₹15,000 outside exempt categories)
     if (mandate.mandate_amount > 15000 && !AFA_EXEMPT_CATEGORIES.has(mandate.category)) {
       queries.updateMandate(mandateId, { status: 'stopped', next_retry_day: null });
-      const reason = `Mandate amount ?${mandate.mandate_amount.toLocaleString('en-IN')} exceeds ?15,000 threshold for non-exempt category '${mandate.category}'. Additional Factor of Authentication (AFA) required.`;
+      const reason = `Mandate amount ?${mandate.mandate_amount.toLocaleString('en-IN')} exceeds ₹15,000 threshold for non-exempt category '${mandate.category}'. Additional Factor of Authentication (AFA) required.`;
       queries.insertAuditLog(mandateId, "afa_required", reason, "rule_engine");
       return {
         mandate_id: mandateId,

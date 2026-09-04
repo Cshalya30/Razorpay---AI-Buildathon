@@ -66,11 +66,11 @@ export const CommandPalette: React.FC = () => {
   }).slice(0, 5);
 
   const demoScenarios = [
-    { id: "MDT-1001", title: "Scenario 1: Core Win", desc: "Netflix ?499 ? Day 5 Salary Match" },
-    { id: "MDT-1002", title: "Scenario 2: AFA Gate", desc: "AWS ?18,000 ? Stopped (>?15k non-exempt)" },
-    { id: "MDT-1003", title: "Scenario 3: Honest Limit", desc: "Cult.fit ?1,199 ? Retried & Failed Again" },
-    { id: "MDT-1004", title: "Scenario 4: Retry Cap", desc: "Spotify ?119 ? Escalated (4/4 limit)" },
-    { id: "MDT-1005", title: "Scenario 5: Churn Respect", desc: "Amazon Prime ?1,499 ? Revoked Stopped" },
+    { id: "MDT-1001", title: "Scenario 1: Core Win", desc: "Netflix ₹499 ? Day 5 Salary Match" },
+    { id: "MDT-1002", title: "Scenario 2: AFA Gate", desc: "AWS ₹18,000 ? Stopped (>₹15k non-exempt)" },
+    { id: "MDT-1003", title: "Scenario 3: Honest Limit", desc: "Cult.fit ₹1,199 ? Retried & Failed Again" },
+    { id: "MDT-1004", title: "Scenario 4: Retry Cap", desc: "Spotify ₹119 ? Escalated (4/4 limit)" },
+    { id: "MDT-1005", title: "Scenario 5: Churn Respect", desc: "Amazon Prime ₹1,499 ? Revoked Stopped" },
   ];
 
   const handleSelectMandate = (id: string) => {
@@ -149,7 +149,7 @@ export const CommandPalette: React.FC = () => {
                     <span className="text-[11px] font-mono text-[#A39C8D]">? {m.merchant_name}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-semibold text-[#1B1B18]">?{m.mandate_amount.toLocaleString("en-IN")}</span>
+                    <span className="font-mono font-semibold text-[#1B1B18]">₹{m.mandate_amount.toLocaleString("en-IN")}</span>
                     <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 text-[#2B4C7E] transition-opacity" />
                   </div>
                 </button>

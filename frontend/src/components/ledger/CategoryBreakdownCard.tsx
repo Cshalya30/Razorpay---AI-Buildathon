@@ -97,7 +97,7 @@ export const CategoryBreakdownCard: React.FC = () => {
               <div className="flex items-center justify-between text-[11px] font-mono">
                 <span className="font-bold text-[#1B1B18]">{c.recoveryRate.toFixed(1)}% Recovery</span>
                 <span className="text-[#6B6558]">
-                  ?{c.recoveredAmount.toLocaleString("en-IN")} / ?{c.totalAmount.toLocaleString("en-IN")}
+                  ₹{c.recoveredAmount.toLocaleString("en-IN")} / ₹{c.totalAmount.toLocaleString("en-IN")}
                 </span>
               </div>
             </div>

@@ -34,7 +34,7 @@ export const StripeNodeFlow: React.FC = () => {
       description: "Autonomous decision kernel synchronizing central bank deterministic statutory compliance with 8-feature calibrated machine learning liquidity forecasting.",
       stats: [
         { label: "Portfolio Clearance Rate", value: "98.7%" },
-        { label: "Incremental Lift Captured", value: "+?2,92,732" },
+        { label: "Incremental Lift Captured", value: "+₹2,92,732" },
         { label: "Monitored Mandates", value: "320 active" },
         { label: "Execution Latency", value: "14ms" }
       ]
@@ -70,11 +70,11 @@ export const StripeNodeFlow: React.FC = () => {
       category: "DETERMINISTIC GATE",
       status: "ENFORCED",
       latency: "1ms",
-      description: "Hard-coded central bank compliance engine. Evaluates 24-hour statutory notice lead time, enforces the ?15,000 AFA ceiling, and terminates retries at 4 attempts.",
+      description: "Hard-coded central bank compliance engine. Evaluates 24-hour statutory notice lead time, enforces the ₹15,000 AFA ceiling, and terminates retries at 4 attempts.",
       stats: [
         { label: "RBI Circular Compliance", value: "100% Gated" },
         { label: "24h Notice Verification", value: "91.2% compliant" },
-        { label: "AFA ?15k Stops", value: "2 mandates held" },
+        { label: "AFA ₹15k Stops", value: "2 mandates held" },
         { label: "Anti-Harassment Cap", value: "1 escalated (4/4)" }
       ]
     },
@@ -100,7 +100,7 @@ export const StripeNodeFlow: React.FC = () => {
       stats: [
         { label: "Settlement Success", value: "98.7% first-try" },
         { label: "Average Attempts Saved", value: "1.6 / mandate" },
-        { label: "Customer Bounce Fees", value: "?0.00 incurred" },
+        { label: "Customer Bounce Fees", value: "₹0.00 incurred" },
         { label: "Bank Settlement RRN", value: "329849201948" }
       ]
     }

@@ -22,7 +22,7 @@ export const DemoScenarioBar: React.FC = () => {
     },
     {
       id: "MDT-1002",
-      name: "2. AFA Threshold (>?15k)",
+      name: "2. AFA Threshold (>₹15k)",
       badge: "Compliance",
       expectedOutcome: "Stopped -> AFA required",
       color: "border-[#A6323B] text-[#A6323B]"

@@ -11,10 +11,11 @@ interface LedgerTableProps {
 }
 
 export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh }) => {
-  const { setSelectedMandate, selectedMandateId } = useStore();
+  const { setSelectedMandate, selectedMandateId, addToast } = useStore();
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [search, setSearch] = useState<string>("");
   const [loadingActionId, setLoadingActionId] = useState<string | null>(null);
+  const [pipelineStage, setPipelineStage] = useState<{ mandateId: string; step: number } | null>(null);
 
   const filteredMandates = mandates.filter((m) => {
     if (filterStatus !== "all" && m.status !== filterStatus) return false;
@@ -32,11 +33,25 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh })
     e.stopPropagation();
     try {
       setLoadingActionId(mandateId);
-      await api.simulateFailure(mandateId);
+      // Priority 2.4: Sequential live pipeline animation (finishes in ~1.3s)
+      setPipelineStage({ mandateId, step: 1 }); // Statutory Shield check
+      await new Promise((r) => setTimeout(r, 380));
+      setPipelineStage({ mandateId, step: 2 }); // Neural Pipeline scoring
+      await new Promise((r) => setTimeout(r, 450));
+      setPipelineStage({ mandateId, step: 3 }); // Orchestration Switch
+      await new Promise((r) => setTimeout(r, 350));
+
+      const res = await api.simulateFailure(mandateId);
+      setPipelineStage({ mandateId, step: 4 }); // Decision Finalized
+      await new Promise((r) => setTimeout(r, 220));
+      setPipelineStage(null);
+
       setSelectedMandate(mandateId);
       onRefresh();
+      addToast(`RECOVER Agent executed for ${mandateId}: Scheduled optimal re-debit timing!`, "success");
     } catch (err) {
       console.error("Simulation error:", err);
+      setPipelineStage(null);
     } finally {
       setLoadingActionId(null);
     }
@@ -90,7 +105,7 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh })
               <th className="py-2.5 px-4 font-medium">Mandate ID</th>
               <th className="py-2.5 px-4 font-medium">Customer / Handle</th>
               <th className="py-2.5 px-4 font-medium">Merchant & Category</th>
-              <th className="py-2.5 px-4 font-medium text-right">Amount (?)</th>
+              <th className="py-2.5 px-4 font-medium text-right">Amount (₹)</th>
               <th className="py-2.5 px-4 font-medium">Due Day</th>
               <th className="py-2.5 px-4 font-medium">Status</th>
               <th className="py-2.5 px-4 font-medium text-right">Agent Action</th>
@@ -138,7 +153,7 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh })
 
                   {/* Right-aligned Tabular Currency Amount */}
                   <td className="py-2.5 px-4 font-mono text-[13px] font-semibold text-right text-[#1B1B18]">
-                    ?{mandate.mandate_amount.toLocaleString("en-IN")}
+                    ₹{mandate.mandate_amount.toLocaleString("en-IN")}
                   </td>
 
                   {/* Due Day */}
@@ -186,11 +201,33 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh })
         </table>
       </div>
 
-      {/* Footer Row Count */}
-      <div className="p-3 border-t border-[#DDD8CC] text-[11px] font-mono text-[#6B6558] flex justify-between bg-white/40">
-        <span>Showing {filteredMandates.length} of {mandates.length} ledger items</span>
-        <span>Click any row to inspect mandate balance curve, audit trail, and compliance record</span>
-      </div>
+      {/* Priority 2.4 #1: Live Decision Pipeline Visual Animation */}
+      {pipelineStage && (
+        <div className="fixed bottom-6 right-6 z-50 bg-[#1B1B18] text-[#EDEAE2] p-4 rounded-sm shadow-2xl border border-[#0F6B5C] max-w-md w-full animate-in fade-in slide-in-from-bottom-4 duration-200">
+          <div className="flex items-center justify-between pb-2 border-b border-[#2C2C28] text-[11px] font-mono">
+            <span className="text-[#0F6B5C] font-bold flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#0F6B5C] animate-ping" />
+              RECOVER AGENT PIPELINE // {pipelineStage.mandateId}
+            </span>
+            <span className="text-[#A39C8D]">NODE {pipelineStage.step} OF 3</span>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 pt-3 text-[11px] font-mono text-center">
+            <div className={`p-2 border transition-all duration-200 ${pipelineStage.step >= 1 ? "bg-[#0F6B5C]/20 border-[#0F6B5C] text-emerald-300 font-bold" : "border-[#333] text-gray-500 opacity-40"}`}>
+              <div className="text-[12px]">🛡️ SHIELD</div>
+              <div className="text-[9px] mt-0.5 opacity-80">24h &amp; AFA Check</div>
+            </div>
+            <div className={`p-2 border transition-all duration-200 ${pipelineStage.step >= 2 ? "bg-cyan-950/50 border-cyan-400 text-cyan-300 font-bold shadow-[0_0_12px_rgba(6,182,212,0.4)]" : "border-[#333] text-gray-500 opacity-40"}`}>
+              <div className="text-[12px]">🧠 NEURAL</div>
+              <div className="text-[9px] mt-0.5 opacity-80">Gradient Scoring</div>
+            </div>
+            <div className={`p-2 border transition-all duration-200 ${pipelineStage.step >= 3 ? "bg-amber-950/50 border-amber-400 text-amber-300 font-bold shadow-[0_0_12px_rgba(245,158,11,0.4)]" : "border-[#333] text-gray-500 opacity-40"}`}>
+              <div className="text-[12px]">⚡ SWITCH</div>
+              <div className="text-[9px] mt-0.5 opacity-80">NPCI Routing</div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

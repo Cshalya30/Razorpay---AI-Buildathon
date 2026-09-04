@@ -28,6 +28,7 @@ export interface Mandate {
   created_at: string;
   customer_name?: string;
   upi_handle?: string;
+  decision_rationale?: string;
 }
 
 export interface BalancePoint {

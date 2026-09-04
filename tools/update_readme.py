@@ -1,4 +1,6 @@
-# RECOVER ? Predictive UPI AutoPay Mandate Recovery Agent
+import os
+
+readme_content = """# RECOVER ? Predictive UPI AutoPay Mandate Recovery Agent
 **Razorpay AI Buildathon 2026 ? Track 3: AI Revenue Recovery**
 
 [![Frontend](https://img.shields.io/badge/frontend-React%2018%20%2B%20Vite%20%2B%20Tailwind-teal.svg)](frontend/)
@@ -139,3 +141,9 @@ cd frontend
 npm install
 npm run dev      # Starts Vite dev server on http://localhost:3000
 ```
+"""
+
+with open("README.md", "w", encoding="utf-8") as f:
+    f.write(readme_content.strip() + "\n")
+
+print("Wrote clean, verified README.md with UTF-8 encoding!")

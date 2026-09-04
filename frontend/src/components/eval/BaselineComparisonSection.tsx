@@ -47,7 +47,7 @@ export const BaselineComparisonSection: React.FC<Props> = ({ comparison }) => {
         </div>
         <div className="flex items-center gap-4 text-[12px] font-mono">
           <span className="text-[#0F6B5C] font-semibold">
-            Delta: +{comparison.deltaRecoveryRate.toFixed(1)}pt (+?{comparison.deltaRecoveredAmount.toLocaleString('en-IN')})
+            Delta: +{comparison.deltaRecoveryRate.toFixed(1)}pt (+₹{comparison.deltaRecoveredAmount.toLocaleString('en-IN')})
           </span>
         </div>
       </div>

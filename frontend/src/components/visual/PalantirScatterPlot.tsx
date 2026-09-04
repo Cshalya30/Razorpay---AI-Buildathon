@@ -60,7 +60,7 @@ export const PalantirScatterPlot: React.FC = () => {
   const timelineItems = [
     { title: "Salary Window Clearance", status: "Active", latency: "Day 05", progress: "98.7% P(Clear)" },
     { title: "24h Pre-Debit Notice Rail", status: "Verified", latency: "26.4h lead", progress: "Statutory Gated" },
-    { title: "AFA Threshold Guard", status: "Enforced", latency: "?15,000", progress: "2 Halted" },
+    { title: "AFA Threshold Guard", status: "Enforced", latency: "₹15,000", progress: "2 Halted" },
     { title: "Anti-Harassment Ceiling", status: "Safe", latency: "Max 4 retries", progress: "1 Escalated" }
   ];
 
@@ -217,9 +217,9 @@ export const PalantirScatterPlot: React.FC = () => {
                 <span>{hoveredPoint.id} ? Day {hoveredPoint.day}</span>
                 <span className="text-emerald-400 font-bold">P(Success) = 98.7%</span>
               </div>
-              <div className="text-slate-300 mt-1">{hoveredPoint.mandateName} ? ?{hoveredPoint.amount}</div>
+              <div className="text-slate-300 mt-1">{hoveredPoint.mandateName} ? ₹{hoveredPoint.amount}</div>
               <div className="text-emerald-400 font-semibold mt-0.5">
-                Surplus Headroom: +?{hoveredPoint.headroom.toLocaleString("en-IN")}
+                Surplus Headroom: +₹{hoveredPoint.headroom.toLocaleString("en-IN")}
               </div>
             </motion.div>
           )}

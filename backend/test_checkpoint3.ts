@@ -92,7 +92,7 @@ async function runCheckpoint3() {
   console.log("Outcome Category:", s1Debit.status === 'recovered' ? "RECOVERED (PASS)" : "FAILED");
 
   console.log("\n--------------------------------------------------");
-  console.log("SCENARIO 2: MDT-1002 (High Amount Non-Exempt > ?15,000)");
+  console.log("SCENARIO 2: MDT-1002 (High Amount Non-Exempt > ₹15,000)");
   console.log("--------------------------------------------------");
   const s2 = await agentService.processMandate("MDT-1002");
   console.log("Decision:", {

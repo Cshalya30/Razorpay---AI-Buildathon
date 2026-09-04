@@ -32,6 +32,12 @@ interface AppState {
 
   isDarkMode: boolean;
   toggleDarkMode: () => void;
+
+  mobileMenuOpen: boolean;
+  setMobileMenuOpen: (open: boolean) => void;
+
+  liveSyncActive: boolean;
+  toggleLiveSync: () => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -46,6 +52,12 @@ export const useStore = create<AppState>((set) => ({
 
   commandPaletteOpen: false,
   setCommandPaletteOpen: (open) => set({ commandPaletteOpen: open }),
+
+  mobileMenuOpen: false,
+  setMobileMenuOpen: (open) => set({ mobileMenuOpen: open }),
+
+  liveSyncActive: true,
+  toggleLiveSync: () => set((state) => ({ liveSyncActive: !state.liveSyncActive })),
 
   metrics: null,
   setMetrics: (metrics) => set({ metrics }),

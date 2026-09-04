@@ -20,9 +20,9 @@ export default {
         accent: "var(--accent)"
       },
       fontFamily: {
-        serif: ["Fraunces", "Georgia", "serif"],
-        sans: ["'IBM Plex Sans'", "-apple-system", "sans-serif"],
-        mono: ["'IBM Plex Mono'", "monospace"]
+        serif: ["Fraunces", "Georgia", "'Times New Roman'", "serif"],
+        sans: ["'IBM Plex Sans'", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "Arial", "sans-serif"],
+        mono: ["'IBM Plex Mono'", "'Courier New'", "monospace"]
       },
       borderRadius: {
         DEFAULT: "6px",

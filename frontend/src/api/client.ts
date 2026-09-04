@@ -184,11 +184,22 @@ export const api = {
     } catch {
       const m = mockMandates.find(x => x.id === id);
       if (m) {
-        m.status = "retry_scheduled";
-        m.next_retry_day = ((m.due_day + 2) % 30) + 1;
-        m.predicted_success_prob = 0.985;
+        // Evaluate statutory gating
+        if (m.mandate_amount > 15000 && m.category === "subscription") {
+          m.status = "stopped";
+          m.decision_rationale = `Amount ₹${m.mandate_amount.toLocaleString('en-IN')} exceeds ₹15,000 AFA ceiling for non-exempt category '${m.category}'. Mandatory AFA challenge required.`;
+        } else if (m.attempts >= 4) {
+          m.status = "escalated";
+          m.decision_rationale = `Anti-harassment cap: 4 consecutive debit attempts reached. Escalated to merchant ops.`;
+        } else {
+          m.status = "retry_scheduled";
+          m.next_retry_day = m.next_retry_day || (((m.due_day + 3) % 30) + 1);
+          const baseProb = Math.min(0.96, Math.max(0.55, 0.92 - (m.mandate_amount / 25000) * 0.25));
+          m.predicted_success_prob = Number(baseProb.toFixed(3));
+          m.decision_rationale = `Day ${m.next_retry_day} selected: ${(baseProb * 100).toFixed(0)}% estimated clearance probability based on inferred salary cycle.`;
+        }
       }
-      return { decision: { status: "retry_scheduled" }, mandate: m!, audit: {} as any };
+      return { decision: { status: m?.status || "retry_scheduled" }, mandate: m!, audit: {} as any };
     }
   },
 
@@ -200,6 +211,7 @@ export const api = {
       const m = mockMandates.find(x => x.id === id);
       if (m) {
         m.status = "recovered";
+        m.decision_rationale = `Mandate successfully settled on re-debit attempt.`;
       }
       return { decision: { status: "recovered" }, mandate: m!, audit: {} as any };
     }
@@ -224,20 +236,41 @@ export const api = {
   },
 
   async getUpcomingRetries() {
+    if (isStandalone) {
+      return this.getMockUpcomingRetries();
+    }
     try {
       const res = await apiClient.get<{ success: boolean; data: RetryQueueData }>("/retries/upcoming");
       return res.data.data;
     } catch {
-      const scheduled = mockMandates.filter(m => m.status === "retry_scheduled");
-      const totalVolume = scheduled.reduce((sum, m) => sum + m.mandate_amount, 0);
-      return {
-        retries: scheduled,
-        totalCount: scheduled.length,
-        totalVolume,
-        avgConfidence: 96.3,
-        dayBuckets: { 8: { count: 1, volume: 4500 }, 11: { count: 1, volume: 2500 }, 22: { count: 1, volume: 8200 } }
-      };
+      return this.getMockUpcomingRetries();
     }
+  },
+
+  getMockUpcomingRetries(): RetryQueueData {
+    const scheduled = mockMandates.filter(m => m.status === "retry_scheduled");
+    const totalVolume = scheduled.reduce((sum, m) => sum + m.mandate_amount, 0);
+    const avgProb = scheduled.length > 0
+      ? (scheduled.reduce((sum, m) => sum + (m.predicted_success_prob ?? 0), 0) / scheduled.length) * 100
+      : 0;
+
+    const dayBuckets: Record<number, { count: number; volume: number }> = {};
+    for (const r of scheduled) {
+      const d = r.next_retry_day ?? 1;
+      if (!dayBuckets[d]) {
+        dayBuckets[d] = { count: 0, volume: 0 };
+      }
+      dayBuckets[d].count++;
+      dayBuckets[d].volume += r.mandate_amount;
+    }
+
+    return {
+      retries: scheduled,
+      totalCount: scheduled.length,
+      totalVolume,
+      avgConfidence: Number(avgProb.toFixed(1)),
+      dayBuckets
+    };
   },
 
   async batchExecuteRetries(day?: number) {

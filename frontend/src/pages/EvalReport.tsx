@@ -139,7 +139,7 @@ export const EvalReport: React.FC = () => {
               {comp?.model.recoveryRate ?? 98.7}%
             </div>
             <div className="text-[12px] text-[#6B6558] font-mono mt-1">
-              ?{comp?.model.totalRecovered.toLocaleString("en-IN") ?? "7,25,687"} of ?{comp?.totalAtRisk.toLocaleString("en-IN") ?? "8,08,714"}
+              ₹{comp?.model.totalRecovered.toLocaleString("en-IN") ?? "7,25,687"} of ₹{comp?.totalAtRisk.toLocaleString("en-IN") ?? "8,08,714"}
             </div>
           </div>
 
@@ -151,7 +151,7 @@ export const EvalReport: React.FC = () => {
               {comp?.baseline.recoveryRate ?? 66.1}%
             </div>
             <div className="text-[12px] text-[#6B6558] font-mono mt-1">
-              ?{comp?.baseline.totalRecovered.toLocaleString("en-IN") ?? "4,32,955"} (Fixed +1/+3/+7 days)
+              ₹{comp?.baseline.totalRecovered.toLocaleString("en-IN") ?? "4,32,955"} (Fixed +1/+3/+7 days)
             </div>
           </div>
         </div>
@@ -223,7 +223,7 @@ export const EvalReport: React.FC = () => {
                 <span>RECOVER Predictive Agent</span>
               </td>
               <td className="py-3 px-4 text-[14px]">{comp?.model.recoveryRate ?? 98.7}%</td>
-              <td className="py-3 px-4 text-right text-[14px]">?{comp?.model.totalRecovered.toLocaleString("en-IN") ?? "7,25,687"}</td>
+              <td className="py-3 px-4 text-right text-[14px]">₹{comp?.model.totalRecovered.toLocaleString("en-IN") ?? "7,25,687"}</td>
               <td className="py-3 px-4 text-[#1B1B18]">1.1 attempts</td>
               <td className="py-3 px-4 text-[#0F6B5C]">Negligible (&lt;1%)</td>
               <td className="py-3 px-4 text-[#0F6B5C]">100% RBI Gated</td>
@@ -235,7 +235,7 @@ export const EvalReport: React.FC = () => {
                 <span>Naive Baseline (Fixed +1/+3/+7)</span>
               </td>
               <td className="py-3 px-4">{comp?.baseline.recoveryRate ?? 66.1}%</td>
-              <td className="py-3 px-4 text-right">?{comp?.baseline.totalRecovered.toLocaleString("en-IN") ?? "4,32,955"}</td>
+              <td className="py-3 px-4 text-right">₹{comp?.baseline.totalRecovered.toLocaleString("en-IN") ?? "4,32,955"}</td>
               <td className="py-3 px-4 text-[#1B1B18]">2.7 attempts</td>
               <td className="py-3 px-4 text-[#B4790E]">Moderate (33.9% fail)</td>
               <td className="py-3 px-4 text-[#6B6558]">Standard</td>
@@ -247,7 +247,7 @@ export const EvalReport: React.FC = () => {
                 <span>Aggressive Daily Retry (Brute Force)</span>
               </td>
               <td className="py-3 px-4">99.1%</td>
-              <td className="py-3 px-4 text-right">?7,28,400</td>
+              <td className="py-3 px-4 text-right">₹7,28,400</td>
               <td className="py-3 px-4 text-[#A6323B]">8.4 attempts</td>
               <td className="py-3 px-4 text-[#A6323B]">Severe (&gt;75% bounces)</td>
               <td className="py-3 px-4 text-[#A6323B]">Violation (Harassment)</td>
@@ -366,7 +366,7 @@ export const EvalReport: React.FC = () => {
             <div className="text-[16px] font-bold text-[#0F6B5C] mt-0.5">
               {simulatedRecoveryRate.toFixed(1)}%
             </div>
-            <div className="text-[10px] text-[#A39C8D]">?{simulatedVolume.toLocaleString("en-IN")} projected</div>
+            <div className="text-[10px] text-[#A39C8D]">₹{simulatedVolume.toLocaleString("en-IN")} projected</div>
           </div>
 
           <div className="p-2 bg-[#EDEAE2]/40 border border-[#DDD8CC]">
