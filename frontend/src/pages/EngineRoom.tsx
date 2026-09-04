@@ -10,16 +10,16 @@ export const EngineRoom: React.FC = () => {
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
-      className="p-8 max-w-7xl mx-auto space-y-8"
+      className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto space-y-8"
     >
       {/* Top Header */}
-      <div className="flex items-center justify-between pb-6 border-b border-[#DDD8CC]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-[#DDD8CC]">
         <div>
           <div className="flex items-center gap-2 mb-1 text-[11px] font-mono text-[#2B4C7E]">
             <FlowArrow size={16} weight="bold" />
             <span>SYSTEM ARCHITECTURE &amp; OPERATING SPECIFICATIONS</span>
           </div>
-          <h1 className="text-3xl font-serif font-bold text-[#1B1B18] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1B1B18] tracking-tight">
             Architectural Blueprint &amp; System Flow
           </h1>
           <p className="text-[13px] text-[#6B6558] font-sans mt-1 max-w-3xl">
@@ -27,7 +27,7 @@ export const EngineRoom: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <span className="px-3 py-1 rounded-full bg-[#0F6B5C]/10 border border-[#0F6B5C]/30 text-[#0F6B5C] font-mono text-[11px] font-semibold">
             KERNEL v2.4 // DETERMINISTIC
           </span>
@@ -123,17 +123,17 @@ export const EngineRoom: React.FC = () => {
       </div>
 
       {/* 4. In-App Known Issues, Fixed Changelog (Priority 3.1) */}
-      <div className="bg-white border border-[#DDD8CC] p-6 shadow-card">
-        <div className="flex items-center justify-between pb-3 border-b border-[#DDD8CC]">
+      <div className="bg-white border border-[#DDD8CC] p-4 sm:p-6 shadow-card">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pb-3 border-b border-[#DDD8CC]">
           <div>
             <div className="text-[11px] font-mono text-[#0F6B5C] uppercase tracking-wider font-bold">
               BUILD HARDENING &amp; FAILURE RECOVERY LOG // v2.4
             </div>
-            <h2 className="text-xl font-serif font-bold text-[#1B1B18] mt-0.5">
+            <h2 className="text-lg sm:text-xl font-serif font-bold text-[#1B1B18] mt-0.5">
               Known Issues Audited &amp; Defensively Resolved
             </h2>
           </div>
-          <span className="px-2.5 py-1 text-[11px] font-mono font-semibold bg-[#0F6B5C]/10 text-[#0F6B5C]">
+          <span className="px-2.5 py-1 text-[11px] font-mono font-semibold bg-[#0F6B5C]/10 text-[#0F6B5C] self-start sm:self-auto">
             4 OF 4 AUDIT ITEMS RESOLVED
           </span>
         </div>

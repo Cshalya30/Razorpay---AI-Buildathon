@@ -79,12 +79,12 @@ export const RetryQueue: React.FC = () => {
   const distinctDays = Array.from(new Set(retries.map(r => r.next_retry_day ?? 1))).sort((a, b) => a - b);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto">
       {/* Page Header */}
       <div className="mb-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="font-serif text-[28px] font-bold text-[#1B1B18] tracking-tight">
+            <h1 className="font-serif text-[24px] sm:text-[28px] font-bold text-[#1B1B18] tracking-tight">
               Predictive Retry Operations Queue
             </h1>
             <p className="text-[13px] text-[#6B6558] mt-1 font-sans">
@@ -92,11 +92,11 @@ export const RetryQueue: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 w-full sm:w-auto">
             <button
               onClick={handleBatchExecute}
               disabled={batchExecuting || filteredRetries.length === 0}
-              className="flex items-center gap-2 px-4 py-2 bg-[#0F6B5C] text-white text-[13px] font-medium hover:bg-[#0C584C] disabled:opacity-50 transition-colors shadow-sm"
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-[#0F6B5C] text-white text-[13px] font-medium hover:bg-[#0C584C] disabled:opacity-50 transition-colors shadow-sm w-full sm:w-auto"
             >
               <Play size={14} weight="fill" />
               <span>
@@ -120,7 +120,7 @@ export const RetryQueue: React.FC = () => {
       </div>
 
       {/* Summary KPI Cards */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="bg-white border border-[#DDD8CC] p-4 shadow-card">
           <div className="text-[11px] font-mono text-[#6B6558] uppercase">QUEUE RECOVERY VOLUME</div>
           <div className="text-[22px] font-mono font-bold text-[#0F6B5C] mt-1">

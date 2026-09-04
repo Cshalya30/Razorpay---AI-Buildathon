@@ -60,9 +60,9 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh })
   return (
     <div className="bg-white border border-[#DDD8CC] shadow-card">
       {/* Table Header Controls */}
-      <div className="p-3 border-b border-[#DDD8CC] flex items-center justify-between gap-4 bg-white/60">
+      <div className="p-3 border-b border-[#DDD8CC] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white/60">
         {/* Status Filters */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 scrollbar-none whitespace-nowrap">
           {[
             { id: "all", label: "All Line Items" },
             { id: "retry_scheduled", label: "Retry Scheduled" },
@@ -73,7 +73,7 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh })
             <button
               key={tab.id}
               onClick={() => setFilterStatus(tab.id)}
-              className={`px-2.5 py-1 text-[12px] font-medium transition-colors ${
+              className={`px-2.5 py-1 text-[12px] font-medium transition-colors shrink-0 ${
                 filterStatus === tab.id
                   ? "bg-[#1B1B18] text-white"
                   : "text-[#6B6558] hover:text-[#1B1B18] hover:bg-[#EDEAE2]"
@@ -85,7 +85,7 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh })
         </div>
 
         {/* Search Box */}
-        <div className="relative w-64">
+        <div className="relative w-full sm:w-64">
           <MagnifyingGlass size={14} className="absolute left-2.5 top-2.5 text-[#A39C8D]" />
           <input
             type="text"

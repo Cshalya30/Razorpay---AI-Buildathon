@@ -87,8 +87,8 @@ export const MandateDetailDrawer: React.FC<Props> = ({ onRefreshLedger }) => {
         className="fixed inset-0 bg-black/30 backdrop-blur-[1px] transition-opacity"
       />
 
-      {/* 480px Slide-over Drawer */}
-      <div className="relative w-[480px] bg-[#EDEAE2] h-full shadow-drawer border-l border-[#DDD8CC] flex flex-col z-10">
+      {/* Responsive Slide-over Drawer (full width on mobile, 480px on desktop) */}
+      <div className="relative w-full sm:w-[480px] max-w-full bg-[#EDEAE2] h-full shadow-drawer border-l border-[#DDD8CC] flex flex-col z-10">
         {/* Drawer Header */}
         <div className="p-4 bg-white border-b border-[#DDD8CC] flex items-start justify-between shrink-0">
           <div>
@@ -99,7 +99,7 @@ export const MandateDetailDrawer: React.FC<Props> = ({ onRefreshLedger }) => {
               {mandate && <StatusStripe status={mandate.status} />}
             </div>
             <div className="text-[12px] text-[#6B6558] font-sans">
-              {mandate?.merchant_name} ? <span className="capitalize">{mandate?.category.replace(/_/g, " ")}</span>
+              {mandate?.merchant_name} · <span className="capitalize">{mandate?.category.replace(/_/g, " ")}</span>
             </div>
           </div>
 

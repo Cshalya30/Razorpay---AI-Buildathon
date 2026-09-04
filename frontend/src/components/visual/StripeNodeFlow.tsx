@@ -109,42 +109,37 @@ export const StripeNodeFlow: React.FC = () => {
   const active = subsystemDetails[selectedNode] || subsystemDetails["recover"];
 
   return (
-    <div className="bg-[#070B19] text-white p-8 rounded-2xl border border-indigo-900/40 shadow-2xl mb-8 relative overflow-hidden font-sans">
+    <div className="bg-[#000000] text-white p-4 sm:p-6 md:p-8 rounded-xl border border-[#262626] shadow-2xl mb-8 relative overflow-hidden font-sans">
       {/* Background Dot Matrix Grid */}
       <div 
-        className="absolute inset-0 pointer-events-none opacity-20"
+        className="absolute inset-0 pointer-events-none opacity-25"
         style={{
-          backgroundImage: "radial-gradient(#6366F1 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(#3F3F46 1px, transparent 1px)",
           backgroundSize: "20px 20px"
         }}
       />
 
-      {/* Ambient Blue Radial Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[450px] bg-indigo-600/10 rounded-full blur-[110px] pointer-events-none" />
+      {/* Subtle Ambient Emerald Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-[#0F6B5C]/10 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Header (Exact Typography from Stripe reference) */}
-      <div className="max-w-3xl mb-8 relative z-10">
+      <div className="max-w-3xl mb-6 relative z-10">
         <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white leading-snug">
           Connect to existing systems.{" "}
-          <span className="text-[#8E9DBE] font-normal">
+          <span className="text-[#A1A1AA] font-normal">
             Orchestrate payments across UPI processors, enforce statutory compliance, and schedule retries via machine learning.
           </span>
         </h2>
       </div>
 
-      {/* The Connected Node Diagram Canvas */}
-      <div className="relative max-w-4xl mx-auto py-8 z-10">
+      {/* The Connected Node Diagram Canvas (Horizontal swipe on mobile) */}
+      <div className="overflow-x-auto w-full pb-3 scrollbar-none">
+        <div className="relative min-w-[720px] max-w-4xl mx-auto py-8 z-10">
         {/* SVG Conduit Rails & Traveling Light Particles */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 800 420" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="glowLine" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#4F46E5" stopOpacity="0.4" />
-              <stop offset="50%" stopColor="#6366F1" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#38BDF8" stopOpacity="0.4" />
-            </linearGradient>
-
             <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+              <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
               <feMerge>
                 <feMergeNode in="coloredBlur" />
                 <feMergeNode in="SourceGraphic" />
@@ -153,42 +148,42 @@ export const StripeNodeFlow: React.FC = () => {
           </defs>
 
           {/* Conduit 1: CRM (top-left) -> RECOVER Center */}
-          <path id="path-crm" d="M 290 50 L 290 120 L 400 180" stroke="#3730A3" strokeWidth="2" strokeDasharray="4 6" fill="none" />
-          <circle r="3.5" fill="#38BDF8" filter="url(#neonGlow)">
+          <path id="path-crm" d="M 290 50 L 290 120 L 400 180" stroke="#27272A" strokeWidth="2" strokeDasharray="4 6" fill="none" />
+          <circle r="3.5" fill="#10B981" filter="url(#neonGlow)">
             <animateMotion dur="2.4s" repeatCount="indefinite" path="M 290 50 L 290 120 L 400 180" />
           </circle>
 
           {/* Conduit 2: Subscriptions (top-center) -> RECOVER Center */}
-          <path id="path-sub" d="M 440 50 L 440 120 L 400 180" stroke="#3730A3" strokeWidth="2" strokeDasharray="4 6" fill="none" />
-          <circle r="3.5" fill="#818CF8" filter="url(#neonGlow)">
+          <path id="path-sub" d="M 440 50 L 440 120 L 400 180" stroke="#27272A" strokeWidth="2" strokeDasharray="4 6" fill="none" />
+          <circle r="3.5" fill="#FFFFFF" filter="url(#neonGlow)">
             <animateMotion dur="2.0s" repeatCount="indefinite" path="M 440 50 L 440 120 L 400 180" />
           </circle>
 
           {/* Conduit 3: Booking System (top-right) -> RECOVER Center */}
-          <path id="path-book" d="M 640 50 L 640 130 L 400 180" stroke="#3730A3" strokeWidth="2" strokeDasharray="4 6" fill="none" />
-          <circle r="3.5" fill="#38BDF8" filter="url(#neonGlow)">
+          <path id="path-book" d="M 640 50 L 640 130 L 400 180" stroke="#27272A" strokeWidth="2" strokeDasharray="4 6" fill="none" />
+          <circle r="3.5" fill="#10B981" filter="url(#neonGlow)">
             <animateMotion dur="3.0s" repeatCount="indefinite" path="M 640 50 L 640 130 L 400 180" />
           </circle>
 
           {/* Conduit 4: RECOVER Center -> Left Compliance Hub */}
-          <path id="path-comp" d="M 400 180 L 250 180" stroke="#3730A3" strokeWidth="2" strokeDasharray="4 6" fill="none" />
+          <path id="path-comp" d="M 400 180 L 250 180" stroke="#27272A" strokeWidth="2" strokeDasharray="4 6" fill="none" />
           <circle r="3.5" fill="#10B981" filter="url(#neonGlow)">
             <animateMotion dur="1.8s" repeatCount="indefinite" path="M 400 180 L 250 180" />
           </circle>
 
           {/* Conduit 5: RECOVER Center -> Right Neural Pipeline */}
-          <path id="path-pipe" d="M 400 180 L 550 180" stroke="#3730A3" strokeWidth="2" strokeDasharray="4 6" fill="none" />
-          <circle r="3.5" fill="#38BDF8" filter="url(#neonGlow)">
+          <path id="path-pipe" d="M 400 180 L 550 180" stroke="#27272A" strokeWidth="2" strokeDasharray="4 6" fill="none" />
+          <circle r="3.5" fill="#FFFFFF" filter="url(#neonGlow)">
             <animateMotion dur="1.9s" repeatCount="indefinite" path="M 400 180 L 550 180" />
           </circle>
 
           {/* Conduit 6: RECOVER Center -> Down Orchestration -> Switches */}
-          <path id="path-switch-l" d="M 400 230 L 400 290 L 370 340" stroke="#3730A3" strokeWidth="2" strokeDasharray="4 6" fill="none" />
-          <circle r="3.5" fill="#38BDF8" filter="url(#neonGlow)">
+          <path id="path-switch-l" d="M 400 230 L 400 290 L 370 340" stroke="#27272A" strokeWidth="2" strokeDasharray="4 6" fill="none" />
+          <circle r="3.5" fill="#10B981" filter="url(#neonGlow)">
             <animateMotion dur="2.2s" repeatCount="indefinite" path="M 400 230 L 400 290 L 370 340" />
           </circle>
 
-          <path id="path-switch-r" d="M 400 230 L 400 290 L 430 340" stroke="#3730A3" strokeWidth="2" strokeDasharray="4 6" fill="none" />
+          <path id="path-switch-r" d="M 400 230 L 400 290 L 430 340" stroke="#27272A" strokeWidth="2" strokeDasharray="4 6" fill="none" />
           <circle r="3.5" fill="#10B981" filter="url(#neonGlow)">
             <animateMotion dur="2.2s" repeatCount="indefinite" path="M 400 230 L 400 290 L 430 340" />
           </circle>
@@ -196,14 +191,14 @@ export const StripeNodeFlow: React.FC = () => {
 
         {/* TOP ROW: Inbound Systems */}
         <div className="flex items-center justify-center gap-3 md:gap-6 mb-16 relative z-10">
-          <div className="w-12 h-9 border border-indigo-500/20 border-dashed rounded-lg hidden sm:block" />
+          <div className="w-12 h-9 border border-[#27272A] border-dashed rounded-lg hidden sm:block" />
 
           <button
             onClick={() => setSelectedNode("crm")}
             className={`px-4 py-2 rounded-lg text-xs font-mono font-medium transition-all ${
               selectedNode === "crm"
-                ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(99,102,241,0.6)] scale-105 border border-indigo-400"
-                : "bg-[#141A33] hover:bg-[#1E254A] text-slate-300 border border-indigo-500/30"
+                ? "bg-[#0F6B5C] text-white shadow-[0_0_15px_rgba(15,107,92,0.5)] scale-105 border border-[#10B981]"
+                : "bg-[#121212] hover:bg-[#1C1C1E] text-[#D4D4D8] border border-[#27272A]"
             }`}
           >
             CRM
@@ -213,21 +208,21 @@ export const StripeNodeFlow: React.FC = () => {
             onClick={() => setSelectedNode("subscriptions")}
             className={`px-5 py-2 rounded-lg text-xs font-mono font-medium transition-all ${
               selectedNode === "subscriptions"
-                ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(99,102,241,0.6)] scale-105 border border-indigo-400"
-                : "bg-[#141A33] hover:bg-[#1E254A] text-slate-300 border border-indigo-500/30"
+                ? "bg-[#0F6B5C] text-white shadow-[0_0_15px_rgba(15,107,92,0.5)] scale-105 border border-[#10B981]"
+                : "bg-[#121212] hover:bg-[#1C1C1E] text-[#D4D4D8] border border-[#27272A]"
             }`}
           >
             Subscriptions
           </button>
 
-          <div className="w-12 h-9 border border-indigo-500/20 border-dashed rounded-lg hidden sm:block" />
+          <div className="w-12 h-9 border border-[#27272A] border-dashed rounded-lg hidden sm:block" />
 
           <button
             onClick={() => setSelectedNode("crm")}
             className={`px-4 py-2 rounded-lg text-xs font-mono font-medium transition-all ${
               selectedNode === "crm"
-                ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(99,102,241,0.6)] scale-105 border border-indigo-400"
-                : "bg-[#141A33] hover:bg-[#1E254A] text-slate-300 border border-indigo-500/30"
+                ? "bg-[#0F6B5C] text-white shadow-[0_0_15px_rgba(15,107,92,0.5)] scale-105 border border-[#10B981]"
+                : "bg-[#121212] hover:bg-[#1C1C1E] text-[#D4D4D8] border border-[#27272A]"
             }`}
           >
             Booking system
@@ -239,17 +234,17 @@ export const StripeNodeFlow: React.FC = () => {
           {/* Left Branch: Compliance Hub with 2x2 Logo Grid */}
           <div className="flex items-center gap-3">
             {/* 2x2 Icon Grid */}
-            <div className="grid grid-cols-2 gap-1.5 p-2 bg-[#0E1428] border border-indigo-500/30 rounded-xl shadow-lg">
-              <div className="w-7 h-7 bg-emerald-500/20 border border-emerald-500/30 rounded flex items-center justify-center text-emerald-400">
+            <div className="grid grid-cols-2 gap-1.5 p-2 bg-[#121212] border border-[#27272A] rounded-xl shadow-lg">
+              <div className="w-7 h-7 bg-emerald-500/15 border border-emerald-500/30 rounded flex items-center justify-center text-emerald-400">
                 <ShieldCheck size={16} weight="bold" />
               </div>
-              <div className="w-7 h-7 bg-sky-500/20 border border-sky-500/30 rounded flex items-center justify-center text-sky-400">
+              <div className="w-7 h-7 bg-zinc-800 border border-zinc-700 rounded flex items-center justify-center text-zinc-300">
                 <Clock size={16} weight="bold" />
               </div>
-              <div className="w-7 h-7 bg-indigo-500/20 border border-indigo-500/30 rounded flex items-center justify-center text-indigo-400">
+              <div className="w-7 h-7 bg-zinc-800 border border-zinc-700 rounded flex items-center justify-center text-zinc-300">
                 <CurrencyInr size={16} weight="bold" />
               </div>
-              <div className="w-7 h-7 bg-amber-500/20 border border-amber-500/30 rounded flex items-center justify-center text-amber-400">
+              <div className="w-7 h-7 bg-amber-500/15 border border-amber-500/30 rounded flex items-center justify-center text-amber-400">
                 <LockKey size={16} weight="bold" />
               </div>
             </div>
@@ -259,8 +254,8 @@ export const StripeNodeFlow: React.FC = () => {
               onClick={() => setSelectedNode("compliance")}
               className={`px-4 py-2 rounded-lg text-xs font-mono font-medium flex items-center gap-1.5 transition-all ${
                 selectedNode === "compliance"
-                  ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(99,102,241,0.6)] scale-105 border border-indigo-400"
-                  : "bg-[#141A33] hover:bg-[#1E254A] text-slate-300 border border-indigo-500/30"
+                  ? "bg-[#0F6B5C] text-white shadow-[0_0_15px_rgba(15,107,92,0.5)] scale-105 border border-[#10B981]"
+                  : "bg-[#121212] hover:bg-[#1C1C1E] text-[#D4D4D8] border border-[#27272A]"
               }`}
             >
               <span>Statutory Shield</span>
@@ -271,10 +266,10 @@ export const StripeNodeFlow: React.FC = () => {
           {/* CENTER HUB: RECOVER ORCHESTRATOR */}
           <button
             onClick={() => setSelectedNode("recover")}
-            className={`w-24 h-24 rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-800 border-2 transition-all flex flex-col items-center justify-center shadow-2xl relative group ${
+            className={`w-24 h-24 rounded-2xl bg-[#121212] border-2 transition-all flex flex-col items-center justify-center shadow-2xl relative group ${
               selectedNode === "recover"
-                ? "border-indigo-300 shadow-[0_0_35px_rgba(99,102,241,0.7)] scale-110"
-                : "border-indigo-400/50 hover:border-indigo-300 hover:shadow-[0_0_25px_rgba(99,102,241,0.5)]"
+                ? "border-[#0F6B5C] shadow-[0_0_35px_rgba(15,107,92,0.6)] scale-110"
+                : "border-[#27272A] hover:border-[#0F6B5C] hover:shadow-[0_0_20px_rgba(15,107,92,0.3)]"
             }`}
           >
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping absolute top-2 right-2" />
@@ -282,7 +277,7 @@ export const StripeNodeFlow: React.FC = () => {
             <span className="font-mono font-extrabold text-white text-base tracking-wider uppercase">
               recover
             </span>
-            <span className="text-[9px] font-mono text-indigo-200 mt-0.5">
+            <span className="text-[9px] font-mono text-emerald-400 mt-0.5">
               AGENT v2.4
             </span>
           </button>
@@ -293,15 +288,15 @@ export const StripeNodeFlow: React.FC = () => {
               onClick={() => setSelectedNode("pipeline")}
               className={`px-4 py-2 rounded-lg text-xs font-mono font-medium flex items-center gap-1.5 transition-all ${
                 selectedNode === "pipeline"
-                  ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(99,102,241,0.6)] scale-105 border border-indigo-400"
-                  : "bg-[#141A33] hover:bg-[#1E254A] text-slate-300 border border-indigo-500/30"
+                  ? "bg-[#0F6B5C] text-white shadow-[0_0_15px_rgba(15,107,92,0.5)] scale-105 border border-[#10B981]"
+                  : "bg-[#121212] hover:bg-[#1C1C1E] text-[#D4D4D8] border border-[#27272A]"
               }`}
             >
               <span>Neural Pipeline</span>
             </button>
 
             {/* Cylinder Database Icon Container */}
-            <div className="w-10 h-10 bg-[#0E1428] border border-indigo-500/30 rounded-xl flex items-center justify-center text-sky-400 shadow-lg">
+            <div className="w-10 h-10 bg-[#121212] border border-[#27272A] rounded-xl flex items-center justify-center text-zinc-300 shadow-lg">
               <HardDrives size={20} weight="fill" />
             </div>
           </div>
@@ -313,8 +308,8 @@ export const StripeNodeFlow: React.FC = () => {
             onClick={() => setSelectedNode("switch")}
             className={`px-4 py-1.5 rounded-lg text-xs font-mono font-semibold mb-6 transition-all ${
               selectedNode === "switch"
-                ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(99,102,241,0.6)] border border-indigo-400"
-                : "bg-[#141A33] hover:bg-[#1E254A] text-slate-300 border border-indigo-500/30"
+                ? "bg-[#0F6B5C] text-white shadow-[0_0_15px_rgba(15,107,92,0.5)] border border-[#10B981]"
+                : "bg-[#121212] hover:bg-[#1C1C1E] text-[#D4D4D8] border border-[#27272A]"
             }`}
           >
             Orchestration Switch
@@ -323,7 +318,7 @@ export const StripeNodeFlow: React.FC = () => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setSelectedNode("switch")}
-              className="px-4 py-1.5 bg-[#0E1428] border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5"
+              className="px-4 py-1.5 bg-[#121212] border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               <span>NPCI AutoPay</span>
@@ -331,13 +326,14 @@ export const StripeNodeFlow: React.FC = () => {
 
             <button
               onClick={() => setSelectedNode("switch")}
-              className="px-4 py-1.5 bg-[#0E1428] border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5"
+              className="px-4 py-1.5 bg-[#121212] border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               <span>Bank Gateway</span>
             </button>
           </div>
         </div>
+      </div>
       </div>
 
       {/* Interactive Subsystem Telemetry Drawer Below */}
@@ -348,14 +344,14 @@ export const StripeNodeFlow: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -4 }}
           transition={{ duration: 0.15 }}
-          className="mt-8 p-6 bg-[#0E1428]/90 border border-indigo-500/30 rounded-xl relative z-10 backdrop-blur-md"
+          className="mt-6 p-4 sm:p-6 bg-[#0E0E10] border border-[#262626] rounded-xl relative z-10"
         >
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-indigo-900/50 mb-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#262626] mb-3">
             <div>
-              <div className="text-[10px] font-mono text-indigo-400 tracking-wider uppercase font-bold">
+              <div className="text-[10px] font-mono text-[#0F6B5C] tracking-wider uppercase font-bold">
                 {active.category} // TELEMETRY
               </div>
-              <h3 className="text-lg font-bold text-white mt-0.5">
+              <h3 className="text-base sm:text-lg font-bold text-white mt-0.5">
                 {active.title}
               </h3>
             </div>
@@ -364,20 +360,20 @@ export const StripeNodeFlow: React.FC = () => {
               <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold">
                 {active.status}
               </span>
-              <span className="text-slate-400">
-                LATENCY: <strong className="text-sky-400">{active.latency}</strong>
+              <span className="text-[#A1A1AA]">
+                LATENCY: <strong className="text-white">{active.latency}</strong>
               </span>
             </div>
           </div>
 
-          <p className="text-xs text-slate-300 leading-relaxed mb-4 max-w-3xl">
+          <p className="text-xs text-[#D4D4D8] leading-relaxed mb-4 max-w-3xl">
             {active.description}
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-indigo-900/40">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-[#262626]">
             {active.stats.map((st, i) => (
-              <div key={i} className="p-2.5 bg-[#090D1C] rounded border border-indigo-950">
-                <div className="text-[10px] font-mono text-slate-400">{st.label}</div>
+              <div key={i} className="p-2.5 bg-[#18181B] rounded border border-[#27272A]">
+                <div className="text-[10px] font-mono text-[#A1A1AA]">{st.label}</div>
                 <div className="text-xs font-mono font-bold text-white mt-0.5">{st.value}</div>
               </div>
             ))}

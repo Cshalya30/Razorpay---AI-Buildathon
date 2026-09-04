@@ -20,19 +20,19 @@
   }
 
   :root.dark, html.dark {
-    --paper: #090D1A;
-    --paper-card: #0F1424;
-    --surface: #11172A;
-    --ink: #F1F5F9;
-    --ink-muted: #94A3B8;
-    --rule: #1E293B;
-    --rule-dark: #334155;
+    --paper: #000000;
+    --paper-card: #0A0A0A;
+    --surface: #121212;
+    --ink: #FFFFFF;
+    --ink-muted: #A1A1AA;
+    --rule: #262626;
+    --rule-dark: #383838;
     --recovered: #10B981;
     --at-risk: #F59E0B;
     --breach: #EF4444;
-    --offline: #64748B;
-    --accent: #6366F1;
-    --accent-light: #1E1B4B;
+    --offline: #71717A;
+    --accent: #10B981;
+    --accent-light: #064E3B;
   }
 
   body {
@@ -75,45 +75,45 @@
   box-shadow: -8px 0 32px rgba(27, 27, 24, 0.12);
 }
 
-/* Global Dark Mode utility overrides so all white cards & rules flip automatically */
+/* Global Dark Mode utility overrides - Pure Obsidian Terminal Black */
 html.dark .bg-white {
-  background-color: #11172A !important;
+  background-color: #121212 !important;
 }
 html.dark .bg-white\/60, html.dark .bg-white\/40 {
-  background-color: #11172A !important;
+  background-color: #121212 !important;
 }
 html.dark .bg-\[\#EDEAE2\] {
-  background-color: #090D1A !important;
+  background-color: #000000 !important;
 }
 html.dark .bg-\[\#EDEAE2\]\/50, html.dark .bg-\[\#EDEAE2\]\/30, html.dark .bg-\[\#EDEAE2\]\/60 {
-  background-color: #0F1424 !important;
+  background-color: #0A0A0A !important;
 }
 html.dark .bg-\[\#F6F4EE\] {
-  background-color: #0F1424 !important;
+  background-color: #0D0D0D !important;
 }
 html.dark .bg-\[\#F7F5F0\] {
-  background-color: #161F38 !important;
+  background-color: #1A1A1A !important;
 }
 html.dark .border-\[\#DDD8CC\] {
-  border-color: #1E293B !important;
+  border-color: #262626 !important;
 }
-html.dark .border-\[\#DDD8CC\]\/60 {
-  border-color: #1E293B !important;
+html.dark .border-\[\#DDD8CC\]\/60, html.dark .border-\[\#DDD8CC\]\/70 {
+  border-color: #262626 !important;
 }
 html.dark .divide-\[\#DDD8CC\] > * + * {
-  border-color: #1E293B !important;
+  border-color: #262626 !important;
 }
 html.dark .text-\[\#1B1B18\] {
-  color: #F8FAFC !important;
+  color: #FFFFFF !important;
 }
 html.dark .text-\[\#6B6558\] {
-  color: #94A3B8 !important;
+  color: #A1A1AA !important;
 }
 html.dark .text-\[\#A39C8D\] {
-  color: #64748B !important;
+  color: #71717A !important;
 }
 html.dark .shadow-card {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.07);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 0 1px #222222 !important;
 }
 
 /* Subtle dot grid pattern for financial background */
@@ -122,7 +122,7 @@ html.dark .shadow-card {
   background-size: 20px 20px;
 }
 html.dark .bg-grid-pattern {
-  background-image: radial-gradient(#1E293B 1px, transparent 1px);
+  background-image: radial-gradient(#262626 1px, transparent 1px);
 }
 
 /* Pulse animation for live socket indicator */

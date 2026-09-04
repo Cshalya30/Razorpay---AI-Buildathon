@@ -58,13 +58,13 @@ export const Ledger: React.FC = () => {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
-      className="p-8 max-w-7xl mx-auto space-y-6"
+      className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto space-y-6"
     >
       {/* Walkthrough Scenarios Bar for Part 9 & Demo Protocol */}
       <DemoScenarioBar />
 
       {/* System Architecture Callout Bar */}
-      <div className="bg-white border border-[#DDD8CC] p-4 shadow-card flex items-center justify-between">
+      <div className="bg-white border border-[#DDD8CC] p-4 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded bg-[#2B4C7E]/10 text-[#2B4C7E] flex items-center justify-center font-bold">
             <FlowArrow size={18} />

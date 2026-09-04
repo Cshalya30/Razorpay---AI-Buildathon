@@ -50,11 +50,11 @@ export const ComplianceDashboard: React.FC = () => {
   });
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="font-serif text-[28px] font-bold text-[#1B1B18] tracking-tight">
+          <h1 className="font-serif text-[24px] sm:text-[28px] font-bold text-[#1B1B18] tracking-tight">
             RBI Statutory Compliance &amp; Audit Registry
           </h1>
           <p className="text-[13px] text-[#6B6558] mt-1 font-sans">
@@ -64,7 +64,7 @@ export const ComplianceDashboard: React.FC = () => {
 
         <button
           onClick={handleExportCsv}
-          className="flex items-center gap-2 px-3 py-2 bg-white border border-[#DDD8CC] text-[#1B1B18] text-[12px] font-mono hover:bg-[#EDEAE2] transition-colors shadow-card"
+          className="flex items-center gap-2 px-3 py-2 bg-white border border-[#DDD8CC] text-[#1B1B18] text-[12px] font-mono hover:bg-[#EDEAE2] transition-colors shadow-card shrink-0 w-full sm:w-auto justify-center"
         >
           <DownloadSimple size={14} />
           <span>Export Statutory Audit (CSV)</span>
@@ -72,7 +72,7 @@ export const ComplianceDashboard: React.FC = () => {
       </div>
 
       {/* 4 Compliance Pillars Cards */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {/* Pillar 1: 24h Pre-debit Notice */}
         <div className="bg-white border border-[#DDD8CC] p-4 shadow-card">
           <div className="flex items-center justify-between text-[#6B6558] mb-1">

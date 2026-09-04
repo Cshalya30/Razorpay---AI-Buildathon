@@ -91,11 +91,11 @@ export const EvalReport: React.FC = () => {
   const bounceRiskRate = Math.max(0.5, (100 - confidenceThreshold) * 0.08);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="font-serif text-[28px] font-bold text-[#1B1B18] tracking-tight">
+          <h1 className="font-serif text-[24px] sm:text-[28px] font-bold text-[#1B1B18] tracking-tight">
             Evaluation Report &amp; AI Model Benchmark
           </h1>
           <p className="text-[13px] text-[#6B6558] mt-1 font-sans">
@@ -106,7 +106,7 @@ export const EvalReport: React.FC = () => {
         <button
           onClick={handleRerunEval}
           disabled={runningEval}
-          className="flex items-center gap-2 px-4 py-2 bg-[#2B4C7E] text-white text-[12px] font-medium hover:bg-[#233F69] disabled:opacity-50 transition-colors shadow-sm"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-[#2B4C7E] text-white text-[12px] font-medium hover:bg-[#233F69] disabled:opacity-50 transition-colors shadow-sm w-full sm:w-auto"
         >
           <ArrowsClockwise size={14} className={runningEval ? "animate-spin" : ""} />
           <span>{runningEval ? "Evaluating Policy Matrix..." : "Re-run Policy Benchmark Live"}</span>
@@ -117,13 +117,13 @@ export const EvalReport: React.FC = () => {
       <PalantirScatterPlot />
 
       {/* Hero Financial Lift Card */}
-      <div className="bg-white border border-[#DDD8CC] p-6 shadow-card mb-6">
-        <div className="grid grid-cols-3 gap-6">
-          <div className="border-r border-[#DDD8CC] pr-6">
+      <div className="bg-white border border-[#DDD8CC] p-4 sm:p-6 shadow-card mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="border-b md:border-b-0 md:border-r border-[#DDD8CC] pb-4 md:pb-0 md:pr-6">
             <div className="text-[11px] font-mono text-[#6B6558] uppercase tracking-wide">
               NET REVENUE RECOVERED (LIFT)
             </div>
-            <div className="text-[36px] font-mono font-bold text-[#0F6B5C] mt-1 leading-none">
+            <div className="text-[28px] sm:text-[36px] font-mono font-bold text-[#0F6B5C] mt-1 leading-none">
               +₹{comp ? comp.deltaRecoveredAmount.toLocaleString("en-IN") : "2,92,732"}
             </div>
             <div className="text-[13px] text-[#0F6B5C] font-mono font-semibold mt-1">
@@ -131,11 +131,11 @@ export const EvalReport: React.FC = () => {
             </div>
           </div>
 
-          <div className="border-r border-[#DDD8CC] pr-6">
+          <div className="border-b md:border-b-0 md:border-r border-[#DDD8CC] pb-4 md:pb-0 md:pr-6">
             <div className="text-[11px] font-mono text-[#6B6558] uppercase tracking-wide">
               PREDICTIVE MODEL RECOVERY
             </div>
-            <div className="text-[36px] font-mono font-bold text-[#1B1B18] mt-1 leading-none">
+            <div className="text-[28px] sm:text-[36px] font-mono font-bold text-[#1B1B18] mt-1 leading-none">
               {comp?.model.recoveryRate ?? 98.7}%
             </div>
             <div className="text-[12px] text-[#6B6558] font-mono mt-1">
@@ -147,7 +147,7 @@ export const EvalReport: React.FC = () => {
             <div className="text-[11px] font-mono text-[#6B6558] uppercase tracking-wide">
               NAIVE BASELINE BENCHMARK
             </div>
-            <div className="text-[36px] font-mono font-bold text-[#7C7568] mt-1 leading-none">
+            <div className="text-[28px] sm:text-[36px] font-mono font-bold text-[#7C7568] mt-1 leading-none">
               {comp?.baseline.recoveryRate ?? 66.1}%
             </div>
             <div className="text-[12px] text-[#6B6558] font-mono mt-1">
@@ -180,7 +180,7 @@ export const EvalReport: React.FC = () => {
               />
               <Tooltip
                 formatter={(value: any, name: any, item: any) => [
-                  `${value}% (?${item.payload.recoveredAmount.toLocaleString('en-IN')})`,
+                  `${value}% (₹${item.payload.recoveredAmount.toLocaleString('en-IN')})`,
                   "Recovery Rate"
                 ]}
                 contentStyle={{
@@ -201,16 +201,16 @@ export const EvalReport: React.FC = () => {
       </div>
 
       {/* Side-by-Side Policy Matrix Table */}
-      <div className="bg-white border border-[#DDD8CC] shadow-card mb-6">
+      <div className="bg-white border border-[#DDD8CC] shadow-card mb-6 overflow-x-auto">
         <div className="p-3 border-b border-[#DDD8CC] text-[12px] font-semibold text-[#1B1B18] tracking-tight">
           Three-Policy Comparative Matrix
         </div>
-        <table className="w-full text-left border-collapse text-[12px] font-mono">
+        <table className="w-full text-left border-collapse text-[12px] font-mono min-w-[650px]">
           <thead>
             <tr className="border-b border-[#DDD8CC] bg-[#EDEAE2]/30 text-[11px] text-[#6B6558] uppercase">
               <th className="py-2.5 px-4">Policy Strategy</th>
               <th className="py-2.5 px-4">Recovery Rate</th>
-              <th className="py-2.5 px-4 text-right">Revenue Captured (?)</th>
+              <th className="py-2.5 px-4 text-right">Revenue Captured (₹)</th>
               <th className="py-2.5 px-4">Avg Retries Per Mandate</th>
               <th className="py-2.5 px-4">Bounce Fee Exposure</th>
               <th className="py-2.5 px-4">Regulatory Compliance</th>
@@ -257,7 +257,7 @@ export const EvalReport: React.FC = () => {
       </div>
 
       {/* Model Quality Telemetry & Feature Attribution */}
-      <div className="grid grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {/* Card 1: Statistical Telemetry */}
         <div className="bg-white border border-[#DDD8CC] p-4 shadow-card">
           <div className="flex items-center gap-2 text-[12px] font-semibold text-[#1B1B18] mb-3">
@@ -339,7 +339,7 @@ export const EvalReport: React.FC = () => {
             </span>
           </div>
           <div className="text-[12px] font-mono text-[#0F6B5C] font-semibold">
-            Cutoff: P(Success) ? {confidenceThreshold}%
+            Cutoff: P(Success) ≥ {confidenceThreshold}%
           </div>
         </div>
 
@@ -360,7 +360,7 @@ export const EvalReport: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 pt-3 border-t border-[#DDD8CC] text-[12px] font-mono">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-3 border-t border-[#DDD8CC] text-[12px] font-mono">
           <div className="p-2 bg-[#EDEAE2]/40 border border-[#DDD8CC]">
             <div className="text-[#6B6558] text-[10px]">SIMULATED RECOVERY RATE</div>
             <div className="text-[16px] font-bold text-[#0F6B5C] mt-0.5">
