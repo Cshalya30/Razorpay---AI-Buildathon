@@ -52,12 +52,15 @@ export const DemoScenarioBar: React.FC = () => {
 
   return (
     <div className="bg-white border border-[#DDD8CC] px-4 py-3 shadow-card mb-6">
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
         <div className="text-[12px] font-semibold text-[#1B1B18] tracking-tight flex items-center gap-2">
           <span>Walkthrough Scenarios (Part 9 Verification)</span>
-          <span className="text-[11px] font-mono text-[#6B6558] font-normal">
+          <span className="text-[11px] font-mono text-[#6B6558] font-normal hidden sm:inline">
             Click to load scenario
           </span>
+        </div>
+        <div className="text-[11px] font-mono text-[#2B4C7E] bg-[#2B4C7E]/10 px-2.5 py-1 border border-[#2B4C7E]/20 rounded-sm font-medium">
+          The live UI runs on precomputed model output for reliability; the trainable pipeline is in ml_service/
         </div>
       </div>
 

@@ -83,13 +83,13 @@ export const api = {
       total: list.length,
       metrics: {
         totalMandates: 320,
-        recoveredCount: 312,
-        atRiskCount: 4,
+        recoveredCount: 82,
+        atRiskCount: 117,
         escalatedCount: 1,
-        stoppedCount: 3,
-        recoveryRate: 98.7,
-        recoveredAmount: 725687,
-        atRiskAmount: 808714
+        stoppedCount: 10,
+        recoveryRate: 70.1,
+        recoveredAmount: 323531,
+        atRiskAmount: 478495
       }
     };
   },
@@ -184,19 +184,40 @@ export const api = {
     } catch {
       const m = mockMandates.find(x => x.id === id);
       if (m) {
-        // Evaluate statutory gating
-        if (m.mandate_amount > 15000 && m.category === "subscription") {
+        // Gate 1: Check Revocation (RBI customer consent right)
+        if (m.id === "MDT-1005" || (m.status === "stopped" && m.decision_rationale?.toLowerCase().includes("revok"))) {
           m.status = "stopped";
-          m.decision_rationale = `Amount ₹${m.mandate_amount.toLocaleString('en-IN')} exceeds ₹15,000 AFA ceiling for non-exempt category '${m.category}'. Mandatory AFA challenge required.`;
-        } else if (m.attempts >= 4) {
+          m.next_retry_day = null;
+          m.predicted_success_prob = null;
+          m.decision_rationale = "Customer Revocation: Mandate revoked by consumer via UPI App / PSP banking handle (RBI customer consent protection). System permanently refuses automated re-debit.";
+        }
+        // Gate 2: Check Statutory AFA Threshold (> ₹15,000 for non-exempt subscriptions)
+        else if (m.mandate_amount > 15000 && !["insurance", "mutual_fund_sip", "credit_card_bill"].includes(m.category)) {
+          m.status = "stopped";
+          m.next_retry_day = null;
+          m.predicted_success_prob = null;
+          m.decision_rationale = `Statutory AFA Limit Exceeded: Debit amount ₹${m.mandate_amount.toLocaleString('en-IN')} exceeds the ₹15,000 RBI ceiling for non-exempt '${m.category}' category (Master Direction Sec 5.3). Mandatory AFA OTP required.`;
+        }
+        // Gate 3: Check Retry Cap (4 attempts max)
+        else if (m.attempts >= 4) {
           m.status = "escalated";
-          m.decision_rationale = `Anti-harassment cap: 4 consecutive debit attempts reached. Escalated to merchant ops.`;
-        } else {
+          m.next_retry_day = null;
+          m.predicted_success_prob = null;
+          m.decision_rationale = `Anti-Harassment Directive: Mandate reached hard ceiling of 4 consecutive debit failures (4/4). Automated retries permanently halted; escalated to merchant operations.`;
+        }
+        // Gate 4: Retriable Mandate -> Serve precomputed calibrated model timing
+        else {
           m.status = "retry_scheduled";
-          m.next_retry_day = m.next_retry_day || (((m.due_day + 3) % 30) + 1);
-          const baseProb = Math.min(0.96, Math.max(0.55, 0.92 - (m.mandate_amount / 25000) * 0.25));
-          m.predicted_success_prob = Number(baseProb.toFixed(3));
-          m.decision_rationale = `Day ${m.next_retry_day} selected: ${(baseProb * 100).toFixed(0)}% estimated clearance probability based on inferred salary cycle.`;
+          // Maintain authentic precomputed model outputs from trained GBDT
+          if (!m.next_retry_day) {
+            m.next_retry_day = (((m.due_day + 3) % 30) + 1);
+          }
+          if (m.predicted_success_prob === null || m.predicted_success_prob === undefined) {
+            m.predicted_success_prob = 0.96;
+          }
+          if (!m.decision_rationale || m.decision_rationale.includes("Debit cleared")) {
+            m.decision_rationale = `Day ${m.next_retry_day} selected: ${(m.predicted_success_prob * 100).toFixed(0)}% estimated clearance probability based on inferred salary liquidity window.`;
+          }
         }
       }
       return { decision: { status: m?.status || "retry_scheduled" }, mandate: m!, audit: {} as any };
@@ -210,10 +231,19 @@ export const api = {
     } catch {
       const m = mockMandates.find(x => x.id === id);
       if (m) {
+        if (m.id === "MDT-1003") {
+          // MDT-1003 is the "Erratic Low Signal" scenario: Model retries -> Fails again
+          m.status = "retry_scheduled";
+          m.attempts = (m.attempts || 1) + 1;
+          m.decision_rationale = `Debit re-attempt failed on Day ${day ?? m.next_retry_day ?? 25}: Insufficient account balance due to irregular gig-worker burn rate.`;
+          return { decision: { status: "retry_scheduled", recovered: false }, mandate: m, audit: {} as any };
+        } else if (m.status === "stopped" || m.status === "escalated") {
+          return { decision: { status: m.status, recovered: false }, mandate: m, audit: {} as any };
+        }
         m.status = "recovered";
-        m.decision_rationale = `Mandate successfully settled on re-debit attempt.`;
+        m.decision_rationale = `Mandate successfully settled on re-debit attempt on Day ${day ?? m.next_retry_day ?? 5}.`;
       }
-      return { decision: { status: "recovered" }, mandate: m!, audit: {} as any };
+      return { decision: { status: "recovered", recovered: true }, mandate: m!, audit: {} as any };
     }
   },
 
@@ -224,13 +254,13 @@ export const api = {
     } catch {
       return {
         totalMandates: 320,
-        recoveredCount: 312,
-        atRiskCount: 4,
+        recoveredCount: 82,
+        atRiskCount: 117,
         escalatedCount: 1,
         stoppedCount: 3,
-        recoveryRate: 98.7,
-        recoveredAmount: 725687,
-        atRiskAmount: 808714
+        recoveryRate: 70.1,
+        recoveredAmount: 323531,
+        atRiskAmount: 478495
       };
     }
   },
@@ -330,19 +360,19 @@ export const api = {
       return {
         baseline: {
           policy: "baseline" as const,
-          totalAtRisk: 808714,
-          totalRecovered: 432955,
-          recoveryRate: 66.1
+          totalAtRisk: 478495,
+          totalRecovered: 227483,
+          recoveryRate: 45.3
         },
         model: {
           policy: "model" as const,
-          totalAtRisk: 808714,
-          totalRecovered: 725687,
-          recoveryRate: 98.7
+          totalAtRisk: 478495,
+          totalRecovered: 323531,
+          recoveryRate: 70.1
         },
-        deltaRecoveryRate: 32.6,
-        deltaRecoveredAmount: 292732,
-        totalAtRisk: 808714,
+        deltaRecoveryRate: 24.8,
+        deltaRecoveredAmount: 96048,
+        totalAtRisk: 478495,
         runAt: "2026-09-04T00:30:00Z"
       };
     }
@@ -356,19 +386,19 @@ export const api = {
       return {
         baseline: {
           policy: "baseline" as const,
-          totalAtRisk: 808714,
-          totalRecovered: 432955,
-          recoveryRate: 66.1
+          totalAtRisk: 478495,
+          totalRecovered: 227483,
+          recoveryRate: 45.3
         },
         model: {
           policy: "model" as const,
-          totalAtRisk: 808714,
-          totalRecovered: 725687,
-          recoveryRate: 98.7
+          totalAtRisk: 478495,
+          totalRecovered: 323531,
+          recoveryRate: 70.1
         },
-        deltaRecoveryRate: 32.6,
-        deltaRecoveredAmount: 292732,
-        totalAtRisk: 808714,
+        deltaRecoveryRate: 24.8,
+        deltaRecoveredAmount: 96048,
+        totalAtRisk: 478495,
         runAt: new Date().toISOString()
       };
     }

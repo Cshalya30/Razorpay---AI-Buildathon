@@ -97,7 +97,9 @@ Tested on a simulated 30-day liquidity ledger containing stochastic spending var
 | **Average Retries Needed** | 2.67 attempts | **1.00 attempt** | **-62.5% reduction in customer bounce friction** |
 | **Customer Bounce Fees** | Incurred on 54.7% | **0 fees (timed to liquidity surplus)** | **100% compliant** |
 
-*Benchmarked across 117 at-risk mandate records (Total Volume: ?4,78,495).*
+*Benchmarked across 117 at-risk mandate records (Total Volume: ₹4,78,495).*
+
+> **Note on Deployment Architecture**: The live UI deployed on Vercel runs on precomputed model output for reliability; the full trainable pipeline and live FastAPI service are in `ml_service/`.
 
 ---
 

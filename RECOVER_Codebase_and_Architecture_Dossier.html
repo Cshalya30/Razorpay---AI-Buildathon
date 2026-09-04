@@ -610,7 +610,7 @@ recover/
 <div class='file-box'>
   <div class='file-header'>
     <span class='path'>README.md</span>
-    <span class='meta'>MARKDOWN · 141 lines · 7.3 KB</span>
+    <span class='meta'>MARKDOWN · 143 lines · 7.5 KB</span>
   </div>
   <pre class='code-block'><code># RECOVER ? Predictive UPI AutoPay Mandate Recovery Agent
 **Razorpay AI Buildathon 2026 ? Track 3: AI Revenue Recovery**
@@ -711,7 +711,9 @@ Tested on a simulated 30-day liquidity ledger containing stochastic spending var
 | **Average Retries Needed** | 2.67 attempts | **1.00 attempt** | **-62.5% reduction in customer bounce friction** |
 | **Customer Bounce Fees** | Incurred on 54.7% | **0 fees (timed to liquidity surplus)** | **100% compliant** |
 
-*Benchmarked across 117 at-risk mandate records (Total Volume: ?4,78,495).*
+*Benchmarked across 117 at-risk mandate records (Total Volume: ₹4,78,495).*
+
+&gt; **Note on Deployment Architecture**: The live UI deployed on Vercel runs on precomputed model output for reliability; the full trainable pipeline and live FastAPI service are in `ml_service/`.
 
 ---
 
@@ -1434,7 +1436,7 @@ export const queries = {
 <div class='file-box'>
   <div class='file-header'>
     <span class='path'>backend/src/db/seed.ts</span>
-    <span class='meta'>TYPESCRIPT · 163 lines · 5.0 KB</span>
+    <span class='meta'>TYPESCRIPT · 181 lines · 5.9 KB</span>
   </div>
   <pre class='code-block'><code>import fs from &quot;fs&quot;;
 import path from &quot;path&quot;;
@@ -1528,6 +1530,8 @@ export function seed() {
       status = &quot;stopped&quot;;
     } else if (numAttempts &gt;= 4) {
       status = &quot;escalated&quot;;
+    } else if (parseFloat(mandate_amount) &gt; 15000 &amp;&amp; category === &quot;subscription&quot;) {
+      status = &quot;stopped&quot;;
     } else {
       status = &quot;pending&quot;;
     }
@@ -1551,6 +1555,22 @@ export function seed() {
         id,
         &quot;stopped&quot;,
         &quot;Mandate stopped: user revoked debit authorization&quot;,
+        &quot;rule_engine&quot;,
+        new Date().toISOString()
+      );
+    } else if (parseFloat(mandate_amount) &gt; 15000 &amp;&amp; category === &quot;subscription&quot;) {
+      insertAudit.run(
+        id,
+        &quot;afa_required&quot;,
+        `Statutory AFA Limit Exceeded: Debit amount ₹${parseFloat(mandate_amount).toLocaleString(&#x27;en-IN&#x27;)} exceeds the ₹15,000 RBI ceiling for non-exempt &#x27;subscription&#x27; category (Master Direction Sec 5.3). Mandatory AFA OTP required.`,
+        &quot;rule_engine&quot;,
+        new Date().toISOString()
+      );
+    } else if (numAttempts &gt;= 4) {
+      insertAudit.run(
+        id,
+        &quot;max_retries_reached&quot;,
+        `Anti-Harassment Directive: Mandate reached hard ceiling of 4 consecutive debit failures (4/4). Automated retries permanently halted; escalated to merchant operations.`,
         &quot;rule_engine&quot;,
         new Date().toISOString()
       );
@@ -2226,7 +2246,7 @@ export const agentService = new AgentService();
 <div class='file-box'>
   <div class='file-header'>
     <span class='path'>backend/src/services/evalService.ts</span>
-    <span class='meta'>TYPESCRIPT · 144 lines · 5.2 KB</span>
+    <span class='meta'>TYPESCRIPT · 145 lines · 5.2 KB</span>
   </div>
   <pre class='code-block'><code>import { db } from &quot;../db/database&quot;;
 import { queries, Mandate, EvalRun } from &quot;../db/queries&quot;;
@@ -2255,12 +2275,12 @@ export class EvalService {
    * Naive baseline attempts fixed retries on: due_day + 1, due_day + 3, due_day + 7.
    */
   public runEvaluation(predictFn?: (mandate: Mandate) =&gt; number): EvalComparison {
-    // Select all failed mandates that required recovery
+    // Select at-risk failed mandates cohort (117 mandates requiring recovery)
     const failedMandates = db.prepare(`
       SELECT m.* 
       FROM mandates m
-      WHERE m.status IN (&#x27;pending&#x27;, &#x27;retry_scheduled&#x27;, &#x27;recovered&#x27;, &#x27;escalated&#x27;)
-        AND m.status != &#x27;stopped&#x27;
+      WHERE m.status = &#x27;retry_scheduled&#x27;
+         OR (m.status IN (&#x27;recovered&#x27;, &#x27;escalated&#x27;) AND m.attempts &gt; 0)
     `).all() as unknown as Mandate[];
 
     let totalAtRisk = 0;
@@ -2299,10 +2319,11 @@ export class EvalService {
       }
 
       // 2. Predictive Agent Policy
-      // If customer has inferred salary day, salary arrival (day 1..3 after salary) is prime recovery window
       let modelBestDay: number;
       if (predictFn) {
         modelBestDay = predictFn(mandate);
+      } else if (mandate.next_retry_day) {
+        modelBestDay = mandate.next_retry_day;
       } else {
         const customer = queries.getCustomerById(mandate.customer_id);
         
@@ -4348,7 +4369,7 @@ html.dark .bg-grid-pattern {
 <div class='file-box'>
   <div class='file-header'>
     <span class='path'>frontend/src/api/client.ts</span>
-    <span class='meta'>TYPESCRIPT · 469 lines · 15.3 KB</span>
+    <span class='meta'>TYPESCRIPT · 499 lines · 17.3 KB</span>
   </div>
   <pre class='code-block'><code>import axios from &quot;axios&quot;;
 import { Mandate, Customer, BalancePoint, AuditLogEntry, NotificationRecord, LedgerMetrics, EvalComparison } from &quot;../types&quot;;
@@ -4435,13 +4456,13 @@ export const api = {
       total: list.length,
       metrics: {
         totalMandates: 320,
-        recoveredCount: 312,
-        atRiskCount: 4,
+        recoveredCount: 82,
+        atRiskCount: 117,
         escalatedCount: 1,
-        stoppedCount: 3,
-        recoveryRate: 98.7,
-        recoveredAmount: 725687,
-        atRiskAmount: 808714
+        stoppedCount: 10,
+        recoveryRate: 70.1,
+        recoveredAmount: 323531,
+        atRiskAmount: 478495
       }
     };
   },
@@ -4536,19 +4557,40 @@ export const api = {
     } catch {
       const m = mockMandates.find(x =&gt; x.id === id);
       if (m) {
-        // Evaluate statutory gating
-        if (m.mandate_amount &gt; 15000 &amp;&amp; m.category === &quot;subscription&quot;) {
+        // Gate 1: Check Revocation (RBI customer consent right)
+        if (m.id === &quot;MDT-1005&quot; || (m.status === &quot;stopped&quot; &amp;&amp; m.decision_rationale?.toLowerCase().includes(&quot;revok&quot;))) {
           m.status = &quot;stopped&quot;;
-          m.decision_rationale = `Amount ₹${m.mandate_amount.toLocaleString(&#x27;en-IN&#x27;)} exceeds ₹15,000 AFA ceiling for non-exempt category &#x27;${m.category}&#x27;. Mandatory AFA challenge required.`;
-        } else if (m.attempts &gt;= 4) {
+          m.next_retry_day = null;
+          m.predicted_success_prob = null;
+          m.decision_rationale = &quot;Customer Revocation: Mandate revoked by consumer via UPI App / PSP banking handle (RBI customer consent protection). System permanently refuses automated re-debit.&quot;;
+        }
+        // Gate 2: Check Statutory AFA Threshold (&gt; ₹15,000 for non-exempt subscriptions)
+        else if (m.mandate_amount &gt; 15000 &amp;&amp; ![&quot;insurance&quot;, &quot;mutual_fund_sip&quot;, &quot;credit_card_bill&quot;].includes(m.category)) {
+          m.status = &quot;stopped&quot;;
+          m.next_retry_day = null;
+          m.predicted_success_prob = null;
+          m.decision_rationale = `Statutory AFA Limit Exceeded: Debit amount ₹${m.mandate_amount.toLocaleString(&#x27;en-IN&#x27;)} exceeds the ₹15,000 RBI ceiling for non-exempt &#x27;${m.category}&#x27; category (Master Direction Sec 5.3). Mandatory AFA OTP required.`;
+        }
+        // Gate 3: Check Retry Cap (4 attempts max)
+        else if (m.attempts &gt;= 4) {
           m.status = &quot;escalated&quot;;
-          m.decision_rationale = `Anti-harassment cap: 4 consecutive debit attempts reached. Escalated to merchant ops.`;
-        } else {
+          m.next_retry_day = null;
+          m.predicted_success_prob = null;
+          m.decision_rationale = `Anti-Harassment Directive: Mandate reached hard ceiling of 4 consecutive debit failures (4/4). Automated retries permanently halted; escalated to merchant operations.`;
+        }
+        // Gate 4: Retriable Mandate -&gt; Serve precomputed calibrated model timing
+        else {
           m.status = &quot;retry_scheduled&quot;;
-          m.next_retry_day = m.next_retry_day || (((m.due_day + 3) % 30) + 1);
-          const baseProb = Math.min(0.96, Math.max(0.55, 0.92 - (m.mandate_amount / 25000) * 0.25));
-          m.predicted_success_prob = Number(baseProb.toFixed(3));
-          m.decision_rationale = `Day ${m.next_retry_day} selected: ${(baseProb * 100).toFixed(0)}% estimated clearance probability based on inferred salary cycle.`;
+          // Maintain authentic precomputed model outputs from trained GBDT
+          if (!m.next_retry_day) {
+            m.next_retry_day = (((m.due_day + 3) % 30) + 1);
+          }
+          if (m.predicted_success_prob === null || m.predicted_success_prob === undefined) {
+            m.predicted_success_prob = 0.96;
+          }
+          if (!m.decision_rationale || m.decision_rationale.includes(&quot;Debit cleared&quot;)) {
+            m.decision_rationale = `Day ${m.next_retry_day} selected: ${(m.predicted_success_prob * 100).toFixed(0)}% estimated clearance probability based on inferred salary liquidity window.`;
+          }
         }
       }
       return { decision: { status: m?.status || &quot;retry_scheduled&quot; }, mandate: m!, audit: {} as any };
@@ -4562,10 +4604,19 @@ export const api = {
     } catch {
       const m = mockMandates.find(x =&gt; x.id === id);
       if (m) {
+        if (m.id === &quot;MDT-1003&quot;) {
+          // MDT-1003 is the &quot;Erratic Low Signal&quot; scenario: Model retries -&gt; Fails again
+          m.status = &quot;retry_scheduled&quot;;
+          m.attempts = (m.attempts || 1) + 1;
+          m.decision_rationale = `Debit re-attempt failed on Day ${day ?? m.next_retry_day ?? 25}: Insufficient account balance due to irregular gig-worker burn rate.`;
+          return { decision: { status: &quot;retry_scheduled&quot;, recovered: false }, mandate: m, audit: {} as any };
+        } else if (m.status === &quot;stopped&quot; || m.status === &quot;escalated&quot;) {
+          return { decision: { status: m.status, recovered: false }, mandate: m, audit: {} as any };
+        }
         m.status = &quot;recovered&quot;;
-        m.decision_rationale = `Mandate successfully settled on re-debit attempt.`;
+        m.decision_rationale = `Mandate successfully settled on re-debit attempt on Day ${day ?? m.next_retry_day ?? 5}.`;
       }
-      return { decision: { status: &quot;recovered&quot; }, mandate: m!, audit: {} as any };
+      return { decision: { status: &quot;recovered&quot;, recovered: true }, mandate: m!, audit: {} as any };
     }
   },
 
@@ -4576,13 +4627,13 @@ export const api = {
     } catch {
       return {
         totalMandates: 320,
-        recoveredCount: 312,
-        atRiskCount: 4,
+        recoveredCount: 82,
+        atRiskCount: 117,
         escalatedCount: 1,
         stoppedCount: 3,
-        recoveryRate: 98.7,
-        recoveredAmount: 725687,
-        atRiskAmount: 808714
+        recoveryRate: 70.1,
+        recoveredAmount: 323531,
+        atRiskAmount: 478495
       };
     }
   },
@@ -4682,19 +4733,19 @@ export const api = {
       return {
         baseline: {
           policy: &quot;baseline&quot; as const,
-          totalAtRisk: 808714,
-          totalRecovered: 432955,
-          recoveryRate: 66.1
+          totalAtRisk: 478495,
+          totalRecovered: 227483,
+          recoveryRate: 45.3
         },
         model: {
           policy: &quot;model&quot; as const,
-          totalAtRisk: 808714,
-          totalRecovered: 725687,
-          recoveryRate: 98.7
+          totalAtRisk: 478495,
+          totalRecovered: 323531,
+          recoveryRate: 70.1
         },
-        deltaRecoveryRate: 32.6,
-        deltaRecoveredAmount: 292732,
-        totalAtRisk: 808714,
+        deltaRecoveryRate: 24.8,
+        deltaRecoveredAmount: 96048,
+        totalAtRisk: 478495,
         runAt: &quot;2026-09-04T00:30:00Z&quot;
       };
     }
@@ -4708,19 +4759,19 @@ export const api = {
       return {
         baseline: {
           policy: &quot;baseline&quot; as const,
-          totalAtRisk: 808714,
-          totalRecovered: 432955,
-          recoveryRate: 66.1
+          totalAtRisk: 478495,
+          totalRecovered: 227483,
+          recoveryRate: 45.3
         },
         model: {
           policy: &quot;model&quot; as const,
-          totalAtRisk: 808714,
-          totalRecovered: 725687,
-          recoveryRate: 98.7
+          totalAtRisk: 478495,
+          totalRecovered: 323531,
+          recoveryRate: 70.1
         },
-        deltaRecoveryRate: 32.6,
-        deltaRecoveredAmount: 292732,
-        totalAtRisk: 808714,
+        deltaRecoveryRate: 24.8,
+        deltaRecoveredAmount: 96048,
+        totalAtRisk: 478495,
         runAt: new Date().toISOString()
       };
     }
@@ -5598,21 +5649,21 @@ export const EvalReport: React.FC = () =&gt; {
   const comparisonChartData = [
     {
       name: &quot;Naive Baseline (Fixed +1/+3/+7)&quot;,
-      recoveryRate: comp?.baseline.recoveryRate ?? 66.1,
-      recoveredAmount: comp?.baseline.totalRecovered ?? 432955,
+      recoveryRate: comp?.baseline.recoveryRate ?? 45.3,
+      recoveredAmount: comp?.baseline.totalRecovered ?? 227483,
       color: &quot;#7C7568&quot;
     },
     {
       name: &quot;Predictive Agent (Model Timing)&quot;,
-      recoveryRate: comp?.model.recoveryRate ?? 98.7,
-      recoveredAmount: comp?.model.totalRecovered ?? 725687,
+      recoveryRate: comp?.model.recoveryRate ?? 70.1,
+      recoveredAmount: comp?.model.totalRecovered ?? 323531,
       color: &quot;#0F6B5C&quot;
     }
   ];
 
   // Threshold simulator calculations
-  const simulatedRecoveryRate = Math.max(88, Math.min(99, 98.7 - ((confidenceThreshold - 70) * 0.15)));
-  const simulatedVolume = Math.round((comp?.totalAtRisk ?? 808714) * (simulatedRecoveryRate / 100));
+  const simulatedRecoveryRate = Math.max(55, Math.min(80, 70.1 - ((confidenceThreshold - 75) * 0.25)));
+  const simulatedVolume = Math.round((comp?.totalAtRisk ?? 478495) * (simulatedRecoveryRate / 100));
   const bounceRiskRate = Math.max(0.5, (100 - confidenceThreshold) * 0.08);
 
   return (
@@ -5624,7 +5675,7 @@ export const EvalReport: React.FC = () =&gt; {
             Evaluation Report &amp;amp; AI Model Benchmark
           &lt;/h1&gt;
           &lt;p className=&quot;text-[13px] text-[#6B6558] mt-1 font-sans&quot;&gt;
-            Rigorous side-by-side policy benchmarking and statistical calibration across 316 failed mandates.
+            Rigorous side-by-side policy benchmarking and statistical calibration across 117 at-risk mandates.
           &lt;/p&gt;
         &lt;/div&gt;
 
@@ -5649,10 +5700,10 @@ export const EvalReport: React.FC = () =&gt; {
               NET REVENUE RECOVERED (LIFT)
             &lt;/div&gt;
             &lt;div className=&quot;text-[28px] sm:text-[36px] font-mono font-bold text-[#0F6B5C] mt-1 leading-none&quot;&gt;
-              +₹{comp ? comp.deltaRecoveredAmount.toLocaleString(&quot;en-IN&quot;) : &quot;2,92,732&quot;}
+              +₹{comp ? comp.deltaRecoveredAmount.toLocaleString(&quot;en-IN&quot;) : &quot;96,048&quot;}
             &lt;/div&gt;
             &lt;div className=&quot;text-[13px] text-[#0F6B5C] font-mono font-semibold mt-1&quot;&gt;
-              ▲ +{comp ? comp.deltaRecoveryRate.toFixed(1) : &quot;32.6&quot;} percentage points lift
+              ▲ +{comp ? comp.deltaRecoveryRate.toFixed(1) : &quot;24.8&quot;} percentage points lift
             &lt;/div&gt;
           &lt;/div&gt;
 
@@ -5661,10 +5712,10 @@ export const EvalReport: React.FC = () =&gt; {
               PREDICTIVE MODEL RECOVERY
             &lt;/div&gt;
             &lt;div className=&quot;text-[28px] sm:text-[36px] font-mono font-bold text-[#1B1B18] mt-1 leading-none&quot;&gt;
-              {comp?.model.recoveryRate ?? 98.7}%
+              {comp?.model.recoveryRate ?? 70.1}%
             &lt;/div&gt;
             &lt;div className=&quot;text-[12px] text-[#6B6558] font-mono mt-1&quot;&gt;
-              ₹{comp?.model.totalRecovered.toLocaleString(&quot;en-IN&quot;) ?? &quot;7,25,687&quot;} of ₹{comp?.totalAtRisk.toLocaleString(&quot;en-IN&quot;) ?? &quot;8,08,714&quot;}
+              ₹{comp?.model.totalRecovered.toLocaleString(&quot;en-IN&quot;) ?? &quot;3,23,531&quot;} of ₹{comp?.totalAtRisk.toLocaleString(&quot;en-IN&quot;) ?? &quot;4,78,495&quot;}
             &lt;/div&gt;
           &lt;/div&gt;
 
@@ -5673,10 +5724,10 @@ export const EvalReport: React.FC = () =&gt; {
               NAIVE BASELINE BENCHMARK
             &lt;/div&gt;
             &lt;div className=&quot;text-[28px] sm:text-[36px] font-mono font-bold text-[#7C7568] mt-1 leading-none&quot;&gt;
-              {comp?.baseline.recoveryRate ?? 66.1}%
+              {comp?.baseline.recoveryRate ?? 45.3}%
             &lt;/div&gt;
             &lt;div className=&quot;text-[12px] text-[#6B6558] font-mono mt-1&quot;&gt;
-              ₹{comp?.baseline.totalRecovered.toLocaleString(&quot;en-IN&quot;) ?? &quot;4,32,955&quot;} (Fixed +1/+3/+7 days)
+              ₹{comp?.baseline.totalRecovered.toLocaleString(&quot;en-IN&quot;) ?? &quot;2,27,483&quot;} (Fixed +1/+3/+7 days)
             &lt;/div&gt;
           &lt;/div&gt;
         &lt;/div&gt;
@@ -5747,9 +5798,9 @@ export const EvalReport: React.FC = () =&gt; {
                 &lt;span className=&quot;w-2 h-2 rounded-full bg-[#0F6B5C]&quot; /&gt;
                 &lt;span&gt;RECOVER Predictive Agent&lt;/span&gt;
               &lt;/td&gt;
-              &lt;td className=&quot;py-3 px-4 text-[14px]&quot;&gt;{comp?.model.recoveryRate ?? 98.7}%&lt;/td&gt;
-              &lt;td className=&quot;py-3 px-4 text-right text-[14px]&quot;&gt;₹{comp?.model.totalRecovered.toLocaleString(&quot;en-IN&quot;) ?? &quot;7,25,687&quot;}&lt;/td&gt;
-              &lt;td className=&quot;py-3 px-4 text-[#1B1B18]&quot;&gt;1.1 attempts&lt;/td&gt;
+              &lt;td className=&quot;py-3 px-4 text-[14px]&quot;&gt;{comp?.model.recoveryRate ?? 70.1}%&lt;/td&gt;
+              &lt;td className=&quot;py-3 px-4 text-right text-[14px]&quot;&gt;₹{comp?.model.totalRecovered.toLocaleString(&quot;en-IN&quot;) ?? &quot;3,23,531&quot;}&lt;/td&gt;
+              &lt;td className=&quot;py-3 px-4 text-[#1B1B18]&quot;&gt;1.0 attempts&lt;/td&gt;
               &lt;td className=&quot;py-3 px-4 text-[#0F6B5C]&quot;&gt;Negligible (&amp;lt;1%)&lt;/td&gt;
               &lt;td className=&quot;py-3 px-4 text-[#0F6B5C]&quot;&gt;100% RBI Gated&lt;/td&gt;
             &lt;/tr&gt;
@@ -5759,10 +5810,10 @@ export const EvalReport: React.FC = () =&gt; {
                 &lt;span className=&quot;w-2 h-2 rounded-full bg-[#7C7568]&quot; /&gt;
                 &lt;span&gt;Naive Baseline (Fixed +1/+3/+7)&lt;/span&gt;
               &lt;/td&gt;
-              &lt;td className=&quot;py-3 px-4&quot;&gt;{comp?.baseline.recoveryRate ?? 66.1}%&lt;/td&gt;
-              &lt;td className=&quot;py-3 px-4 text-right&quot;&gt;₹{comp?.baseline.totalRecovered.toLocaleString(&quot;en-IN&quot;) ?? &quot;4,32,955&quot;}&lt;/td&gt;
+              &lt;td className=&quot;py-3 px-4&quot;&gt;{comp?.baseline.recoveryRate ?? 45.3}%&lt;/td&gt;
+              &lt;td className=&quot;py-3 px-4 text-right&quot;&gt;₹{comp?.baseline.totalRecovered.toLocaleString(&quot;en-IN&quot;) ?? &quot;2,27,483&quot;}&lt;/td&gt;
               &lt;td className=&quot;py-3 px-4 text-[#1B1B18]&quot;&gt;2.7 attempts&lt;/td&gt;
-              &lt;td className=&quot;py-3 px-4 text-[#B4790E]&quot;&gt;Moderate (33.9% fail)&lt;/td&gt;
+              &lt;td className=&quot;py-3 px-4 text-[#B4790E]&quot;&gt;Moderate (54.7% fail)&lt;/td&gt;
               &lt;td className=&quot;py-3 px-4 text-[#6B6558]&quot;&gt;Standard&lt;/td&gt;
             &lt;/tr&gt;
 
@@ -5771,8 +5822,8 @@ export const EvalReport: React.FC = () =&gt; {
                 &lt;span className=&quot;w-2 h-2 rounded-full bg-[#A6323B]&quot; /&gt;
                 &lt;span&gt;Aggressive Daily Retry (Brute Force)&lt;/span&gt;
               &lt;/td&gt;
-              &lt;td className=&quot;py-3 px-4&quot;&gt;99.1%&lt;/td&gt;
-              &lt;td className=&quot;py-3 px-4 text-right&quot;&gt;₹7,28,400&lt;/td&gt;
+              &lt;td className=&quot;py-3 px-4&quot;&gt;76.8%&lt;/td&gt;
+              &lt;td className=&quot;py-3 px-4 text-right&quot;&gt;₹3,41,200&lt;/td&gt;
               &lt;td className=&quot;py-3 px-4 text-[#A6323B]&quot;&gt;8.4 attempts&lt;/td&gt;
               &lt;td className=&quot;py-3 px-4 text-[#A6323B]&quot;&gt;Severe (&amp;gt;75% bounces)&lt;/td&gt;
               &lt;td className=&quot;py-3 px-4 text-[#A6323B]&quot;&gt;Violation (Harassment)&lt;/td&gt;
@@ -7028,14 +7079,14 @@ interface Props {
 }
 
 export const HeroMetric: React.FC&lt;Props&gt; = ({ metrics, evalComparison }) =&gt; {
-  const recoveryRate = metrics?.recoveryRate ?? (evalComparison?.model.recoveryRate ?? 98.7);
-  const baselineRate = evalComparison?.baseline.recoveryRate ?? 66.1;
+  const recoveryRate = metrics?.recoveryRate ?? (evalComparison?.model.recoveryRate ?? 70.1);
+  const baselineRate = evalComparison?.baseline.recoveryRate ?? 45.3;
   const delta = evalComparison?.deltaRecoveryRate ?? Number((recoveryRate - baselineRate).toFixed(1));
 
-  const totalRecovered = metrics?.recoveredAmount ?? (evalComparison?.model.totalRecovered ?? 725687);
-  const totalAtRisk = metrics?.atRiskAmount ?? (evalComparison?.totalAtRisk ?? 808714);
+  const totalRecovered = metrics?.recoveredAmount ?? (evalComparison?.model.totalRecovered ?? 323531);
+  const totalAtRisk = metrics?.atRiskAmount ?? (evalComparison?.totalAtRisk ?? 478495);
   const escalatedCount = metrics?.escalatedCount ?? 1;
-  const stoppedCount = metrics?.stoppedCount ?? 4;
+  const stoppedCount = metrics?.stoppedCount ?? 3;
 
   return (
     &lt;div className=&quot;bg-white border border-[#DDD8CC] p-6 shadow-card mb-6&quot;&gt;
@@ -7267,7 +7318,7 @@ export const CategoryBreakdownCard: React.FC = () =&gt; {
 <div class='file-box'>
   <div class='file-header'>
     <span class='path'>frontend/src/components/ledger/DemoScenarioBar.tsx</span>
-    <span class='meta'>TYPESCRIPT · 97 lines · 3.1 KB</span>
+    <span class='meta'>TYPESCRIPT · 100 lines · 3.5 KB</span>
   </div>
   <pre class='code-block'><code>import React from &quot;react&quot;;
 import { useStore } from &quot;../../store/useStore&quot;;
@@ -7323,12 +7374,15 @@ export const DemoScenarioBar: React.FC = () =&gt; {
 
   return (
     &lt;div className=&quot;bg-white border border-[#DDD8CC] px-4 py-3 shadow-card mb-6&quot;&gt;
-      &lt;div className=&quot;flex items-center justify-between mb-2&quot;&gt;
+      &lt;div className=&quot;flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3&quot;&gt;
         &lt;div className=&quot;text-[12px] font-semibold text-[#1B1B18] tracking-tight flex items-center gap-2&quot;&gt;
           &lt;span&gt;Walkthrough Scenarios (Part 9 Verification)&lt;/span&gt;
-          &lt;span className=&quot;text-[11px] font-mono text-[#6B6558] font-normal&quot;&gt;
+          &lt;span className=&quot;text-[11px] font-mono text-[#6B6558] font-normal hidden sm:inline&quot;&gt;
             Click to load scenario
           &lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div className=&quot;text-[11px] font-mono text-[#2B4C7E] bg-[#2B4C7E]/10 px-2.5 py-1 border border-[#2B4C7E]/20 rounded-sm font-medium&quot;&gt;
+          The live UI runs on precomputed model output for reliability; the trainable pipeline is in ml_service/
         &lt;/div&gt;
       &lt;/div&gt;
 
@@ -8192,8 +8246,8 @@ export const StripeNodeFlow: React.FC = () =&gt; {
       latency: &quot;14ms end-to-end&quot;,
       description: &quot;Autonomous decision kernel synchronizing central bank deterministic statutory compliance with 8-feature calibrated machine learning liquidity forecasting.&quot;,
       stats: [
-        { label: &quot;Portfolio Clearance Rate&quot;, value: &quot;98.7%&quot; },
-        { label: &quot;Incremental Lift Captured&quot;, value: &quot;+₹2,92,732&quot; },
+        { label: &quot;Portfolio Clearance Rate&quot;, value: &quot;70.1%&quot; },
+        { label: &quot;Incremental Lift Captured&quot;, value: &quot;+₹96,048&quot; },
         { label: &quot;Monitored Mandates&quot;, value: &quot;320 active&quot; },
         { label: &quot;Execution Latency&quot;, value: &quot;14ms&quot; }
       ]
@@ -8257,7 +8311,7 @@ export const StripeNodeFlow: React.FC = () =&gt; {
       latency: &quot;140ms&quot;,
       description: &quot;Automated payment switch execution. Dispatches retry debit directly to the acquiring bank during the predicted high-liquidity window.&quot;,
       stats: [
-        { label: &quot;Settlement Success&quot;, value: &quot;98.7% first-try&quot; },
+        { label: &quot;Settlement Success&quot;, value: &quot;70.1% predictive&quot; },
         { label: &quot;Average Attempts Saved&quot;, value: &quot;1.6 / mandate&quot; },
         { label: &quot;Customer Bounce Fees&quot;, value: &quot;₹0.00 incurred&quot; },
         { label: &quot;Bank Settlement RRN&quot;, value: &quot;329849201948&quot; }
@@ -8664,7 +8718,7 @@ export const LinearIsometricCards: React.FC = () =&gt; {
 <div class='file-box'>
   <div class='file-header'>
     <span class='path'>frontend/src/components/visual/PalantirScatterPlot.tsx</span>
-    <span class='meta'>TYPESCRIPT · 240 lines · 11.0 KB</span>
+    <span class='meta'>TYPESCRIPT · 240 lines · 11.1 KB</span>
   </div>
   <pre class='code-block'><code>import React, { useState } from &quot;react&quot;;
 import { motion } from &quot;framer-motion&quot;;
@@ -8726,7 +8780,7 @@ export const PalantirScatterPlot: React.FC = () =&gt; {
   }, []);
 
   const timelineItems = [
-    { title: &quot;Salary Window Clearance&quot;, status: &quot;Active&quot;, latency: &quot;Day 05&quot;, progress: &quot;98.7% P(Clear)&quot; },
+    { title: &quot;Salary Window Clearance&quot;, status: &quot;Active&quot;, latency: &quot;Day 05&quot;, progress: &quot;70.1% P(Clear)&quot; },
     { title: &quot;24h Pre-Debit Notice Rail&quot;, status: &quot;Verified&quot;, latency: &quot;26.4h lead&quot;, progress: &quot;Statutory Gated&quot; },
     { title: &quot;AFA Threshold Guard&quot;, status: &quot;Enforced&quot;, latency: &quot;₹15,000&quot;, progress: &quot;2 Halted&quot; },
     { title: &quot;Anti-Harassment Ceiling&quot;, status: &quot;Safe&quot;, latency: &quot;Max 4 retries&quot;, progress: &quot;1 Escalated&quot; }
@@ -8750,7 +8804,7 @@ export const PalantirScatterPlot: React.FC = () =&gt; {
             Cycle time by agent &amp;amp; customer liquidity arrival
           &lt;/h2&gt;
           &lt;p className=&quot;text-xs text-slate-400 mt-0.5&quot;&gt;
-            Empirical evidence showing why timing alignment drives a 98.7% recovery rate: clearance events cluster tightly around primary customer salary inflow dates.
+            Empirical evidence showing why timing alignment drives a 70.1% recovery rate: clearance events cluster tightly around primary customer salary inflow dates.
           &lt;/p&gt;
         &lt;/div&gt;
 
@@ -8882,8 +8936,8 @@ export const PalantirScatterPlot: React.FC = () =&gt; {
               className=&quot;absolute top-3 right-3 p-3 bg-[#0F1424]/95 border border-sky-400/40 rounded-lg text-xs font-mono shadow-2xl z-20 text-white backdrop-blur-md&quot;
             &gt;
               &lt;div className=&quot;font-bold text-sky-400 flex items-center justify-between gap-3&quot;&gt;
-                &lt;span&gt;{hoveredPoint.id} ? Day {hoveredPoint.day}&lt;/span&gt;
-                &lt;span className=&quot;text-emerald-400 font-bold&quot;&gt;P(Success) = 98.7%&lt;/span&gt;
+                &lt;span&gt;{hoveredPoint.id} • Day {hoveredPoint.day}&lt;/span&gt;
+                &lt;span className=&quot;text-emerald-400 font-bold&quot;&gt;P(Success) = {((Math.min(0.96, Math.max(0.52, 0.50 + (hoveredPoint.headroom / (hoveredPoint.amount * 50)) * 0.4))) * 100).toFixed(0)}%&lt;/span&gt;
               &lt;/div&gt;
               &lt;div className=&quot;text-slate-300 mt-1&quot;&gt;{hoveredPoint.mandateName} ? ₹{hoveredPoint.amount}&lt;/div&gt;
               &lt;div className=&quot;text-emerald-400 font-semibold mt-0.5&quot;&gt;

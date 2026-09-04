@@ -33,8 +33,8 @@ export const StripeNodeFlow: React.FC = () => {
       latency: "14ms end-to-end",
       description: "Autonomous decision kernel synchronizing central bank deterministic statutory compliance with 8-feature calibrated machine learning liquidity forecasting.",
       stats: [
-        { label: "Portfolio Clearance Rate", value: "98.7%" },
-        { label: "Incremental Lift Captured", value: "+₹2,92,732" },
+        { label: "Portfolio Clearance Rate", value: "70.1%" },
+        { label: "Incremental Lift Captured", value: "+₹96,048" },
         { label: "Monitored Mandates", value: "320 active" },
         { label: "Execution Latency", value: "14ms" }
       ]
@@ -98,7 +98,7 @@ export const StripeNodeFlow: React.FC = () => {
       latency: "140ms",
       description: "Automated payment switch execution. Dispatches retry debit directly to the acquiring bank during the predicted high-liquidity window.",
       stats: [
-        { label: "Settlement Success", value: "98.7% first-try" },
+        { label: "Settlement Success", value: "70.1% predictive" },
         { label: "Average Attempts Saved", value: "1.6 / mandate" },
         { label: "Customer Bounce Fees", value: "₹0.00 incurred" },
         { label: "Bank Settlement RRN", value: "329849201948" }

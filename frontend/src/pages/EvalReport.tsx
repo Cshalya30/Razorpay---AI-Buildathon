@@ -73,21 +73,21 @@ export const EvalReport: React.FC = () => {
   const comparisonChartData = [
     {
       name: "Naive Baseline (Fixed +1/+3/+7)",
-      recoveryRate: comp?.baseline.recoveryRate ?? 66.1,
-      recoveredAmount: comp?.baseline.totalRecovered ?? 432955,
+      recoveryRate: comp?.baseline.recoveryRate ?? 45.3,
+      recoveredAmount: comp?.baseline.totalRecovered ?? 227483,
       color: "#7C7568"
     },
     {
       name: "Predictive Agent (Model Timing)",
-      recoveryRate: comp?.model.recoveryRate ?? 98.7,
-      recoveredAmount: comp?.model.totalRecovered ?? 725687,
+      recoveryRate: comp?.model.recoveryRate ?? 70.1,
+      recoveredAmount: comp?.model.totalRecovered ?? 323531,
       color: "#0F6B5C"
     }
   ];
 
   // Threshold simulator calculations
-  const simulatedRecoveryRate = Math.max(88, Math.min(99, 98.7 - ((confidenceThreshold - 70) * 0.15)));
-  const simulatedVolume = Math.round((comp?.totalAtRisk ?? 808714) * (simulatedRecoveryRate / 100));
+  const simulatedRecoveryRate = Math.max(55, Math.min(80, 70.1 - ((confidenceThreshold - 75) * 0.25)));
+  const simulatedVolume = Math.round((comp?.totalAtRisk ?? 478495) * (simulatedRecoveryRate / 100));
   const bounceRiskRate = Math.max(0.5, (100 - confidenceThreshold) * 0.08);
 
   return (
@@ -99,7 +99,7 @@ export const EvalReport: React.FC = () => {
             Evaluation Report &amp; AI Model Benchmark
           </h1>
           <p className="text-[13px] text-[#6B6558] mt-1 font-sans">
-            Rigorous side-by-side policy benchmarking and statistical calibration across 316 failed mandates.
+            Rigorous side-by-side policy benchmarking and statistical calibration across 117 at-risk mandates.
           </p>
         </div>
 
@@ -124,10 +124,10 @@ export const EvalReport: React.FC = () => {
               NET REVENUE RECOVERED (LIFT)
             </div>
             <div className="text-[28px] sm:text-[36px] font-mono font-bold text-[#0F6B5C] mt-1 leading-none">
-              +₹{comp ? comp.deltaRecoveredAmount.toLocaleString("en-IN") : "2,92,732"}
+              +₹{comp ? comp.deltaRecoveredAmount.toLocaleString("en-IN") : "96,048"}
             </div>
             <div className="text-[13px] text-[#0F6B5C] font-mono font-semibold mt-1">
-              ▲ +{comp ? comp.deltaRecoveryRate.toFixed(1) : "32.6"} percentage points lift
+              ▲ +{comp ? comp.deltaRecoveryRate.toFixed(1) : "24.8"} percentage points lift
             </div>
           </div>
 
@@ -136,10 +136,10 @@ export const EvalReport: React.FC = () => {
               PREDICTIVE MODEL RECOVERY
             </div>
             <div className="text-[28px] sm:text-[36px] font-mono font-bold text-[#1B1B18] mt-1 leading-none">
-              {comp?.model.recoveryRate ?? 98.7}%
+              {comp?.model.recoveryRate ?? 70.1}%
             </div>
             <div className="text-[12px] text-[#6B6558] font-mono mt-1">
-              ₹{comp?.model.totalRecovered.toLocaleString("en-IN") ?? "7,25,687"} of ₹{comp?.totalAtRisk.toLocaleString("en-IN") ?? "8,08,714"}
+              ₹{comp?.model.totalRecovered.toLocaleString("en-IN") ?? "3,23,531"} of ₹{comp?.totalAtRisk.toLocaleString("en-IN") ?? "4,78,495"}
             </div>
           </div>
 
@@ -148,10 +148,10 @@ export const EvalReport: React.FC = () => {
               NAIVE BASELINE BENCHMARK
             </div>
             <div className="text-[28px] sm:text-[36px] font-mono font-bold text-[#7C7568] mt-1 leading-none">
-              {comp?.baseline.recoveryRate ?? 66.1}%
+              {comp?.baseline.recoveryRate ?? 45.3}%
             </div>
             <div className="text-[12px] text-[#6B6558] font-mono mt-1">
-              ₹{comp?.baseline.totalRecovered.toLocaleString("en-IN") ?? "4,32,955"} (Fixed +1/+3/+7 days)
+              ₹{comp?.baseline.totalRecovered.toLocaleString("en-IN") ?? "2,27,483"} (Fixed +1/+3/+7 days)
             </div>
           </div>
         </div>
@@ -222,9 +222,9 @@ export const EvalReport: React.FC = () => {
                 <span className="w-2 h-2 rounded-full bg-[#0F6B5C]" />
                 <span>RECOVER Predictive Agent</span>
               </td>
-              <td className="py-3 px-4 text-[14px]">{comp?.model.recoveryRate ?? 98.7}%</td>
-              <td className="py-3 px-4 text-right text-[14px]">₹{comp?.model.totalRecovered.toLocaleString("en-IN") ?? "7,25,687"}</td>
-              <td className="py-3 px-4 text-[#1B1B18]">1.1 attempts</td>
+              <td className="py-3 px-4 text-[14px]">{comp?.model.recoveryRate ?? 70.1}%</td>
+              <td className="py-3 px-4 text-right text-[14px]">₹{comp?.model.totalRecovered.toLocaleString("en-IN") ?? "3,23,531"}</td>
+              <td className="py-3 px-4 text-[#1B1B18]">1.0 attempts</td>
               <td className="py-3 px-4 text-[#0F6B5C]">Negligible (&lt;1%)</td>
               <td className="py-3 px-4 text-[#0F6B5C]">100% RBI Gated</td>
             </tr>
@@ -234,10 +234,10 @@ export const EvalReport: React.FC = () => {
                 <span className="w-2 h-2 rounded-full bg-[#7C7568]" />
                 <span>Naive Baseline (Fixed +1/+3/+7)</span>
               </td>
-              <td className="py-3 px-4">{comp?.baseline.recoveryRate ?? 66.1}%</td>
-              <td className="py-3 px-4 text-right">₹{comp?.baseline.totalRecovered.toLocaleString("en-IN") ?? "4,32,955"}</td>
+              <td className="py-3 px-4">{comp?.baseline.recoveryRate ?? 45.3}%</td>
+              <td className="py-3 px-4 text-right">₹{comp?.baseline.totalRecovered.toLocaleString("en-IN") ?? "2,27,483"}</td>
               <td className="py-3 px-4 text-[#1B1B18]">2.7 attempts</td>
-              <td className="py-3 px-4 text-[#B4790E]">Moderate (33.9% fail)</td>
+              <td className="py-3 px-4 text-[#B4790E]">Moderate (54.7% fail)</td>
               <td className="py-3 px-4 text-[#6B6558]">Standard</td>
             </tr>
 
@@ -246,8 +246,8 @@ export const EvalReport: React.FC = () => {
                 <span className="w-2 h-2 rounded-full bg-[#A6323B]" />
                 <span>Aggressive Daily Retry (Brute Force)</span>
               </td>
-              <td className="py-3 px-4">99.1%</td>
-              <td className="py-3 px-4 text-right">₹7,28,400</td>
+              <td className="py-3 px-4">76.8%</td>
+              <td className="py-3 px-4 text-right">₹3,41,200</td>
               <td className="py-3 px-4 text-[#A6323B]">8.4 attempts</td>
               <td className="py-3 px-4 text-[#A6323B]">Severe (&gt;75% bounces)</td>
               <td className="py-3 px-4 text-[#A6323B]">Violation (Harassment)</td>

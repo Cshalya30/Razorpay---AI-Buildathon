@@ -46,14 +46,14 @@ interface Props {
 }
 
 export const HeroMetric: React.FC<Props> = ({ metrics, evalComparison }) => {
-  const recoveryRate = metrics?.recoveryRate ?? (evalComparison?.model.recoveryRate ?? 98.7);
-  const baselineRate = evalComparison?.baseline.recoveryRate ?? 66.1;
+  const recoveryRate = metrics?.recoveryRate ?? (evalComparison?.model.recoveryRate ?? 70.1);
+  const baselineRate = evalComparison?.baseline.recoveryRate ?? 45.3;
   const delta = evalComparison?.deltaRecoveryRate ?? Number((recoveryRate - baselineRate).toFixed(1));
 
-  const totalRecovered = metrics?.recoveredAmount ?? (evalComparison?.model.totalRecovered ?? 725687);
-  const totalAtRisk = metrics?.atRiskAmount ?? (evalComparison?.totalAtRisk ?? 808714);
+  const totalRecovered = metrics?.recoveredAmount ?? (evalComparison?.model.totalRecovered ?? 323531);
+  const totalAtRisk = metrics?.atRiskAmount ?? (evalComparison?.totalAtRisk ?? 478495);
   const escalatedCount = metrics?.escalatedCount ?? 1;
-  const stoppedCount = metrics?.stoppedCount ?? 4;
+  const stoppedCount = metrics?.stoppedCount ?? 3;
 
   return (
     <div className="bg-white border border-[#DDD8CC] p-6 shadow-card mb-6">

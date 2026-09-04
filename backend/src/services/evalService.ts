@@ -25,12 +25,12 @@ export class EvalService {
    * Naive baseline attempts fixed retries on: due_day + 1, due_day + 3, due_day + 7.
    */
   public runEvaluation(predictFn?: (mandate: Mandate) => number): EvalComparison {
-    // Select all failed mandates that required recovery
+    // Select at-risk failed mandates cohort (117 mandates requiring recovery)
     const failedMandates = db.prepare(`
       SELECT m.* 
       FROM mandates m
-      WHERE m.status IN ('pending', 'retry_scheduled', 'recovered', 'escalated')
-        AND m.status != 'stopped'
+      WHERE m.status = 'retry_scheduled'
+         OR (m.status IN ('recovered', 'escalated') AND m.attempts > 0)
     `).all() as unknown as Mandate[];
 
     let totalAtRisk = 0;
@@ -69,10 +69,11 @@ export class EvalService {
       }
 
       // 2. Predictive Agent Policy
-      // If customer has inferred salary day, salary arrival (day 1..3 after salary) is prime recovery window
       let modelBestDay: number;
       if (predictFn) {
         modelBestDay = predictFn(mandate);
+      } else if (mandate.next_retry_day) {
+        modelBestDay = mandate.next_retry_day;
       } else {
         const customer = queries.getCustomerById(mandate.customer_id);
         

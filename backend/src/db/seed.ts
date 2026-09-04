@@ -90,6 +90,8 @@ export function seed() {
       status = "stopped";
     } else if (numAttempts >= 4) {
       status = "escalated";
+    } else if (parseFloat(mandate_amount) > 15000 && category === "subscription") {
+      status = "stopped";
     } else {
       status = "pending";
     }
@@ -113,6 +115,22 @@ export function seed() {
         id,
         "stopped",
         "Mandate stopped: user revoked debit authorization",
+        "rule_engine",
+        new Date().toISOString()
+      );
+    } else if (parseFloat(mandate_amount) > 15000 && category === "subscription") {
+      insertAudit.run(
+        id,
+        "afa_required",
+        `Statutory AFA Limit Exceeded: Debit amount ₹${parseFloat(mandate_amount).toLocaleString('en-IN')} exceeds the ₹15,000 RBI ceiling for non-exempt 'subscription' category (Master Direction Sec 5.3). Mandatory AFA OTP required.`,
+        "rule_engine",
+        new Date().toISOString()
+      );
+    } else if (numAttempts >= 4) {
+      insertAudit.run(
+        id,
+        "max_retries_reached",
+        `Anti-Harassment Directive: Mandate reached hard ceiling of 4 consecutive debit failures (4/4). Automated retries permanently halted; escalated to merchant operations.`,
         "rule_engine",
         new Date().toISOString()
       );

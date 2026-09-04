@@ -58,7 +58,7 @@ export const PalantirScatterPlot: React.FC = () => {
   }, []);
 
   const timelineItems = [
-    { title: "Salary Window Clearance", status: "Active", latency: "Day 05", progress: "98.7% P(Clear)" },
+    { title: "Salary Window Clearance", status: "Active", latency: "Day 05", progress: "70.1% P(Clear)" },
     { title: "24h Pre-Debit Notice Rail", status: "Verified", latency: "26.4h lead", progress: "Statutory Gated" },
     { title: "AFA Threshold Guard", status: "Enforced", latency: "₹15,000", progress: "2 Halted" },
     { title: "Anti-Harassment Ceiling", status: "Safe", latency: "Max 4 retries", progress: "1 Escalated" }
@@ -82,7 +82,7 @@ export const PalantirScatterPlot: React.FC = () => {
             Cycle time by agent &amp; customer liquidity arrival
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
-            Empirical evidence showing why timing alignment drives a 98.7% recovery rate: clearance events cluster tightly around primary customer salary inflow dates.
+            Empirical evidence showing why timing alignment drives a 70.1% recovery rate: clearance events cluster tightly around primary customer salary inflow dates.
           </p>
         </div>
 
@@ -214,8 +214,8 @@ export const PalantirScatterPlot: React.FC = () => {
               className="absolute top-3 right-3 p-3 bg-[#0F1424]/95 border border-sky-400/40 rounded-lg text-xs font-mono shadow-2xl z-20 text-white backdrop-blur-md"
             >
               <div className="font-bold text-sky-400 flex items-center justify-between gap-3">
-                <span>{hoveredPoint.id} ? Day {hoveredPoint.day}</span>
-                <span className="text-emerald-400 font-bold">P(Success) = 98.7%</span>
+                <span>{hoveredPoint.id} • Day {hoveredPoint.day}</span>
+                <span className="text-emerald-400 font-bold">P(Success) = {((Math.min(0.96, Math.max(0.52, 0.50 + (hoveredPoint.headroom / (hoveredPoint.amount * 50)) * 0.4))) * 100).toFixed(0)}%</span>
               </div>
               <div className="text-slate-300 mt-1">{hoveredPoint.mandateName} ? ₹{hoveredPoint.amount}</div>
               <div className="text-emerald-400 font-semibold mt-0.5">
