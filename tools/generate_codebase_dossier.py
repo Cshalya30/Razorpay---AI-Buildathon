@@ -110,6 +110,7 @@ CODEBASE_CATALOG = [
         "files": [
             ("frontend/src/components/layout/Sidebar.tsx", "typescript"),
             ("frontend/src/components/layout/TopBar.tsx", "typescript"),
+            ("frontend/src/components/common/BrandLogo.tsx", "typescript"),
             ("frontend/src/components/common/CommandPalette.tsx", "typescript"),
             ("frontend/src/components/common/ToastContainer.tsx", "typescript")
         ]

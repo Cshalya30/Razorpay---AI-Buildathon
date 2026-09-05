@@ -460,8 +460,8 @@ Below is the complete, unabridged, verbatim source code for every file in the ap
 - **Language**: `markdown` | **Lines**: `143` | **Size**: `7.5 KB`
 
 ```markdown
-# RECOVER ? Predictive UPI AutoPay Mandate Recovery Agent
-**Razorpay AI Buildathon 2026 ? Track 3: AI Revenue Recovery**
+# REBOUND — Predictive UPI AutoPay Mandate Recovery Agent
+**Razorpay AI Buildathon 2026 • Track 3: AI Revenue Recovery**
 
 [![Frontend](https://img.shields.io/badge/frontend-React%2018%20%2B%20Vite%20%2B%20Tailwind-teal.svg)](frontend/)
 [![Backend](https://img.shields.io/badge/backend-Node.js%2025%20%2B%20Express-black.svg)](backend/)
@@ -472,15 +472,15 @@ Below is the complete, unabridged, verbatim source code for every file in the ap
 ## 1. The Problem
 Over **20 million UPI AutoPay mandates** fail or are cancelled every month in India. The dominant cause is not fraud or deliberate churn, but **stateless insufficient account balance** at the arbitrary moment of debit.
 
-UPI Autopay failure rates hover between **8% and 15%**?roughly triple that of credit card recurring mandates?because debit attempts are treated as blind point-in-time transactions. Traditional retry systems rely on naive fixed-interval retries (e.g. Day+1, Day+3, Day+7) without knowing whether the customer has received their salary or cleared previous obligations. This causes high bounce fees, merchant churn, and unnecessary mandate cancellations.
+UPI Autopay failure rates hover between **8% and 15%**—roughly triple that of credit card recurring mandates—because debit attempts are treated as blind point-in-time transactions. Traditional retry systems rely on naive fixed-interval retries (e.g. Day+1, Day+3, Day+7) without knowing whether the customer has received their salary or cleared previous obligations. This causes high bounce fees, merchant churn, and unnecessary mandate cancellations.
 
-**RECOVER** replaces naive retry guessing with an autonomous predictive agent that times re-debit attempts to align with inferred customer liquidity (e.g. salary arrival windows), while enforcing strict central bank compliance gating and an immutable audit trail.
+**REBOUND** replaces naive retry guessing with an autonomous predictive agent that times re-debit attempts to align with inferred customer liquidity (e.g. salary arrival windows), while enforcing strict central bank compliance gating and an immutable audit trail.
 
 ---
 
 ## 2. Architecture & Decision Boundary
 
-RECOVER is engineered around a **strict structural separation between prediction and decision**:
+REBOUND is engineered around a **strict structural separation between prediction and decision**:
 
 1. **AI Layer (`ml_service/`) ? Pure Prediction Only**:
    - Built with Python 3.14 + FastAPI + scikit-learn (`GradientBoostingClassifier` + Platt Sigmoid Calibration).
@@ -552,10 +552,10 @@ recover/
 
 Tested on a simulated 30-day liquidity ledger containing stochastic spending variance, 22% gig-economy profiles, and 2% technical bank gateway declines:
 
-| Metric | Naive Baseline (+1, +3, +7) | RECOVER Intelligent Agent | Net Performance Lift |
+| Metric | Naive Baseline (+1, +3, +7) | REBOUND Intelligent Agent | Net Performance Lift |
 |---|:---:|:---:|:---:|
-| **Portfolio Recovery Rate** | **45.3%** | **70.1%** | **? +24.8 percentage points** |
-| **Capital Recovered** | ?2,27,483 | ?3,23,531 | **+?96,048 additional lift** |
+| **Portfolio Recovery Rate** | **45.3%** | **70.1%** | **▲ +24.8 percentage points** |
+| **Capital Recovered** | ₹2,27,483 | ₹3,23,531 | **+₹96,048 additional lift** |
 | **Average Retries Needed** | 2.67 attempts | **1.00 attempt** | **-62.5% reduction in customer bounce friction** |
 | **Customer Bounce Fees** | Incurred on 54.7% | **0 fees (timed to liquidity surplus)** | **100% compliant** |
 
@@ -3810,16 +3810,16 @@ print(f"Done! Cleaned currency symbols in {files_fixed} files.")
 *React 18 root setup, pitch-black OLED CSS design tokens, Zustand state store, and unified API client.*
 
 ### File: `frontend/index.html`
-- **Language**: `html` | **Lines**: `17` | **Size**: `1.1 KB`
+- **Language**: `html` | **Lines**: `17` | **Size**: `1.6 KB`
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230F6B5C'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/></svg>" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'%3E%3Crect width='32' height='32' rx='8' fill='%23121212'/%3E%3Cpath d='M9 7.5v17' stroke='%2310B981' stroke-width='2.75' stroke-linecap='round'/%3E%3Cpath d='M9 7.5h7.5c3.3 0 5.5 2 5.5 5s-2.2 5-5.5 5H9' stroke='%2310B981' stroke-width='2.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M14.5 17.5Q16.5 24 23.5 24' stroke='%2334D399' stroke-width='2.75' stroke-linecap='round'/%3E%3Cpath d='M20.5 21L24 24l-3.5 3' stroke='%2334D399' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='14.5' cy='12.5' r='2' fill='%2334D399'/%3E%3C/svg%3E" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RECOVER – Predictive UPI AutoPay Mandate Recovery Agent</title>
+    <title>REBOUND – Predictive UPI AutoPay Recovery Agent</title>
     <!-- Google Fonts: Fraunces, IBM Plex Sans, IBM Plex Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -4762,7 +4762,7 @@ export function downloadAuditCsv() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.setAttribute("href", url);
-  link.setAttribute("download", `recover_rbi_statutory_audit_${new Date().toISOString().slice(0, 10)}.csv`);
+  link.setAttribute("download", `rebound_rbi_statutory_audit_${new Date().toISOString().slice(0, 10)}.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -5700,7 +5700,7 @@ export const EvalReport: React.FC = () => {
             <tr className="bg-[#0F6B5C]/5 font-semibold text-[#0F6B5C]">
               <td className="py-3 px-4 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#0F6B5C]" />
-                <span>RECOVER Predictive Agent</span>
+                <span>REBOUND Predictive Agent</span>
               </td>
               <td className="py-3 px-4 text-[14px]">{comp?.model.recoveryRate ?? 70.1}%</td>
               <td className="py-3 px-4 text-right text-[14px]">₹{comp?.model.totalRecovered.toLocaleString("en-IN") ?? "3,23,531"}</td>
@@ -5902,7 +5902,7 @@ export const EngineRoom: React.FC = () => {
             Architectural Blueprint &amp; System Flow
           </h1>
           <p className="text-[13px] text-[#6B6558] font-sans mt-1 max-w-3xl">
-            Technical specifications for the RECOVER agent: deterministic central bank compliance gating, calibrated gradient-boosted timing, and sub-15ms decision latency.
+            Technical specifications for the REBOUND agent: deterministic central bank compliance gating, calibrated gradient-boosted timing, and sub-15ms decision latency.
           </p>
         </div>
 
@@ -5938,7 +5938,7 @@ export const EngineRoom: React.FC = () => {
               <span>STATUTORY AUDIT / MODEL SPECIFICATION CARD</span>
             </div>
             <h2 className="text-xl font-serif font-bold text-[#1B1B18] mt-0.5">
-              RECOVER Gradient Boosted Timing Model Card
+              REBOUND Gradient Boosted Timing Model Card
             </h2>
           </div>
           <div className="flex items-center gap-2">
@@ -6087,7 +6087,7 @@ export const EngineRoom: React.FC = () => {
 *Responsive top navigation bar, collapsible mobile sidebar drawer, command palette, and notification toasts.*
 
 ### File: `frontend/src/components/layout/Sidebar.tsx`
-- **Language**: `typescript` | **Lines**: `156` | **Size**: `4.8 KB`
+- **Language**: `typescript` | **Lines**: `151` | **Size**: `4.6 KB`
 
 ```typescript
 import React, { useEffect, useState } from "react";
@@ -6102,6 +6102,8 @@ import {
   Icon
 } from "@phosphor-icons/react";
 import { NavTab } from "../../types";
+
+import { BrandLogo } from "../common/BrandLogo";
 
 interface NavItem {
   id: NavTab;
@@ -6163,16 +6165,9 @@ export const Sidebar: React.FC = () => {
   const sidebarContent = (
     <div className="flex flex-col justify-between h-full py-6">
       <div>
-        {/* Fraunces Serif Wordmark */}
-        <div className="px-6 mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="font-serif text-2xl font-bold tracking-normal text-[#EDEAE2]">
-              Recover
-            </h1>
-            <p className="text-[11px] font-mono text-[#A39C8D] mt-1 tracking-wide">
-              UPI AUTOPAY REGISTER
-            </p>
-          </div>
+        {/* Rebound Brand Logo & Wordmark */}
+        <div className="px-5 mb-8 flex items-center justify-between">
+          <BrandLogo size="md" showText={true} />
           {mobileMenuOpen && (
             <button
               onClick={() => setMobileMenuOpen(false)}
@@ -6386,6 +6381,135 @@ export const TopBar: React.FC = () => {
         </button>
       </div>
     </header>
+  );
+};
+
+```
+
+---
+### File: `frontend/src/components/common/BrandLogo.tsx`
+- **Language**: `typescript` | **Lines**: `121` | **Size**: `4.1 KB`
+
+```typescript
+import React from "react";
+
+interface BrandLogoProps {
+  size?: "sm" | "md" | "lg" | "xl";
+  showText?: boolean;
+  className?: string;
+}
+
+export const BrandLogo: React.FC<BrandLogoProps> = ({
+  size = "md",
+  showText = false,
+  className = ""
+}) => {
+  const sizeMap = {
+    sm: { box: 24, icon: 20, font: "text-lg", sub: "text-[9px]" },
+    md: { box: 32, icon: 26, font: "text-2xl", sub: "text-[10px]" },
+    lg: { box: 40, icon: 32, font: "text-3xl", sub: "text-[11px]" },
+    xl: { box: 52, icon: 42, font: "text-4xl", sub: "text-[12px]" }
+  };
+
+  const config = sizeMap[size];
+
+  return (
+    <div className={`flex items-center gap-3 ${className}`}>
+      {/* Precision Geometric Rebound Mark */}
+      <div 
+        className="relative shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-[#18181B] to-[#0A0A0B] border border-[#27272A] shadow-md group transition-all duration-200 hover:border-[#10B981]/50"
+        style={{ width: config.box, height: config.box }}
+      >
+        {/* Subtle Ambient Radial Glow */}
+        <div className="absolute inset-0 bg-[#10B981]/10 rounded-xl blur-sm pointer-events-none" />
+
+        <svg 
+          width={config.icon} 
+          height={config.icon} 
+          viewBox="0 0 32 32" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+          className="relative z-10"
+        >
+          <defs>
+            <linearGradient id="rebound-grad" x1="6" y1="6" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#10B981" />
+              <stop offset="60%" stopColor="#059669" />
+              <stop offset="100%" stopColor="#047857" />
+            </linearGradient>
+            <linearGradient id="rebound-accent" x1="12" y1="12" x2="26" y2="6" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#34D399" />
+              <stop offset="100%" stopColor="#6EE7B7" />
+            </linearGradient>
+            <filter id="rebound-glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1" result="glow" />
+              <feMerge>
+                <feMergeNode in="glow" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          {/* Vertical Mandate Spine */}
+          <path
+            d="M 9 7.5 L 9 24.5"
+            stroke="url(#rebound-grad)"
+            strokeWidth="2.75"
+            strokeLinecap="round"
+          />
+
+          {/* Upper Cyclical Loop (Mandate rhythm) */}
+          <path
+            d="M 9 7.5 H 16.5 C 19.8 7.5 22 9.5 22 12.5 C 22 15.5 19.8 17.5 16.5 17.5 H 9"
+            stroke="url(#rebound-grad)"
+            strokeWidth="2.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Dynamic Rebound Spring Leg & Upward Recovery Arrow */}
+          <path
+            d="M 14.5 17.5 Q 16.5 24 23.5 24"
+            stroke="url(#rebound-accent)"
+            strokeWidth="2.75"
+            strokeLinecap="round"
+          />
+
+          {/* Arrowhead launching to liquidity settlement */}
+          <path
+            d="M 20.5 21 L 24 24 L 20.5 27"
+            stroke="#34D399"
+            strokeWidth="2.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* AI Precision Timing Node (Inflection Pulse) */}
+          <circle 
+            cx="14.5" 
+            cy="12.5" 
+            r="1.8" 
+            fill="#34D399" 
+            filter="url(#rebound-glow)"
+          />
+        </svg>
+      </div>
+
+      {/* Optional Wordmark */}
+      {showText && (
+        <div>
+          <div className="flex items-center gap-1.5">
+            <h1 className={`font-serif ${config.font} font-bold tracking-tight text-[#EDEAE2] dark:text-white leading-none`}>
+              Rebound
+            </h1>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+          </div>
+          <p className={`${config.sub} font-mono text-[#A39C8D] mt-1 tracking-widest uppercase`}>
+            UPI AUTOPAY AGENT
+          </p>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -6619,11 +6743,11 @@ export const CommandPalette: React.FC = () => {
         {/* Footer Shortcut Hints */}
         <div className="p-2.5 bg-[#EDEAE2]/40 border-t border-[#DDD8CC] flex items-center justify-between text-[11px] font-mono text-[#6B6558]">
           <div className="flex items-center gap-3">
-            <span>?? Navigate</span>
-            <span>? Select</span>
+            <span>↑↓ Navigate</span>
+            <span>↵ Select</span>
             <span>ESC Close</span>
           </div>
-          <div>RECOVER AGENT ? OPERATOR PALETTE</div>
+          <div>REBOUND AGENT • OPERATOR PALETTE</div>
         </div>
       </motion.div>
     </div>
@@ -6755,7 +6879,7 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh })
 
       setSelectedMandate(mandateId);
       onRefresh();
-      addToast(`RECOVER Agent executed for ${mandateId}: Scheduled optimal re-debit timing!`, "success");
+      addToast(`REBOUND Agent executed for ${mandateId}: Scheduled optimal re-debit timing!`, "success");
     } catch (err) {
       console.error("Simulation error:", err);
       setPipelineStage(null);
@@ -6914,7 +7038,7 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh })
           <div className="flex items-center justify-between pb-2 border-b border-[#2C2C28] text-[11px] font-mono">
             <span className="text-[#0F6B5C] font-bold flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#0F6B5C] animate-ping" />
-              RECOVER AGENT PIPELINE // {pipelineStage.mandateId}
+              REBOUND AGENT PIPELINE // {pipelineStage.mandateId}
             </span>
             <span className="text-[#A39C8D]">NODE {pipelineStage.step} OF 3</span>
           </div>
@@ -7593,7 +7717,7 @@ export const MandateDetailDrawer: React.FC<Props> = ({ onRefreshLedger }) => {
                   {/* Priority 3.2: Per-mandate before/after policy comparison */}
                   <div className="bg-white border border-[#DDD8CC] p-3.5 shadow-card">
                     <div className="text-[11px] font-mono text-[#6B6558] uppercase tracking-wider mb-2">
-                      Policy Execution Comparison: Naive vs. RECOVER
+                      Policy Execution Comparison: Naive vs. REBOUND
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
                       {/* Left: Naive Baseline Policy */}
@@ -7609,10 +7733,10 @@ export const MandateDetailDrawer: React.FC<Props> = ({ onRefreshLedger }) => {
                         </div>
                       </div>
 
-                      {/* Right: RECOVER Intelligent Timing */}
+                      {/* Right: REBOUND Intelligent Timing */}
                       <div className="bg-[#0F6B5C]/10 p-2.5 border border-[#0F6B5C]/30 space-y-1">
                         <div className="font-bold text-[#0F6B5C] flex items-center gap-1">
-                          <span>✓ RECOVER Predictive</span>
+                          <span>✓ REBOUND Predictive</span>
                         </div>
                         <div className="text-[#6B6558] font-mono text-[10px]">
                           Selected: Day {data.mandate.next_retry_day ?? "Pending"} ({((data.mandate.predicted_success_prob ?? 0.85) * 100).toFixed(0)}% conf)
@@ -8168,7 +8292,7 @@ export const StripeNodeFlow: React.FC = () => {
 
   const subsystemDetails: Record<string, SubsystemDetail> = {
     "recover": {
-      title: "RECOVER Autonomous Orchestrator",
+      title: "REBOUND Autonomous Orchestrator",
       category: "CORE AGENT KERNEL",
       status: "ACTIVE CLUSTER",
       latency: "14ms end-to-end",
@@ -8404,7 +8528,7 @@ export const StripeNodeFlow: React.FC = () => {
             </button>
           </div>
 
-          {/* CENTER HUB: RECOVER ORCHESTRATOR */}
+          {/* CENTER HUB: REBOUND ORCHESTRATOR */}
           <button
             onClick={() => setSelectedNode("recover")}
             className={`w-24 h-24 rounded-2xl bg-[#121212] border-2 transition-all flex flex-col items-center justify-center shadow-2xl relative group ${
@@ -8416,7 +8540,7 @@ export const StripeNodeFlow: React.FC = () => {
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping absolute top-2 right-2" />
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 absolute top-2 right-2" />
             <span className="font-mono font-extrabold text-white text-base tracking-wider uppercase">
-              recover
+              rebound
             </span>
             <span className="text-[9px] font-mono text-emerald-400 mt-0.5">
               AGENT v2.4

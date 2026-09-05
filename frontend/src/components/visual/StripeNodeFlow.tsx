@@ -27,7 +27,7 @@ export const StripeNodeFlow: React.FC = () => {
 
   const subsystemDetails: Record<string, SubsystemDetail> = {
     "recover": {
-      title: "RECOVER Autonomous Orchestrator",
+      title: "REBOUND Autonomous Orchestrator",
       category: "CORE AGENT KERNEL",
       status: "ACTIVE CLUSTER",
       latency: "14ms end-to-end",
@@ -263,7 +263,7 @@ export const StripeNodeFlow: React.FC = () => {
             </button>
           </div>
 
-          {/* CENTER HUB: RECOVER ORCHESTRATOR */}
+          {/* CENTER HUB: REBOUND ORCHESTRATOR */}
           <button
             onClick={() => setSelectedNode("recover")}
             className={`w-24 h-24 rounded-2xl bg-[#121212] border-2 transition-all flex flex-col items-center justify-center shadow-2xl relative group ${
@@ -275,7 +275,7 @@ export const StripeNodeFlow: React.FC = () => {
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping absolute top-2 right-2" />
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 absolute top-2 right-2" />
             <span className="font-mono font-extrabold text-white text-base tracking-wider uppercase">
-              recover
+              rebound
             </span>
             <span className="text-[9px] font-mono text-emerald-400 mt-0.5">
               AGENT v2.4

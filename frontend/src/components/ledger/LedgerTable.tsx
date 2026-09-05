@@ -48,7 +48,7 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh })
 
       setSelectedMandate(mandateId);
       onRefresh();
-      addToast(`RECOVER Agent executed for ${mandateId}: Scheduled optimal re-debit timing!`, "success");
+      addToast(`REBOUND Agent executed for ${mandateId}: Scheduled optimal re-debit timing!`, "success");
     } catch (err) {
       console.error("Simulation error:", err);
       setPipelineStage(null);
@@ -207,7 +207,7 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({ mandates, onRefresh })
           <div className="flex items-center justify-between pb-2 border-b border-[#2C2C28] text-[11px] font-mono">
             <span className="text-[#0F6B5C] font-bold flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#0F6B5C] animate-ping" />
-              RECOVER AGENT PIPELINE // {pipelineStage.mandateId}
+              REBOUND AGENT PIPELINE // {pipelineStage.mandateId}
             </span>
             <span className="text-[#A39C8D]">NODE {pipelineStage.step} OF 3</span>
           </div>

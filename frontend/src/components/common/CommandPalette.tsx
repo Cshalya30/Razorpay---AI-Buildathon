@@ -221,11 +221,11 @@ export const CommandPalette: React.FC = () => {
         {/* Footer Shortcut Hints */}
         <div className="p-2.5 bg-[#EDEAE2]/40 border-t border-[#DDD8CC] flex items-center justify-between text-[11px] font-mono text-[#6B6558]">
           <div className="flex items-center gap-3">
-            <span>?? Navigate</span>
-            <span>? Select</span>
+            <span>↑↓ Navigate</span>
+            <span>↵ Select</span>
             <span>ESC Close</span>
           </div>
-          <div>RECOVER AGENT ? OPERATOR PALETTE</div>
+          <div>REBOUND AGENT • OPERATOR PALETTE</div>
         </div>
       </motion.div>
     </div>

@@ -1,5 +1,5 @@
-# RECOVER ? Predictive UPI AutoPay Mandate Recovery Agent
-**Razorpay AI Buildathon 2026 ? Track 3: AI Revenue Recovery**
+# REBOUND — Predictive UPI AutoPay Mandate Recovery Agent
+**Razorpay AI Buildathon 2026 • Track 3: AI Revenue Recovery**
 
 [![Frontend](https://img.shields.io/badge/frontend-React%2018%20%2B%20Vite%20%2B%20Tailwind-teal.svg)](frontend/)
 [![Backend](https://img.shields.io/badge/backend-Node.js%2025%20%2B%20Express-black.svg)](backend/)
@@ -10,15 +10,15 @@
 ## 1. The Problem
 Over **20 million UPI AutoPay mandates** fail or are cancelled every month in India. The dominant cause is not fraud or deliberate churn, but **stateless insufficient account balance** at the arbitrary moment of debit.
 
-UPI Autopay failure rates hover between **8% and 15%**?roughly triple that of credit card recurring mandates?because debit attempts are treated as blind point-in-time transactions. Traditional retry systems rely on naive fixed-interval retries (e.g. Day+1, Day+3, Day+7) without knowing whether the customer has received their salary or cleared previous obligations. This causes high bounce fees, merchant churn, and unnecessary mandate cancellations.
+UPI Autopay failure rates hover between **8% and 15%**—roughly triple that of credit card recurring mandates—because debit attempts are treated as blind point-in-time transactions. Traditional retry systems rely on naive fixed-interval retries (e.g. Day+1, Day+3, Day+7) without knowing whether the customer has received their salary or cleared previous obligations. This causes high bounce fees, merchant churn, and unnecessary mandate cancellations.
 
-**RECOVER** replaces naive retry guessing with an autonomous predictive agent that times re-debit attempts to align with inferred customer liquidity (e.g. salary arrival windows), while enforcing strict central bank compliance gating and an immutable audit trail.
+**REBOUND** replaces naive retry guessing with an autonomous predictive agent that times re-debit attempts to align with inferred customer liquidity (e.g. salary arrival windows), while enforcing strict central bank compliance gating and an immutable audit trail.
 
 ---
 
 ## 2. Architecture & Decision Boundary
 
-RECOVER is engineered around a **strict structural separation between prediction and decision**:
+REBOUND is engineered around a **strict structural separation between prediction and decision**:
 
 1. **AI Layer (`ml_service/`) ? Pure Prediction Only**:
    - Built with Python 3.14 + FastAPI + scikit-learn (`GradientBoostingClassifier` + Platt Sigmoid Calibration).
@@ -90,10 +90,10 @@ recover/
 
 Tested on a simulated 30-day liquidity ledger containing stochastic spending variance, 22% gig-economy profiles, and 2% technical bank gateway declines:
 
-| Metric | Naive Baseline (+1, +3, +7) | RECOVER Intelligent Agent | Net Performance Lift |
+| Metric | Naive Baseline (+1, +3, +7) | REBOUND Intelligent Agent | Net Performance Lift |
 |---|:---:|:---:|:---:|
-| **Portfolio Recovery Rate** | **45.3%** | **70.1%** | **? +24.8 percentage points** |
-| **Capital Recovered** | ?2,27,483 | ?3,23,531 | **+?96,048 additional lift** |
+| **Portfolio Recovery Rate** | **45.3%** | **70.1%** | **▲ +24.8 percentage points** |
+| **Capital Recovered** | ₹2,27,483 | ₹3,23,531 | **+₹96,048 additional lift** |
 | **Average Retries Needed** | 2.67 attempts | **1.00 attempt** | **-62.5% reduction in customer bounce friction** |
 | **Customer Bounce Fees** | Incurred on 54.7% | **0 fees (timed to liquidity surplus)** | **100% compliant** |
 

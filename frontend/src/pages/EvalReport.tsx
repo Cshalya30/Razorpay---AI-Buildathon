@@ -220,7 +220,7 @@ export const EvalReport: React.FC = () => {
             <tr className="bg-[#0F6B5C]/5 font-semibold text-[#0F6B5C]">
               <td className="py-3 px-4 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#0F6B5C]" />
-                <span>RECOVER Predictive Agent</span>
+                <span>REBOUND Predictive Agent</span>
               </td>
               <td className="py-3 px-4 text-[14px]">{comp?.model.recoveryRate ?? 70.1}%</td>
               <td className="py-3 px-4 text-right text-[14px]">₹{comp?.model.totalRecovered.toLocaleString("en-IN") ?? "3,23,531"}</td>

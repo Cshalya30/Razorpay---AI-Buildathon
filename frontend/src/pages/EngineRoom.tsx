@@ -23,7 +23,7 @@ export const EngineRoom: React.FC = () => {
             Architectural Blueprint &amp; System Flow
           </h1>
           <p className="text-[13px] text-[#6B6558] font-sans mt-1 max-w-3xl">
-            Technical specifications for the RECOVER agent: deterministic central bank compliance gating, calibrated gradient-boosted timing, and sub-15ms decision latency.
+            Technical specifications for the REBOUND agent: deterministic central bank compliance gating, calibrated gradient-boosted timing, and sub-15ms decision latency.
           </p>
         </div>
 
@@ -59,7 +59,7 @@ export const EngineRoom: React.FC = () => {
               <span>STATUTORY AUDIT / MODEL SPECIFICATION CARD</span>
             </div>
             <h2 className="text-xl font-serif font-bold text-[#1B1B18] mt-0.5">
-              RECOVER Gradient Boosted Timing Model Card
+              REBOUND Gradient Boosted Timing Model Card
             </h2>
           </div>
           <div className="flex items-center gap-2">

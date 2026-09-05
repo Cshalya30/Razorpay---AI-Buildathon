@@ -187,7 +187,7 @@ export const MandateDetailDrawer: React.FC<Props> = ({ onRefreshLedger }) => {
                   {/* Priority 3.2: Per-mandate before/after policy comparison */}
                   <div className="bg-white border border-[#DDD8CC] p-3.5 shadow-card">
                     <div className="text-[11px] font-mono text-[#6B6558] uppercase tracking-wider mb-2">
-                      Policy Execution Comparison: Naive vs. RECOVER
+                      Policy Execution Comparison: Naive vs. REBOUND
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
                       {/* Left: Naive Baseline Policy */}
@@ -203,10 +203,10 @@ export const MandateDetailDrawer: React.FC<Props> = ({ onRefreshLedger }) => {
                         </div>
                       </div>
 
-                      {/* Right: RECOVER Intelligent Timing */}
+                      {/* Right: REBOUND Intelligent Timing */}
                       <div className="bg-[#0F6B5C]/10 p-2.5 border border-[#0F6B5C]/30 space-y-1">
                         <div className="font-bold text-[#0F6B5C] flex items-center gap-1">
-                          <span>✓ RECOVER Predictive</span>
+                          <span>✓ REBOUND Predictive</span>
                         </div>
                         <div className="text-[#6B6558] font-mono text-[10px]">
                           Selected: Day {data.mandate.next_retry_day ?? "Pending"} ({((data.mandate.predicted_success_prob ?? 0.85) * 100).toFixed(0)}% conf)

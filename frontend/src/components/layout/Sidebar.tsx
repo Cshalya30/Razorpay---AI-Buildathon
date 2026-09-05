@@ -11,6 +11,8 @@ import {
 } from "@phosphor-icons/react";
 import { NavTab } from "../../types";
 
+import { BrandLogo } from "../common/BrandLogo";
+
 interface NavItem {
   id: NavTab;
   label: string;
@@ -71,16 +73,9 @@ export const Sidebar: React.FC = () => {
   const sidebarContent = (
     <div className="flex flex-col justify-between h-full py-6">
       <div>
-        {/* Fraunces Serif Wordmark */}
-        <div className="px-6 mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="font-serif text-2xl font-bold tracking-normal text-[#EDEAE2]">
-              Recover
-            </h1>
-            <p className="text-[11px] font-mono text-[#A39C8D] mt-1 tracking-wide">
-              UPI AUTOPAY REGISTER
-            </p>
-          </div>
+        {/* Rebound Brand Logo & Wordmark */}
+        <div className="px-5 mb-8 flex items-center justify-between">
+          <BrandLogo size="md" showText={true} />
           {mobileMenuOpen && (
             <button
               onClick={() => setMobileMenuOpen(false)}
