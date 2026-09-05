@@ -8,6 +8,7 @@ import { EvalReport } from "./pages/EvalReport";
 import { EngineRoom } from "./pages/EngineRoom";
 import { CommandPalette } from "./components/common/CommandPalette";
 import { ToastContainer } from "./components/common/ToastContainer";
+import { IntroSplashScreen } from "./components/common/IntroSplashScreen";
 import { useStore } from "./store/useStore";
 
 export const App: React.FC = () => {
@@ -29,6 +30,9 @@ export const App: React.FC = () => {
           {activeNav === "eval" && <EvalReport />}
         </main>
       </div>
+
+      {/* Cinematic Rolling Intro Screen (Pitch Mode) */}
+      <IntroSplashScreen />
 
       {/* Global Command Palette (?K) */}
       <CommandPalette />

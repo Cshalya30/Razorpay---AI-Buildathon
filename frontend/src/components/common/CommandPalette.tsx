@@ -11,6 +11,7 @@ import {
   DownloadSimple, 
   ArrowRight,
   Command,
+  Sparkle,
   X
 } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,6 +22,7 @@ export const CommandPalette: React.FC = () => {
     setCommandPaletteOpen, 
     setSelectedMandate, 
     setActiveNav,
+    setSplashOpen,
     addToast 
   } = useStore();
 
@@ -91,6 +93,9 @@ export const CommandPalette: React.FC = () => {
     } else if (action === "eval") {
       setActiveNav("eval");
       addToast("Switched to Evaluation & Benchmark Report", "info");
+    } else if (action === "pitch") {
+      setSplashOpen(true);
+      addToast("Launched REBOUND Rolling Pitch Intro", "info");
     }
   };
 
@@ -214,6 +219,17 @@ export const CommandPalette: React.FC = () => {
                 <span className="font-medium text-[#1B1B18]">View Full Policy Benchmark &amp; Telemetry</span>
               </div>
               <span className="text-[10px] font-mono text-[#2B4C7E]">ROC-AUC 0.9969</span>
+            </button>
+
+            <button
+              onClick={() => handleAction("pitch")}
+              className="w-full flex items-center justify-between px-3 py-1.5 text-left hover:bg-[#EDEAE2]/60 rounded-sm transition-colors"
+            >
+              <div className="flex items-center gap-2.5">
+                <Sparkle size={14} className="text-[#0F6B5C]" />
+                <span className="font-medium text-[#1B1B18]">Replay Pitch Intro Screen (Rolling Splash)</span>
+              </div>
+              <span className="text-[10px] font-mono text-[#0F6B5C]">Video Pitch Mode</span>
             </button>
           </div>
         </div>

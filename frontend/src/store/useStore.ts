@@ -38,6 +38,9 @@ interface AppState {
 
   liveSyncActive: boolean;
   toggleLiveSync: () => void;
+
+  splashOpen: boolean;
+  setSplashOpen: (open: boolean) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -58,6 +61,9 @@ export const useStore = create<AppState>((set) => ({
 
   liveSyncActive: true,
   toggleLiveSync: () => set((state) => ({ liveSyncActive: !state.liveSyncActive })),
+
+  splashOpen: typeof window !== "undefined" ? !sessionStorage.getItem("rebound_splash_dismissed") : false,
+  setSplashOpen: (open) => set({ splashOpen: open }),
 
   metrics: null,
   setMetrics: (metrics) => set({ metrics }),

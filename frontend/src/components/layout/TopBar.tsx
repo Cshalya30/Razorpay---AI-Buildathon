@@ -8,7 +8,8 @@ import {
   FileCsv,
   Moon,
   Sun,
-  List
+  List,
+  Play
 } from "@phosphor-icons/react";
 
 export const TopBar: React.FC = () => {
@@ -20,7 +21,8 @@ export const TopBar: React.FC = () => {
     toggleDarkMode,
     setMobileMenuOpen,
     liveSyncActive,
-    toggleLiveSync
+    toggleLiveSync,
+    setSplashOpen
   } = useStore();
   const [evalLoading, setEvalLoading] = useState<boolean>(false);
 
@@ -92,7 +94,20 @@ export const TopBar: React.FC = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5">
+        {/* Pitch Mode / Replay Intro Button */}
+        <button
+          onClick={() => {
+            setSplashOpen(true);
+            addToast("Launched REBOUND Intro Rolling Screen (Pitch Mode)", "info");
+          }}
+          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-mono text-[#0F6B5C] bg-[#0F6B5C]/10 hover:bg-[#0F6B5C]/20 border border-[#0F6B5C]/30 transition-colors shadow-sm rounded-sm font-semibold cursor-pointer"
+          title="Replay cinematic intro loading screen for video pitch recording"
+        >
+          <Play size={13} weight="fill" />
+          <span>Pitch Intro</span>
+        </button>
+
         {/* Dark Mode Toggle Button */}
         <button
           onClick={toggleDarkMode}

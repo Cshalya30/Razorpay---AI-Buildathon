@@ -3853,7 +3853,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 
 ---
 ### File: `frontend/src/App.tsx`
-- **Language**: `typescript` | **Lines**: `40` | **Size**: `1.4 KB`
+- **Language**: `typescript` | **Lines**: `44` | **Size**: `1.6 KB`
 
 ```typescript
 import React from "react";
@@ -3866,6 +3866,7 @@ import { EvalReport } from "./pages/EvalReport";
 import { EngineRoom } from "./pages/EngineRoom";
 import { CommandPalette } from "./components/common/CommandPalette";
 import { ToastContainer } from "./components/common/ToastContainer";
+import { IntroSplashScreen } from "./components/common/IntroSplashScreen";
 import { useStore } from "./store/useStore";
 
 export const App: React.FC = () => {
@@ -3887,6 +3888,9 @@ export const App: React.FC = () => {
           {activeNav === "eval" && <EvalReport />}
         </main>
       </div>
+
+      {/* Cinematic Rolling Intro Screen (Pitch Mode) */}
+      <IntroSplashScreen />
 
       {/* Global Command Palette (?K) */}
       <CommandPalette />
@@ -4010,7 +4014,7 @@ export type NavTab = "ledger" | "retries" | "compliance" | "eval" | "architectur
 
 ---
 ### File: `frontend/src/store/useStore.ts`
-- **Language**: `typescript` | **Lines**: `98` | **Size**: `2.8 KB`
+- **Language**: `typescript` | **Lines**: `104` | **Size**: `3.0 KB`
 
 ```typescript
 import { create } from "zustand";
@@ -4053,6 +4057,9 @@ interface AppState {
 
   liveSyncActive: boolean;
   toggleLiveSync: () => void;
+
+  splashOpen: boolean;
+  setSplashOpen: (open: boolean) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -4073,6 +4080,9 @@ export const useStore = create<AppState>((set) => ({
 
   liveSyncActive: true,
   toggleLiveSync: () => set((state) => ({ liveSyncActive: !state.liveSyncActive })),
+
+  splashOpen: typeof window !== "undefined" ? !sessionStorage.getItem("rebound_splash_dismissed") : false,
+  setSplashOpen: (open) => set({ splashOpen: open }),
 
   metrics: null,
   setMetrics: (metrics) => set({ metrics }),
@@ -6246,7 +6256,7 @@ export const Sidebar: React.FC = () => {
 
 ---
 ### File: `frontend/src/components/layout/TopBar.tsx`
-- **Language**: `typescript` | **Lines**: `134` | **Size**: `5.0 KB`
+- **Language**: `typescript` | **Lines**: `149` | **Size**: `5.7 KB`
 
 ```typescript
 import React, { useState } from "react";
@@ -6259,7 +6269,8 @@ import {
   FileCsv,
   Moon,
   Sun,
-  List
+  List,
+  Play
 } from "@phosphor-icons/react";
 
 export const TopBar: React.FC = () => {
@@ -6271,7 +6282,8 @@ export const TopBar: React.FC = () => {
     toggleDarkMode,
     setMobileMenuOpen,
     liveSyncActive,
-    toggleLiveSync
+    toggleLiveSync,
+    setSplashOpen
   } = useStore();
   const [evalLoading, setEvalLoading] = useState<boolean>(false);
 
@@ -6343,7 +6355,20 @@ export const TopBar: React.FC = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5">
+        {/* Pitch Mode / Replay Intro Button */}
+        <button
+          onClick={() => {
+            setSplashOpen(true);
+            addToast("Launched REBOUND Intro Rolling Screen (Pitch Mode)", "info");
+          }}
+          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-mono text-[#0F6B5C] bg-[#0F6B5C]/10 hover:bg-[#0F6B5C]/20 border border-[#0F6B5C]/30 transition-colors shadow-sm rounded-sm font-semibold cursor-pointer"
+          title="Replay cinematic intro loading screen for video pitch recording"
+        >
+          <Play size={13} weight="fill" />
+          <span>Pitch Intro</span>
+        </button>
+
         {/* Dark Mode Toggle Button */}
         <button
           onClick={toggleDarkMode}
@@ -6517,7 +6542,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
 ---
 ### File: `frontend/src/components/common/CommandPalette.tsx`
-- **Language**: `typescript` | **Lines**: `233` | **Size**: `9.9 KB`
+- **Language**: `typescript` | **Lines**: `249` | **Size**: `10.7 KB`
 
 ```typescript
 import React, { useEffect, useState, useRef } from "react";
@@ -6533,6 +6558,7 @@ import {
   DownloadSimple, 
   ArrowRight,
   Command,
+  Sparkle,
   X
 } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -6543,6 +6569,7 @@ export const CommandPalette: React.FC = () => {
     setCommandPaletteOpen, 
     setSelectedMandate, 
     setActiveNav,
+    setSplashOpen,
     addToast 
   } = useStore();
 
@@ -6613,6 +6640,9 @@ export const CommandPalette: React.FC = () => {
     } else if (action === "eval") {
       setActiveNav("eval");
       addToast("Switched to Evaluation & Benchmark Report", "info");
+    } else if (action === "pitch") {
+      setSplashOpen(true);
+      addToast("Launched REBOUND Rolling Pitch Intro", "info");
     }
   };
 
@@ -6736,6 +6766,17 @@ export const CommandPalette: React.FC = () => {
                 <span className="font-medium text-[#1B1B18]">View Full Policy Benchmark &amp; Telemetry</span>
               </div>
               <span className="text-[10px] font-mono text-[#2B4C7E]">ROC-AUC 0.9969</span>
+            </button>
+
+            <button
+              onClick={() => handleAction("pitch")}
+              className="w-full flex items-center justify-between px-3 py-1.5 text-left hover:bg-[#EDEAE2]/60 rounded-sm transition-colors"
+            >
+              <div className="flex items-center gap-2.5">
+                <Sparkle size={14} className="text-[#0F6B5C]" />
+                <span className="font-medium text-[#1B1B18]">Replay Pitch Intro Screen (Rolling Splash)</span>
+              </div>
+              <span className="text-[10px] font-mono text-[#0F6B5C]">Video Pitch Mode</span>
             </button>
           </div>
         </div>

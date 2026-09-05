@@ -3960,7 +3960,7 @@ ReactDOM.createRoot(document.getElementById(&quot;root&quot;)!).render(
 <div class='file-box'>
   <div class='file-header'>
     <span class='path'>frontend/src/App.tsx</span>
-    <span class='meta'>TYPESCRIPT · 40 lines · 1.4 KB</span>
+    <span class='meta'>TYPESCRIPT · 44 lines · 1.6 KB</span>
   </div>
   <pre class='code-block'><code>import React from &quot;react&quot;;
 import { Sidebar } from &quot;./components/layout/Sidebar&quot;;
@@ -3972,6 +3972,7 @@ import { EvalReport } from &quot;./pages/EvalReport&quot;;
 import { EngineRoom } from &quot;./pages/EngineRoom&quot;;
 import { CommandPalette } from &quot;./components/common/CommandPalette&quot;;
 import { ToastContainer } from &quot;./components/common/ToastContainer&quot;;
+import { IntroSplashScreen } from &quot;./components/common/IntroSplashScreen&quot;;
 import { useStore } from &quot;./store/useStore&quot;;
 
 export const App: React.FC = () =&gt; {
@@ -3993,6 +3994,9 @@ export const App: React.FC = () =&gt; {
           {activeNav === &quot;eval&quot; &amp;&amp; &lt;EvalReport /&gt;}
         &lt;/main&gt;
       &lt;/div&gt;
+
+      {/* Cinematic Rolling Intro Screen (Pitch Mode) */}
+      &lt;IntroSplashScreen /&gt;
 
       {/* Global Command Palette (?K) */}
       &lt;CommandPalette /&gt;
@@ -4115,7 +4119,7 @@ export type NavTab = &quot;ledger&quot; | &quot;retries&quot; | &quot;compliance
 <div class='file-box'>
   <div class='file-header'>
     <span class='path'>frontend/src/store/useStore.ts</span>
-    <span class='meta'>TYPESCRIPT · 98 lines · 2.8 KB</span>
+    <span class='meta'>TYPESCRIPT · 104 lines · 3.0 KB</span>
   </div>
   <pre class='code-block'><code>import { create } from &quot;zustand&quot;;
 import { LedgerMetrics, EvalComparison, NavTab } from &quot;../types&quot;;
@@ -4157,6 +4161,9 @@ interface AppState {
 
   liveSyncActive: boolean;
   toggleLiveSync: () =&gt; void;
+
+  splashOpen: boolean;
+  setSplashOpen: (open: boolean) =&gt; void;
 }
 
 export const useStore = create&lt;AppState&gt;((set) =&gt; ({
@@ -4177,6 +4184,9 @@ export const useStore = create&lt;AppState&gt;((set) =&gt; ({
 
   liveSyncActive: true,
   toggleLiveSync: () =&gt; set((state) =&gt; ({ liveSyncActive: !state.liveSyncActive })),
+
+  splashOpen: typeof window !== &quot;undefined&quot; ? !sessionStorage.getItem(&quot;rebound_splash_dismissed&quot;) : false,
+  setSplashOpen: (open) =&gt; set({ splashOpen: open }),
 
   metrics: null,
   setMetrics: (metrics) =&gt; set({ metrics }),
@@ -6338,7 +6348,7 @@ export const Sidebar: React.FC = () =&gt; {
 <div class='file-box'>
   <div class='file-header'>
     <span class='path'>frontend/src/components/layout/TopBar.tsx</span>
-    <span class='meta'>TYPESCRIPT · 134 lines · 5.0 KB</span>
+    <span class='meta'>TYPESCRIPT · 149 lines · 5.7 KB</span>
   </div>
   <pre class='code-block'><code>import React, { useState } from &quot;react&quot;;
 import { useStore } from &quot;../../store/useStore&quot;;
@@ -6350,7 +6360,8 @@ import {
   FileCsv,
   Moon,
   Sun,
-  List
+  List,
+  Play
 } from &quot;@phosphor-icons/react&quot;;
 
 export const TopBar: React.FC = () =&gt; {
@@ -6362,7 +6373,8 @@ export const TopBar: React.FC = () =&gt; {
     toggleDarkMode,
     setMobileMenuOpen,
     liveSyncActive,
-    toggleLiveSync
+    toggleLiveSync,
+    setSplashOpen
   } = useStore();
   const [evalLoading, setEvalLoading] = useState&lt;boolean&gt;(false);
 
@@ -6434,7 +6446,20 @@ export const TopBar: React.FC = () =&gt; {
       &lt;/div&gt;
 
       {/* Action Buttons */}
-      &lt;div className=&quot;flex items-center gap-3&quot;&gt;
+      &lt;div className=&quot;flex items-center gap-2.5&quot;&gt;
+        {/* Pitch Mode / Replay Intro Button */}
+        &lt;button
+          onClick={() =&gt; {
+            setSplashOpen(true);
+            addToast(&quot;Launched REBOUND Intro Rolling Screen (Pitch Mode)&quot;, &quot;info&quot;);
+          }}
+          className=&quot;hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-mono text-[#0F6B5C] bg-[#0F6B5C]/10 hover:bg-[#0F6B5C]/20 border border-[#0F6B5C]/30 transition-colors shadow-sm rounded-sm font-semibold cursor-pointer&quot;
+          title=&quot;Replay cinematic intro loading screen for video pitch recording&quot;
+        &gt;
+          &lt;Play size={13} weight=&quot;fill&quot; /&gt;
+          &lt;span&gt;Pitch Intro&lt;/span&gt;
+        &lt;/button&gt;
+
         {/* Dark Mode Toggle Button */}
         &lt;button
           onClick={toggleDarkMode}
@@ -6607,7 +6632,7 @@ export const BrandLogo: React.FC&lt;BrandLogoProps&gt; = ({
 <div class='file-box'>
   <div class='file-header'>
     <span class='path'>frontend/src/components/common/CommandPalette.tsx</span>
-    <span class='meta'>TYPESCRIPT · 233 lines · 9.9 KB</span>
+    <span class='meta'>TYPESCRIPT · 249 lines · 10.7 KB</span>
   </div>
   <pre class='code-block'><code>import React, { useEffect, useState, useRef } from &quot;react&quot;;
 import { useStore } from &quot;../../store/useStore&quot;;
@@ -6622,6 +6647,7 @@ import {
   DownloadSimple, 
   ArrowRight,
   Command,
+  Sparkle,
   X
 } from &quot;@phosphor-icons/react&quot;;
 import { motion, AnimatePresence } from &quot;framer-motion&quot;;
@@ -6632,6 +6658,7 @@ export const CommandPalette: React.FC = () =&gt; {
     setCommandPaletteOpen, 
     setSelectedMandate, 
     setActiveNav,
+    setSplashOpen,
     addToast 
   } = useStore();
 
@@ -6702,6 +6729,9 @@ export const CommandPalette: React.FC = () =&gt; {
     } else if (action === &quot;eval&quot;) {
       setActiveNav(&quot;eval&quot;);
       addToast(&quot;Switched to Evaluation &amp; Benchmark Report&quot;, &quot;info&quot;);
+    } else if (action === &quot;pitch&quot;) {
+      setSplashOpen(true);
+      addToast(&quot;Launched REBOUND Rolling Pitch Intro&quot;, &quot;info&quot;);
     }
   };
 
@@ -6825,6 +6855,17 @@ export const CommandPalette: React.FC = () =&gt; {
                 &lt;span className=&quot;font-medium text-[#1B1B18]&quot;&gt;View Full Policy Benchmark &amp;amp; Telemetry&lt;/span&gt;
               &lt;/div&gt;
               &lt;span className=&quot;text-[10px] font-mono text-[#2B4C7E]&quot;&gt;ROC-AUC 0.9969&lt;/span&gt;
+            &lt;/button&gt;
+
+            &lt;button
+              onClick={() =&gt; handleAction(&quot;pitch&quot;)}
+              className=&quot;w-full flex items-center justify-between px-3 py-1.5 text-left hover:bg-[#EDEAE2]/60 rounded-sm transition-colors&quot;
+            &gt;
+              &lt;div className=&quot;flex items-center gap-2.5&quot;&gt;
+                &lt;Sparkle size={14} className=&quot;text-[#0F6B5C]&quot; /&gt;
+                &lt;span className=&quot;font-medium text-[#1B1B18]&quot;&gt;Replay Pitch Intro Screen (Rolling Splash)&lt;/span&gt;
+              &lt;/div&gt;
+              &lt;span className=&quot;text-[10px] font-mono text-[#0F6B5C]&quot;&gt;Video Pitch Mode&lt;/span&gt;
             &lt;/button&gt;
           &lt;/div&gt;
         &lt;/div&gt;
