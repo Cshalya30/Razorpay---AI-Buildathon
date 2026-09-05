@@ -6360,12 +6360,12 @@ export const TopBar: React.FC = () => {
         <button
           onClick={() => {
             setSplashOpen(true);
-            addToast("Launched REBOUND Intro Rolling Screen (Pitch Mode)", "info");
+            addToast("Launched REBOUND Intro Screen (Pitch Mode)", "info");
           }}
-          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-mono text-[#0F6B5C] bg-[#0F6B5C]/10 hover:bg-[#0F6B5C]/20 border border-[#0F6B5C]/30 transition-colors shadow-sm rounded-sm font-semibold cursor-pointer"
-          title="Replay cinematic intro loading screen for video pitch recording"
+          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-mono text-[#1B1B18] dark:text-zinc-200 hover:bg-[#EDEAE2] dark:hover:bg-zinc-800 border border-[#DDD8CC] dark:border-zinc-800 transition-colors shadow-sm rounded-sm font-medium cursor-pointer"
+          title="Replay intro screen for video pitch recording"
         >
-          <Play size={13} weight="fill" />
+          <Play size={12} weight="bold" />
           <span>Pitch Intro</span>
         </button>
 
